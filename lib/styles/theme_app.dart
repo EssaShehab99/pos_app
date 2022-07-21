@@ -8,9 +8,9 @@ class ThemeApp{
       hintColor: ColorsApp.grey,
       iconTheme: IconThemeData(color: ColorsApp.primary,size: 35),
       textTheme:TextTheme(
-        headline1: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: ColorsApp.primary),
-        bodyText1: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: ColorsApp.primary),
-        bodyText2: TextStyle(fontWeight: FontWeight.w400,fontSize: 18,color: ColorsApp.primary),
+        headline1: TextStyle(fontWeight: FontWeight.bold,fontSize: 25,color: ColorsApp.secondary),
+        bodyText1: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: ColorsApp.secondary),
+        bodyText2: TextStyle(fontWeight: FontWeight.w400,fontSize: 17,color: ColorsApp.secondary),
       )
   );
 }

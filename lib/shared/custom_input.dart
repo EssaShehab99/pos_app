@@ -42,21 +42,31 @@ class CustomInput extends StatelessWidget {
       enabled: enabled,
       maxLength: maxLength,
       textAlign: textAlign ?? TextAlign.start,
-        onChanged:onChanged,
+      onChanged: onChanged,
       style: Theme.of(context).textTheme.bodyText1,
       decoration: InputDecoration(
-        border: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color: ColorsApp.shadow,
+            width: 2,
+          ),
         ),
-        fillColor: ColorsApp.grey,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: BorderSide(
+            color: ColorsApp.shadow,
+            width: 2,
+          ),
+        ),
+        fillColor: ColorsApp.white,
         filled: true,
         hintTextDirection: textDirection,
         contentPadding: EdgeInsets.all(10),
         hintText: hint,
         counterText: "",
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-              color: ColorsApp.grey,
+              color: ColorsApp.primary,
             ),
       ),
     );

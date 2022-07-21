@@ -1,0 +1,15 @@
+{
+ "en": "EN",
+ "phone": "رقم الهاتف",
+ "login": "تسجيل الدخول",
+ "register": "إنشاء حساب",
+ "password": "كلمة المرور",
+ "remember-me": "تذكرني",
+ "forgot-password": "نسيت كلمة المرور",
+ "email": "البريد الإلكتروني",
+ "business-name": "اسم الشركة",
+ "confirm-password": "تأكيد كلمة المرور",
+ "already-have-account": "لديك حساب بالفعل؟",
+ "verify_otp": "التحقق من OTP",
+ "verify": "التحقق"
+}

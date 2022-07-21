@@ -18,7 +18,7 @@ class _CustomButtonState extends State<CustomButton> {
       width: double.infinity,
       height: 60,
       decoration: BoxDecoration(
-          color: ColorsApp.primary,
+          color: ColorsApp.secondary,
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(

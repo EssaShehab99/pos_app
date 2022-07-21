@@ -24,26 +24,40 @@ class CustomDropdown extends StatelessWidget {
       items: items?.map((item) {
         return DropdownMenuItem(
           value: item["value"],
-          child: Center(child: Text(item["value"]+" "+item["data"],textDirection: TextDirection.ltr,)),
+          child: Center(
+              child: Text(
+            item["value"] + " " + item["data"],
+            textDirection: TextDirection.ltr,
+          )),
         );
       }).toList(),
-      value: items!=null?items?.first["value"]:null,
+      value: items != null ? items?.first["value"] : null,
       onChanged: onChanged,
       validator: validator,
       style: Theme.of(context).textTheme.bodyText1,
       icon: SizedBox.shrink(),
       decoration: InputDecoration(
-        border: UnderlineInputBorder(
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
-          borderSide: BorderSide.none,
+          borderSide: BorderSide(
+            color: ColorsApp.shadow,
+            width: 2,
+          ),
         ),
-        fillColor: ColorsApp.grey,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(5),
+          borderSide: BorderSide(
+            color: ColorsApp.shadow,
+            width: 2,
+          ),
+        ),
+        fillColor: ColorsApp.white,
         filled: true,
         contentPadding: EdgeInsets.all(10),
         hintText: hint,
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-          color: ColorsApp.grey,
-        ),
+              color: ColorsApp.grey,
+            ),
       ),
     );
   }

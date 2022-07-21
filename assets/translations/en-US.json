@@ -1,0 +1,15 @@
+{
+  "en": "EN",
+    "phone": "Phone",
+    "login": "Login",
+    "register": "Register",
+  "password": "Password",
+  "remember-me": "Remember me",
+    "forgot-password": "Forgot password",
+  "email": "Email",
+  "business-name": "Business name",
+  "confirm-password": "Confirm password",
+  "already-have-account": "Already have an account?",
+  "verify_otp": "Verify OTP",
+  "verify": "Verify"
+}

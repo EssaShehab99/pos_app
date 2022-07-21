@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:pos_app/modules/auth/register.dart';
+import 'package:pos_app/modules/auth/verify_otp.dart';
 import 'package:pos_app/routes.dart';
 import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
@@ -53,6 +55,10 @@ class _MyAppState extends State<MyApp> {
               switch (settings.name) {
                 case Routes.LOGIN_PAGE:
                   return const Login();
+                case Routes.REGISTER_PAGE:
+                  return const Register();
+                case Routes.VERIFY_OTP_PAGE:
+                  return const VerifyOtp();
                   default:
                     return const Login();
               }
