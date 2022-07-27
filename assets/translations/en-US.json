@@ -10,6 +10,13 @@
   "business-name": "Business name",
   "confirm-password": "Confirm password",
   "already-have-account": "Already have an account?",
-  "verify_otp": "Verify OTP",
-  "verify": "Verify"
+  "verify-otp": "Verify OTP",
+  "verify": "Verify",
+  "invoice-sales": "Invoice Sales",
+  "return-invoice": "Return Invoice",
+  "product-manager": "Product Manager",
+  "emp-manager": "Employee Manager",
+  "sales-invoice": "Sales Invoice",
+  "product": "Product"
+
 }

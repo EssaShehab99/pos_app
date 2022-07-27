@@ -13,6 +13,7 @@ class CustomInput extends StatelessWidget {
       this.enabled,
       this.textAlign,
       this.onChanged,
+      this.icon,
       this.maxLength,
       this.obscureText,
       this.textDirection,
@@ -29,6 +30,7 @@ class CustomInput extends StatelessWidget {
   final TextDirection? textDirection;
   final ValueChanged<String>? onChanged;
   final int? maxLength;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +48,14 @@ class CustomInput extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyText1,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             color: ColorsApp.shadow,
             width: 2,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(
             color: ColorsApp.shadow,
             width: 2,
@@ -62,12 +64,16 @@ class CustomInput extends StatelessWidget {
         fillColor: ColorsApp.white,
         filled: true,
         hintTextDirection: textDirection,
-        contentPadding: EdgeInsets.all(10),
+        contentPadding: EdgeInsets.all(15),
         hintText: hint,
         counterText: "",
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-              color: ColorsApp.primary,
+              color: ColorsApp.shadow,
             ),
+        suffixIcon: Icon(
+          icon,
+          color: ColorsApp.shadow,
+        ),
       ),
     );
   }

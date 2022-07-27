@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class Routes {
   static const String LOGIN_PAGE = 'login';
   static const String REGISTER_PAGE = 'register';
-  static const String VERIFY_OTP_PAGE = 'verify_otp';
+  static const String VERIFY_OTP_PAGE = 'verify-otp';
   static const String HOME_PAGE = 'home';
+  static const String SALES_INVOICE_PAGE = 'sales-invoice';
 
   static Route<T> fadeThrough<T>(RouteSettings settings, WidgetBuilder page,
       {int duration = 300}) {

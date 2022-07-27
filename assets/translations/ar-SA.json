@@ -10,6 +10,12 @@
  "business-name": "اسم الشركة",
  "confirm-password": "تأكيد كلمة المرور",
  "already-have-account": "لديك حساب بالفعل؟",
- "verify_otp": "التحقق من OTP",
- "verify": "التحقق"
+ "verify-otp": "التحقق من OTP",
+ "verify": "التحقق",
+ "invoice-sales": "فاتورة مبيعات",
+ "return-invoice": "فاتورة مرتجع",
+ "product-manager": "إدارة المنتجات",
+ "emp-manager": "إدارة الموظفين",
+ "sales-invoice": "فاتورة مبيعات",
+ "product": "المنتجات"
 }

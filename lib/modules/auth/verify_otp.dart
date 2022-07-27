@@ -93,7 +93,7 @@ class VerifyOtp extends StatelessWidget {
                           children: [
                             Center(
                               child: Text(
-                                'verify_otp'.tr(),
+                                'verify-otp'.tr(),
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline1

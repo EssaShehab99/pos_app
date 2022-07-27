@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:pos_app/modules/auth/home.dart';
 import 'package:pos_app/modules/auth/register.dart';
 import 'package:pos_app/modules/auth/verify_otp.dart';
 import 'package:pos_app/routes.dart';
@@ -8,6 +9,7 @@ import 'package:pos_app/styles/theme_app.dart';
 import 'package:provider/provider.dart';
 import 'data/setting/config_app.dart';
 import 'modules/auth/login.dart';
+import 'modules/auth/sales_invoice.dart';
 
 //TODO: easy_localization package setup for ios
 //TODO: local_auth package setup for ios
@@ -49,7 +51,7 @@ class _MyAppState extends State<MyApp> {
           locale: context.locale,
           debugShowCheckedModeBanner: false,
           theme: ThemeApp.light,
-            initialRoute: Routes.LOGIN_PAGE,
+            initialRoute: Routes.SALES_INVOICE_PAGE,
             onGenerateRoute: (RouteSettings settings) {
             return Routes.fadeThrough(settings, (context) {
               switch (settings.name) {
@@ -59,6 +61,10 @@ class _MyAppState extends State<MyApp> {
                   return const Register();
                 case Routes.VERIFY_OTP_PAGE:
                   return const VerifyOtp();
+                case Routes.HOME_PAGE:
+                  return const Home();
+                case Routes.SALES_INVOICE_PAGE:
+                  return const SalesInvoice();
                   default:
                     return const Login();
               }
