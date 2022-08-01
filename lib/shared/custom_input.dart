@@ -64,7 +64,7 @@ class CustomInput extends StatelessWidget {
         fillColor: ColorsApp.white,
         filled: true,
         hintTextDirection: textDirection,
-        contentPadding: EdgeInsets.all(15),
+        contentPadding: EdgeInsets.all(5),
         hintText: hint,
         counterText: "",
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(

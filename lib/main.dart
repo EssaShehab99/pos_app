@@ -9,7 +9,7 @@ import 'package:pos_app/styles/theme_app.dart';
 import 'package:provider/provider.dart';
 import 'data/setting/config_app.dart';
 import 'modules/auth/login.dart';
-import 'modules/auth/sales_invoice.dart';
+import 'modules/home/sales_invoice.dart';
 
 //TODO: easy_localization package setup for ios
 //TODO: local_auth package setup for ios

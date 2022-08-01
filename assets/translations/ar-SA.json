@@ -17,5 +17,6 @@
  "product-manager": "إدارة المنتجات",
  "emp-manager": "إدارة الموظفين",
  "sales-invoice": "فاتورة مبيعات",
- "product": "المنتجات"
+ "product": "المنتجات",
+ "print": "طباعة"
 }
