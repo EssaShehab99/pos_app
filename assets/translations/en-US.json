@@ -18,6 +18,13 @@
   "emp-manager": "Employee Manager",
   "sales-invoice": "Sales Invoice",
   "product": "Product",
-  "print": "Print"
+  "print": "Print",
+  "returned-invoice": "Returned Invoice",
+  "invoice-number": "Invoice Number",
+  "customer-name": "Customer Name",
+  "total": "Total",
+  "operations": "Operations",
+  "customers": "Customers",
+  "customer-number": "Customer Number"
 
 }

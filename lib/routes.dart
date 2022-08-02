@@ -7,7 +7,8 @@ class Routes {
   static const String VERIFY_OTP_PAGE = 'verify-otp';
   static const String HOME_PAGE = 'home';
   static const String SALES_INVOICE_PAGE = 'sales-invoice';
-  static const String SALES_RETURNED_INVOICE='ReturnedInvoice';
+  static const String SALES_RETURNED_INVOICE='returned-invoice';
+  static const String CUSTOMER_PAGE = 'customer';
 
   static Route<T> fadeThrough<T>(RouteSettings settings, WidgetBuilder page,
       {int duration = 300}) {

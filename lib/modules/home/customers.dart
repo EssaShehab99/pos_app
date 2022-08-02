@@ -9,8 +9,8 @@ import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
 
-class ReturnedInvoice extends StatelessWidget {
-  const ReturnedInvoice({Key? key}) : super(key: key);
+class Customers extends StatelessWidget {
+  const Customers({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class ReturnedInvoice extends StatelessWidget {
                       Flexible(
                         flex: 2,
                         child: Text(
-                          'returned-invoice'.tr(),
+                          'customers'.tr(),
                           style: TextStyle(
                             color: ColorsApp.white,
                             fontSize: 18,
@@ -68,8 +68,7 @@ class ReturnedInvoice extends StatelessWidget {
                         ),
                       ),
                       Flexible(
-                        child: Container(
-                        ),
+                        child: Container(),
                       ),
                     ],
                   ),
@@ -87,12 +86,17 @@ class ReturnedInvoice extends StatelessWidget {
                   const SizedBox(height: ConstantsValues.padding),
                   Expanded(
                     flex: 0,
-                    child: Padding(
+                    child: Container(
                       padding: const EdgeInsets.all(ConstantsValues.padding),
-                      child: CustomInput(
-                        hint: 'product'.tr(),
-                        controller: TextEditingController(),
-                        icon: Icons.search,
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorsApp.white,
+                        ),
+                        child: Icon(Icons.add, color: ColorsApp.secondary),
                       ),
                     ),
                   ),
@@ -105,9 +109,9 @@ class ReturnedInvoice extends StatelessWidget {
                             TableRow(
                               children: [
                                 for (String item in [
-                                  'invoice-number'.tr(),
+                                  'customer-number'.tr(),
                                   'customer-name'.tr(),
-                                  'total'.tr(),
+                                  'phone'.tr(),
                                   'operations'.tr(),
                                 ])
                                   FittedBox(
@@ -141,7 +145,12 @@ class ReturnedInvoice extends StatelessWidget {
                             for (int i = 0; i <= 10; i++)
                               TableRow(
                                 children: [
-                                  for (var item in ['0', 'البراء', '650', ''])
+                                  for (var item in [
+                                    '0',
+                                    'البراء',
+                                    '555111444',
+                                    ''
+                                  ])
                                     FittedBox(
                                       child: Container(
                                         alignment: Alignment.center,
@@ -157,7 +166,15 @@ class ReturnedInvoice extends StatelessWidget {
                                                     fontWeight:
                                                         FontWeight.bold),
                                               )
-                                            : Icon(Icons.print),
+                                            : Row(
+                                                children: [
+                                                  Expanded(
+                                                      child:
+                                                          Icon(Icons.delete)),
+                                                  Expanded(
+                                                      child: Icon(Icons.edit)),
+                                                ],
+                                              ),
                                       ),
                                     ),
                                 ],
@@ -188,6 +205,28 @@ class ReturnedInvoice extends StatelessWidget {
         ),
         panel: Column(
           children: [
+            SizedBox(height: ConstantsValues.padding),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.all(ConstantsValues.padding),
+              child: Column(
+                children: [
+                  CustomInput(
+                    controller: new TextEditingController(),
+                    hint: 'customer-name'.tr(),
+                  ),
+                  SizedBox()
+                  CustomInput(
+                    controller: new TextEditingController(),
+                    hint: 'phone'.tr(),
+                  ),
+                  CustomInput(
+                    controller: new TextEditingController(),
+                    hint: 'email'.tr(),
+                  ),
+                ],
+              ),
+            )),
             Expanded(
                 flex: 0,
                 child: Container(
@@ -197,141 +236,6 @@ class ReturnedInvoice extends StatelessWidget {
                     onTap: () {},
                     isLoading: false,
                     text: "print".tr(),
-                  ),
-                )),
-            Expanded(
-                flex: 4,
-                child: Container(
-                  height: double.infinity,
-                  padding: EdgeInsets.all(ConstantsValues.padding),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadiusDirectional.only(
-                          topEnd: Radius.circular(
-                              ConstantsValues.borderRadius * 2)),
-                      color: ColorsApp.grey),
-                  child: ListView.builder(
-                    itemCount: 20,
-                    itemBuilder: (_, __) => Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: ConstantsValues.padding * 0.5),
-                      decoration: BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(color: ColorsApp.shadow))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(
-                                ConstantsValues.padding * 0.5),
-                            child: CircleAvatar(
-                              radius: 30,
-                              backgroundColor: ColorsApp.secondary,
-                            ),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15)),
-                              Text("الحجم: وسط",
-                                  style: Theme.of(context).textTheme.bodyText1),
-                              Text("الوحدة: حبه",
-                                  style: Theme.of(context).textTheme.bodyText1),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: ColorsApp.secondary,
-                                radius: 18,
-                                child: Icon(Icons.keyboard_arrow_up_outlined,
-                                    color: ColorsApp.white),
-                              ),
-                              Text("2",
-                                  style: Theme.of(context).textTheme.bodyText1),
-                              CircleAvatar(
-                                backgroundColor: ColorsApp.secondary,
-                                radius: 18,
-                                child: Icon(Icons.keyboard_arrow_up_outlined,
-                                    color: ColorsApp.white),
-                              ),
-                            ],
-                          ),
-                          Text("2 ريال",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1
-                                  ?.copyWith(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal)),
-                        ],
-                      ),
-                    ),
-                  ),
-                )),
-            Expanded(
-                flex: 2,
-                child: Container(
-                  padding: EdgeInsets.all(ConstantsValues.padding),
-                  margin: EdgeInsets.all(ConstantsValues.padding),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                          ConstantsValues.borderRadius * 0.5),
-                      border: Border.all(color: ColorsApp.shadow)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                              child: Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15))),
-                          Flexible(
-                              child: Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15))),
-                          Flexible(
-                              child: Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15))),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                              child: Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15))),
-                          Flexible(
-                              child: Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15))),
-                          Flexible(
-                              child: Text("قهوة عمانية",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(fontSize: 15))),
-                        ],
-                      )
-                    ],
                   ),
                 )),
           ],

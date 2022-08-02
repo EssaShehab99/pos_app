@@ -18,5 +18,12 @@
  "emp-manager": "إدارة الموظفين",
  "sales-invoice": "فاتورة مبيعات",
  "product": "المنتجات",
- "print": "طباعة"
+ "print": "طباعة",
+ "returned-invoice": "فاتورة مرتجع",
+ "invoice-number": "رقم الفاتورة",
+ "customer-name": "اسم العميل",
+ "total": "المجموع",
+ "operations": "العمليات",
+ "customers":"العملاء",
+ "customer-number":"رقم العميل"
 }

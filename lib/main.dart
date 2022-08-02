@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:pos_app/modules/auth/home.dart';
 import 'package:pos_app/modules/auth/register.dart';
 import 'package:pos_app/modules/auth/verify_otp.dart';
+import 'package:pos_app/modules/home/customers.dart';
+import 'package:pos_app/modules/home/returned_invoice.dart';
 import 'package:pos_app/routes.dart';
 import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
@@ -45,13 +47,13 @@ class _MyAppState extends State<MyApp> {
         builder: (_, loginManager, __) {
           // print(loginManager.user?.token);
           return MaterialApp(
-          title: 'HR App',
+          title: 'POS App',
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           debugShowCheckedModeBanner: false,
           theme: ThemeApp.light,
-            initialRoute: Routes.SALES_INVOICE_PAGE,
+            initialRoute: Routes.CUSTOMER_PAGE,
             onGenerateRoute: (RouteSettings settings) {
             return Routes.fadeThrough(settings, (context) {
               switch (settings.name) {
@@ -65,6 +67,10 @@ class _MyAppState extends State<MyApp> {
                   return const Home();
                 case Routes.SALES_INVOICE_PAGE:
                   return const SalesInvoice();
+                case Routes.SALES_RETURNED_INVOICE:
+                  return const ReturnedInvoice();
+                case Routes.CUSTOMER_PAGE:
+                  return const Customers();
                   default:
                     return const Login();
               }
