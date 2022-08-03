@@ -1,17 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pos_app/modules/auth/home.dart';
+import 'package:pos_app/modules/home.dart';
 import 'package:pos_app/modules/auth/register.dart';
 import 'package:pos_app/modules/auth/verify_otp.dart';
-import 'package:pos_app/modules/home/customers.dart';
-import 'package:pos_app/modules/home/returned_invoice.dart';
+import 'package:pos_app/modules/customers.dart';
 import 'package:pos_app/routes.dart';
 import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
 import 'package:provider/provider.dart';
 import 'data/setting/config_app.dart';
 import 'modules/auth/login.dart';
-import 'modules/home/sales_invoice.dart';
+import 'modules/products.dart';
+import 'modules/returned_invoice.dart';
+import 'modules/sales_invoice.dart';
 
 //TODO: easy_localization package setup for ios
 //TODO: local_auth package setup for ios
@@ -53,7 +54,7 @@ class _MyAppState extends State<MyApp> {
           locale: context.locale,
           debugShowCheckedModeBanner: false,
           theme: ThemeApp.light,
-            initialRoute: Routes.CUSTOMER_PAGE,
+            initialRoute: Routes.LOGIN_PAGE,
             onGenerateRoute: (RouteSettings settings) {
             return Routes.fadeThrough(settings, (context) {
               switch (settings.name) {
@@ -71,6 +72,8 @@ class _MyAppState extends State<MyApp> {
                   return const ReturnedInvoice();
                 case Routes.CUSTOMER_PAGE:
                   return  Customers();
+                case Routes.PRODUCT_PAGE:
+                  return  Products();
                   default:
                     return const Login();
               }

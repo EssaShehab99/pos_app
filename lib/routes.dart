@@ -9,6 +9,7 @@ class Routes {
   static const String SALES_INVOICE_PAGE = 'sales-invoice';
   static const String SALES_RETURNED_INVOICE='returned-invoice';
   static const String CUSTOMER_PAGE = 'customer';
+  static const String PRODUCT_PAGE = 'product';
 
   static Route<T> fadeThrough<T>(RouteSettings settings, WidgetBuilder page,
       {int duration = 300}) {

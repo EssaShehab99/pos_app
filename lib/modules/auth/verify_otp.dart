@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart' as localized;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pos_app/routes.dart';
 import '../../constants/constants_images.dart';
 import '../../constants/constants_values.dart';
 import '../../shared/component.dart';
@@ -134,7 +135,7 @@ class VerifyOtp extends StatelessWidget {
                             CustomButton(
                               text: 'verify'.tr(),
                               onTap: () {
-                                print('verify');
+                                Navigator.of(context).pushNamed(Routes.HOME_PAGE);
                               },),
                           ],
                         ),

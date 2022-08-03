@@ -9,15 +9,15 @@ import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
 
-class Customers extends StatefulWidget {
-   Customers({Key? key}) : super(key: key);
+class Products extends StatefulWidget {
+  const Products({Key? key}) : super(key: key);
 
   @override
-  State<Customers> createState() => _CustomersState();
+  State<Products> createState() => _ProductsState();
 }
 
-class _CustomersState extends State<Customers> {
-   final PanelController _pc1 = PanelController();
+class _ProductsState extends State<Products> {
+  final PanelController _pc1 = PanelController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class _CustomersState extends State<Customers> {
             spreadRadius: 1,
           )
         ],
-        maxHeight: 500,
+        maxHeight: 420,
         backdropColor: Colors.white.withOpacity(0.0),
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -53,7 +53,7 @@ class _CustomersState extends State<Customers> {
                       Flexible(
                         child: Container(
                           alignment: AlignmentDirectional.centerStart,
-                          margin: EdgeInsetsDirectional.only(
+                          margin: const EdgeInsetsDirectional.only(
                               start: ConstantsValues.padding * 0.5),
                           child: IconButton(
                             icon: Icon(Icons.arrow_back_ios,
@@ -67,7 +67,7 @@ class _CustomersState extends State<Customers> {
                       Flexible(
                         flex: 2,
                         child: Text(
-                          'customers'.tr(),
+                          'products'.tr(),
                           style: TextStyle(
                             color: ColorsApp.white,
                             fontSize: 18,
@@ -92,54 +92,47 @@ class _CustomersState extends State<Customers> {
               child: Column(
                 children: [
                   const SizedBox(height: ConstantsValues.padding),
-                  Expanded(
+                  Flexible(
                     flex: 0,
-                    child: Container(
+                    child: Padding(
                       padding: const EdgeInsets.all(ConstantsValues.padding),
-                      alignment: AlignmentDirectional.centerStart,
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: ColorsApp.white,
-                        ),
-                        child: IconButton(
-                          icon: Icon(Icons.add, color: ColorsApp.secondary),
-                          onPressed: () {
-                            _pc1.open();
-                          },
-                        ),
+                      child: CustomInput(
+                        hint: 'product'.tr(),
+                        controller: TextEditingController(),
+                        icon: Icons.search,
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.all(ConstantsValues.padding),
-                      child: SingleChildScrollView(
+                  Flexible(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.all(ConstantsValues.padding),
                         child: Table(
+                          defaultColumnWidth: FixedColumnWidth(100.0),
                           children: [
                             TableRow(
                               children: [
                                 for (String item in [
-                                  'customer-number'.tr(),
-                                  'customer-name'.tr(),
-                                  'phone'.tr(),
+                                  'product-number'.tr(),
+                                  'product-name'.tr(),
+                                  'category'.tr(),
+                                  'quantity'.tr(),
+                                  'size'.tr(),
+                                  'tax'.tr(),
+                                  'price'.tr(),
                                   'operations'.tr(),
                                 ])
-                                  FittedBox(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      height: 100,
-                                      width: 120,
-                                      padding: EdgeInsets.all(5),
-                                      child: Text(
-                                        item,
-                                        style: TextStyle(
-                                            color: ColorsApp.secondary,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
+                                  Container(
+                                    height: 50,
+                                    width: 120,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      item,
+                                      style: TextStyle(
+                                          color: ColorsApp.secondary,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                               ],
@@ -153,23 +146,29 @@ class _CustomersState extends State<Customers> {
                               SizedBox(height: 15), //SizeBox Widget
                               SizedBox(height: 15),
                               SizedBox(height: 15),
-                              SizedBox(height: 0),
+                              SizedBox(height: 15),
+                              SizedBox(height: 15), //SizeBox Widget
+                              SizedBox(height: 15),
+                              SizedBox(height: 15),
+                              SizedBox(height: 15),
                             ]),
-                            for (int i = 0; i <= 10; i++)
+                            for (int i = 0; i <= 2; i++)
                               TableRow(
                                 children: [
                                   for (var item in [
                                     '0',
-                                    'البراء',
-                                    '555111444',
+                                    'قهوة',
+                                    'مشروبات',
+                                    '1',
+                                    'صغير',
+                                    '0',
+                                    '10.00',
                                     ''
                                   ])
-                                    FittedBox(
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        height: 100,
+                                    Container(
+                                        height: 50,
                                         width: 120,
-                                        padding: EdgeInsets.all(5),
+                                        alignment: Alignment.center,
                                         child: item != ''
                                             ? Text(
                                                 item,
@@ -187,9 +186,7 @@ class _CustomersState extends State<Customers> {
                                                   Expanded(
                                                       child: Icon(Icons.edit)),
                                                 ],
-                                              ),
-                                      ),
-                                    ),
+                                              )),
                                 ],
                                 decoration: BoxDecoration(
                                   color: ColorsApp.white,
@@ -198,7 +195,7 @@ class _CustomersState extends State<Customers> {
                                           top: Radius.circular(
                                               ConstantsValues.borderRadius *
                                                   0.5))
-                                      : i == 9
+                                      : i == 2
                                           ? BorderRadius.vertical(
                                               bottom: Radius.circular(
                                                   ConstantsValues.borderRadius *
@@ -227,41 +224,59 @@ class _CustomersState extends State<Customers> {
                   Flexible(
                     child: CustomInput(
                       controller: new TextEditingController(),
-                      hint: 'customer-name'.tr(),
+                      hint: 'product-name'.tr(),
                     ),
                   ),
-                  SizedBox(height: ConstantsValues.padding,),
+                  SizedBox(
+                    height: ConstantsValues.padding,
+                  ),
                   Flexible(
                     child: CustomInput(
                       controller: new TextEditingController(),
-                      hint: 'phone'.tr(),
+                      hint: 'category'.tr(),
                     ),
                   ),
-                  SizedBox(height: ConstantsValues.padding,),
+                  SizedBox(
+                    height: ConstantsValues.padding,
+                  ),
                   Flexible(
-                    child: CustomInput(
-                      controller: new TextEditingController(),
-                      hint: 'email'.tr(),
-                    ),
-                  ),
-                  SizedBox(height: ConstantsValues.padding,),
-                  Flexible(child: Row(
+                      child: Row(
                     children: [
-                      Flexible(child: CustomInput(
+                      Flexible(
+                          child: CustomInput(
                         controller: new TextEditingController(),
-                        hint: 'tax-number'.tr(),
+                        hint: 'quantity'.tr(),
                       )),
-                      SizedBox(width: 30,),
-                      Flexible(child: CustomInput(
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Flexible(
+                          child: CustomInput(
                         controller: new TextEditingController(),
-                        hint: 'commercial-register'.tr(),
+                        hint: 'size'.tr(),
                       )),
                     ],
                   )),
-                  SizedBox(height: ConstantsValues.padding,),
-                  Flexible(child: CustomInput(
-                    controller: new TextEditingController(),
-                    hint: 'address'.tr(),
+                  SizedBox(
+                    height: ConstantsValues.padding,
+                  ),
+                  Flexible(
+                      child: Row(
+                    children: [
+                      Flexible(
+                          child: CustomInput(
+                        controller: new TextEditingController(),
+                        hint: 'tax'.tr(),
+                      )),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Flexible(
+                          child: CustomInput(
+                        controller: new TextEditingController(),
+                        hint: 'price'.tr(),
+                      )),
+                    ],
                   )),
                 ],
               ),

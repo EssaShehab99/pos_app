@@ -27,7 +27,9 @@ class _CustomButtonState extends State<CustomButton> {
                 blurRadius: 3)
           ]),
       child: InkWell(
-        onTap: widget.isLoading??false?(){}:widget.onTap,
+        onTap: widget.isLoading??false?(){
+
+        }:widget.onTap,
         child: Center(
             child: widget.isLoading??false
                 ?CircularProgressIndicator(

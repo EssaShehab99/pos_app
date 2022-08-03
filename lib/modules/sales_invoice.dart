@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../../constants/constants_images.dart';
 import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
@@ -520,10 +519,3 @@ class SalesInvoice extends StatelessWidget {
     ));
   }
 }
-
-// class __Menu {
-//   String title;
-//   String icon;
-//
-//   __Menu({required this.icon, required this.title});
-// }

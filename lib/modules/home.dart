@@ -1,11 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pos_app/routes.dart';
 
-import '../../constants/constants_images.dart';
-import '../../constants/constants_values.dart';
-import '../../shared/custom_input.dart';
-import '../../styles/colors_app.dart';
+import '../constants/constants_images.dart';
+import '../constants/constants_values.dart';
+import '../shared/custom_input.dart';
+import '../styles/colors_app.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class Home extends StatelessWidget {
           title: 'return-invoice'.tr(),
           icon: ConstantsImages.IMAGE_RETURNS_INVOICE),
       __Menu(title: 'product-manager'.tr(), icon: ConstantsImages.IMAGE_PRODUCT),
-      __Menu(title: 'emp-manager'.tr(), icon: ConstantsImages.IMAGE_EMPLOYEE),
+      __Menu(title: 'customer-manager'.tr(), icon: ConstantsImages.IMAGE_CUSTOMER),
     ];
     return SafeArea(
         child: Scaffold(
@@ -134,49 +135,62 @@ class Home extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       physics: const BouncingScrollPhysics(),
                       children: menus.map((__Menu menu) {
-                        return Container(
-                          margin: const EdgeInsets.all(
-                              ConstantsValues.padding * 0.5),
-                          width: 180,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: ColorsApp.white,
-                            borderRadius: BorderRadius.circular(
-                                ConstantsValues.borderRadius),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: ColorsApp.shadow.withOpacity(0.08),
-                                  blurRadius: 5,
-                                  spreadRadius: 5),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Flexible(
-                                child: Container(
-                                  margin: const EdgeInsets.all(
-                                      ConstantsValues.padding * 0.2),
-                                  child: SvgPicture.asset(
-                                    menu.icon,
-                                    width: 50,
-                                    height: 50,
+                        return InkWell(
+                          onTap: () {
+                            if(menu.title == 'invoice-sales'.tr()) {
+                              Navigator.pushNamed(context, Routes.SALES_INVOICE_PAGE);
+                            } else if(menu.title == 'return-invoice'.tr()) {
+                              Navigator.pushNamed(context, Routes.SALES_RETURNED_INVOICE);
+                            } else if(menu.title == 'product-manager'.tr()) {
+                              Navigator.pushNamed(context, Routes.PRODUCT_PAGE);
+                            } else if(menu.title == 'customer-manager'.tr()) {
+                              Navigator.pushNamed(context, Routes.CUSTOMER_PAGE);
+                            }
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(
+                                ConstantsValues.padding * 0.5),
+                            width: 180,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: ColorsApp.white,
+                              borderRadius: BorderRadius.circular(
+                                  ConstantsValues.borderRadius),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: ColorsApp.shadow.withOpacity(0.08),
+                                    blurRadius: 5,
+                                    spreadRadius: 5),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Flexible(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(
+                                        ConstantsValues.padding * 0.2),
+                                    child: SvgPicture.asset(
+                                      menu.icon,
+                                      width: 50,
+                                      height: 50,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Flexible(
-                                child: Container(
-                                  margin: const EdgeInsets.all(
-                                      ConstantsValues.padding * 0.5),
-                                  child: Text(
-                                    menu.title,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                Flexible(
+                                  child: Container(
+                                    margin: const EdgeInsets.all(
+                                        ConstantsValues.padding * 0.5),
+                                    child: Text(
+                                      menu.title,
+                                      style:
+                                          Theme.of(context).textTheme.bodyText2,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         );
                       }).toList(),

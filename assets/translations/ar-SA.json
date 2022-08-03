@@ -15,7 +15,7 @@
  "invoice-sales": "فاتورة مبيعات",
  "return-invoice": "فاتورة مرتجع",
  "product-manager": "إدارة المنتجات",
- "emp-manager": "إدارة الموظفين",
+ "customer-manager": "إدارة العملاء",
  "sales-invoice": "فاتورة مبيعات",
  "product": "المنتجات",
  "print": "طباعة",
@@ -28,5 +28,13 @@
  "customer-number":"رقم العميل",
  "tax-number":"الرقم الضريبي",
  "commercial-register":"السجل تجاري",
- "address":"العنوان"
+ "address":"العنوان",
+ "products":"المنتجات",
+ "product-number":"رقم المنتج",
+ "product-name": "اسم المنتج",
+ "category": "الصنف",
+ "quantity": "الكمية",
+ "size": "المقاس",
+ "tax": "الضريبة",
+ "price": "السعر"
 }
