@@ -25,5 +25,8 @@
  "total": "المجموع",
  "operations": "العمليات",
  "customers":"العملاء",
- "customer-number":"رقم العميل"
+ "customer-number":"رقم العميل",
+ "tax-number":"الرقم الضريبي",
+ "commercial-register":"السجل تجاري",
+ "address":"العنوان"
 }

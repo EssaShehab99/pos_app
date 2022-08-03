@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
                 case Routes.SALES_RETURNED_INVOICE:
                   return const ReturnedInvoice();
                 case Routes.CUSTOMER_PAGE:
-                  return const Customers();
+                  return  Customers();
                   default:
                     return const Login();
               }

@@ -9,8 +9,15 @@ import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
 
-class Customers extends StatelessWidget {
-  const Customers({Key? key}) : super(key: key);
+class Customers extends StatefulWidget {
+   Customers({Key? key}) : super(key: key);
+
+  @override
+  State<Customers> createState() => _CustomersState();
+}
+
+class _CustomersState extends State<Customers> {
+   final PanelController _pc1 = PanelController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +25,7 @@ class Customers extends StatelessWidget {
         child: Scaffold(
       backgroundColor: ColorsApp.primary,
       body: SlidingUpPanel(
+        controller: _pc1,
         borderRadius: BorderRadiusDirectional.only(
             topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
         boxShadow: [
@@ -27,7 +35,7 @@ class Customers extends StatelessWidget {
             spreadRadius: 1,
           )
         ],
-        maxHeight: 700,
+        maxHeight: 500,
         backdropColor: Colors.white.withOpacity(0.0),
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -96,7 +104,12 @@ class Customers extends StatelessWidget {
                           shape: BoxShape.circle,
                           color: ColorsApp.white,
                         ),
-                        child: Icon(Icons.add, color: ColorsApp.secondary),
+                        child: IconButton(
+                          icon: Icon(Icons.add, color: ColorsApp.secondary),
+                          onPressed: () {
+                            _pc1.open();
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -211,19 +224,45 @@ class Customers extends StatelessWidget {
               padding: const EdgeInsets.all(ConstantsValues.padding),
               child: Column(
                 children: [
-                  CustomInput(
-                    controller: new TextEditingController(),
-                    hint: 'customer-name'.tr(),
+                  Flexible(
+                    child: CustomInput(
+                      controller: new TextEditingController(),
+                      hint: 'customer-name'.tr(),
+                    ),
                   ),
-                  SizedBox()
-                  CustomInput(
-                    controller: new TextEditingController(),
-                    hint: 'phone'.tr(),
+                  SizedBox(height: ConstantsValues.padding,),
+                  Flexible(
+                    child: CustomInput(
+                      controller: new TextEditingController(),
+                      hint: 'phone'.tr(),
+                    ),
                   ),
-                  CustomInput(
-                    controller: new TextEditingController(),
-                    hint: 'email'.tr(),
+                  SizedBox(height: ConstantsValues.padding,),
+                  Flexible(
+                    child: CustomInput(
+                      controller: new TextEditingController(),
+                      hint: 'email'.tr(),
+                    ),
                   ),
+                  SizedBox(height: ConstantsValues.padding,),
+                  Flexible(child: Row(
+                    children: [
+                      Flexible(child: CustomInput(
+                        controller: new TextEditingController(),
+                        hint: 'tax-number'.tr(),
+                      )),
+                      SizedBox(width: 30,),
+                      Flexible(child: CustomInput(
+                        controller: new TextEditingController(),
+                        hint: 'commercial-register'.tr(),
+                      )),
+                    ],
+                  )),
+                  SizedBox(height: ConstantsValues.padding,),
+                  Flexible(child: CustomInput(
+                    controller: new TextEditingController(),
+                    hint: 'address'.tr(),
+                  )),
                 ],
               ),
             )),

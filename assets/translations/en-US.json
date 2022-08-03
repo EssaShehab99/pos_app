@@ -25,6 +25,9 @@
   "total": "Total",
   "operations": "Operations",
   "customers": "Customers",
-  "customer-number": "Customer Number"
+  "customer-number": "Customer Number",
+  "tax-number": "Tax Number",
+  "commercial-register": "Commercial Register",
+  "address": "Address"
 
 }
