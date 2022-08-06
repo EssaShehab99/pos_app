@@ -5,6 +5,7 @@ class Routes {
   static const String LOGIN_PAGE = 'login';
   static const String REGISTER_PAGE = 'register';
   static const String VERIFY_OTP_PAGE = 'verify-otp';
+  static const String FORGOT_PASSWORD_PAGE = 'forgot-password';
   static const String HOME_PAGE = 'home';
   static const String SALES_INVOICE_PAGE = 'sales-invoice';
   static const String SALES_RETURNED_INVOICE='returned-invoice';

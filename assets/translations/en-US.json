@@ -36,7 +36,11 @@
   "quantity": "Quantity",
   "size": "Size",
   "tax": "Tax",
-  "price": "Price"
+  "price": "Price",
+  "failed": "Failed",
+  "verify-otp-failed": "Verify OTP Failed",
+  "forget-password": "Forget Password",
+  "change-password": "Change Password"
 
 
 }

@@ -7,4 +7,5 @@ class ColorsApp{
   static Color shadow=Color.fromRGBO(0, 0, 0, 0.20);
   static Color white=Color.fromRGBO(255, 255, 255, 1.0);
   static Color green=Color.fromRGBO(0, 255, 52, 1.0);
+  static Color red=Color.fromRGBO(255, 0, 0, 1.0);
 }

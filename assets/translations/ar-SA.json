@@ -36,5 +36,9 @@
  "quantity": "الكمية",
  "size": "المقاس",
  "tax": "الضريبة",
- "price": "السعر"
+ "price": "السعر",
+ "failed": "فشل",
+ "verify-otp-failed": "فشل في التحقق من OTP",
+ "forget-password": "نسيت كلمة المرور",
+ "change-password": "تغيير كلمة المرور"
 }

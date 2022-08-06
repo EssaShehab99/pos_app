@@ -36,3 +36,14 @@ class Component {
     );
   }
 }
+enum Status {
+  FAILED,
+  SUCCESS,
+  LOADING,
+  NONE,
+  EXIST,
+}
+enum OTPType {
+  FORGOT_PASSWORD,
+  SIGN_UP
+}

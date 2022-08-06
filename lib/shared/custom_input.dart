@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import '../constants/constants_values.dart';
@@ -13,6 +15,7 @@ class CustomInput extends StatelessWidget {
       this.enabled,
       this.textAlign,
       this.onChanged,
+      this.contentPadding,
       this.icon,
       this.maxLength,
       this.obscureText,
@@ -31,6 +34,7 @@ class CustomInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final int? maxLength;
   final IconData? icon;
+  final double? contentPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +68,13 @@ class CustomInput extends StatelessWidget {
         fillColor: ColorsApp.white,
         filled: true,
         hintTextDirection: textDirection,
-        contentPadding: EdgeInsets.all(5),
+        contentPadding: EdgeInsets.all(contentPadding??10),
         hintText: hint,
         counterText: "",
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
               color: ColorsApp.shadow,
             ),
-        suffixIcon: Icon(
+        suffixIcon: icon==null?null:Icon(
           icon,
           color: ColorsApp.shadow,
         ),
