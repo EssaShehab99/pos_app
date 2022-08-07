@@ -10,6 +10,8 @@ import '../../../constants/constants_images.dart';
 import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
+import '../data/models/category.dart';
+import '../data/models/product.dart';
 import '../data/providers/product_manager.dart';
 import '../shared/component.dart';
 import 'add_category_dialog.dart';
@@ -24,16 +26,18 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   final PanelController _pc1 = PanelController();
   final controllerName = TextEditingController();
-  final controllerCategory = TextEditingController();
   final controllerQuantity = TextEditingController();
   final controllerSize = TextEditingController();
   final controllerTax = TextEditingController();
   final controllerPrice = TextEditingController();
+  String category = "";
   final _formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    ProductManager productManager = Provider.of<ProductManager>(context)..getCategories();
+    ProductManager productManager = Provider.of<ProductManager>(context)
+      ..getCategories();
     OperationsType operationsType = OperationsType.ADD;
     return SafeArea(
         child: Scaffold(
@@ -250,39 +254,66 @@ class _ProductsState extends State<Products> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Consumer<ProductManager>(
-                              builder: (context, value, child) => CustomDropdown(
+                            child: Selector<ProductManager, List<Category>>(
+                              selector: (_, productManager) =>
+                                  productManager.categories,
+                              builder: (context, value, child) =>
+                                  CustomDropdown(
                                 items: [
-                                  {
-                                    'value': 1,
-                                    'data': "item.name",
-                                  },
-                                  for(var item in productManager.categories)
+                                  for (var item in value)
                                     {
                                       'value': item.id,
                                       'data': item.name,
                                     }
                                 ],
+                                onDeletePress: (String value) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          Component.ConfirmDialog(
+                                              title: 'delete-category'.tr(),
+                                              content: 'are-you-sure'.tr(),
+                                              onPressed: () {
+                                                productManager
+                                                    .deleteCategory(value);
+                                              },
+                                              context: context));
+                                },
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'category'.tr();
+                                  }
+                                  return null;
+                                },
                                 hint: 'category'.tr(),
                                 onChanged: (value) {
-
+                                  category = value;
                                 },
                               ),
                             ),
                           ),
-                          SizedBox(width: ConstantsValues.padding,),
+                          SizedBox(
+                            width: ConstantsValues.padding,
+                          ),
                           Expanded(
-                              flex: 0,child: Container(
-                              decoration: BoxDecoration(
-                                  color: ColorsApp.secondary,
-                                  borderRadius: BorderRadius.circular(
-                                      ConstantsValues.borderRadius * 0.5)),
-                              child:IconButton(
-                            icon:  Icon(Icons.add,color: ColorsApp.white,),
-                            onPressed: () {
-                             showDialog(context: context, builder: (context) => AddCategoryDialog());
-                            },
-                          ))),
+                              flex: 0,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: ColorsApp.secondary,
+                                      borderRadius: BorderRadius.circular(
+                                          ConstantsValues.borderRadius * 0.5)),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: ColorsApp.white,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              AddCategoryDialog());
+                                    },
+                                  ))),
                         ],
                       ),
                     ),
@@ -296,6 +327,7 @@ class _ProductsState extends State<Products> {
                             child: CustomInput(
                           controller: controllerQuantity,
                           hint: 'quantity'.tr(),
+                          keyboardType: TextInputType.number,
                         )),
                         SizedBox(
                           width: 30,
@@ -317,6 +349,7 @@ class _ProductsState extends State<Products> {
                             child: CustomInput(
                           controller: controllerTax,
                           hint: 'tax'.tr(),
+                          keyboardType: TextInputType.number,
                         )),
                         SizedBox(
                           width: 30,
@@ -325,6 +358,7 @@ class _ProductsState extends State<Products> {
                             child: CustomInput(
                           controller: controllerPrice,
                           hint: 'price'.tr(),
+                          keyboardType: TextInputType.number,
                         )),
                       ],
                     )),
@@ -337,17 +371,32 @@ class _ProductsState extends State<Products> {
                 child: Container(
                   width: 100,
                   margin: EdgeInsets.all(ConstantsValues.padding),
-                  child: CustomButton(
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        if(operationsType==OperationsType.ADD) {
-
+                  child: StatefulBuilder(builder: (context, setStateButton) {
+                    return CustomButton(
+                      isLoading: isLoading,
+                      onTap: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setStateButton(() {
+                            isLoading = true;
+                          });
+                          if (operationsType == OperationsType.ADD) {
+                            await productManager.addProduct(Product(
+                                id: "",
+                                name: controllerName.text,
+                                quantity: int.parse(controllerQuantity.text),
+                                size: controllerSize.text,
+                                tax: double.parse(controllerTax.text),
+                                price: double.parse(controllerPrice.text),
+                                category: category));
+                            setStateButton(() {
+                              isLoading = false;
+                            });
+                          }
                         }
-                      }
-                    },
-                    isLoading: false,
-                    text: "print".tr(),
-                  ),
+                      },
+                      text: "print".tr(),
+                    );
+                  }),
                 )),
           ],
         ),

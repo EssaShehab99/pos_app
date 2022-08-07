@@ -10,6 +10,7 @@ class CustomDropdown extends StatelessWidget {
       this.isCountry=false,
       this.validator,
       this.onChanged,
+      this.onDeletePress,
       this.enabled})
       : super(key: key);
   final List<Map<String, dynamic>>? items;
@@ -18,6 +19,7 @@ class CustomDropdown extends StatelessWidget {
   final bool isCountry;
   final FormFieldValidator<dynamic>? validator;
   final ValueChanged? onChanged;
+  final Function(String)? onDeletePress;
 
   @override
   Widget build(BuildContext context) {
@@ -26,18 +28,35 @@ class CustomDropdown extends StatelessWidget {
       items: items?.map((item) {
         return DropdownMenuItem(
           value: item["value"],
-          child: Center(
-              child: Text(
-                isCountry?item["value"] + " " + item["data"]:item["data"],
+          child: Container(
+            alignment: Alignment.center,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(
+                        isCountry?item["value"] + " " + item["data"]:item["data"],
             textDirection: TextDirection.ltr,
-          )),
+          ),
+                    ),
+                  ),
+                  Expanded(child: Align(alignment:AlignmentDirectional.centerEnd,child: InkWell(
+                      onTap: () {
+                        if(onDeletePress!=null){
+                          onDeletePress!(item["value"]);
+                        }
+                      },
+                      child: Icon(Icons.delete,color: ColorsApp.secondary,)))),
+                ],
+              )),
         );
       }).toList(),
-      value: items != null ? items?.first["value"] : null,
+      value: items != null&&items!.isNotEmpty ? items?.first["value"] : null,
       onChanged: onChanged,
       validator: validator,
       style: Theme.of(context).textTheme.bodyText1,
-      icon: SizedBox.shrink(),
+      icon: const SizedBox.shrink(),
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
@@ -58,7 +77,7 @@ class CustomDropdown extends StatelessWidget {
         contentPadding: const EdgeInsets.all(10),
         hintText: hint,
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
-              color: ColorsApp.grey,
+              color: ColorsApp.shadow,
             ),
       ),
     );

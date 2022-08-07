@@ -4,9 +4,9 @@ class Product {
   String id;
   String name;
   String category;
-  String quantity;
+  int quantity;
   String size;
-  String tax;
+  double tax;
   double price;
 
   Product(
@@ -18,9 +18,9 @@ class Product {
       required this.tax,
       required this.price});
 
-  factory Product.fromJson(Map<String, dynamic> json) {
+  factory Product.fromJson(Map<String, dynamic> json, String id) {
     return Product(
-        id: json['id'],
+        id: id,
         name: json['name'],
         category: json['category'],
         quantity: json['quantity'],

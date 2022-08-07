@@ -56,7 +56,6 @@ class AddCategoryDialog extends StatelessWidget {
                     setState(() {
                       isLoading = true;
                     });
-                    print("object");
                     await productManager.addCategory(
                         Category(name: nameController.text, id: "0")).then((value){
                       Navigator.of(context).pop();

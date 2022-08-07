@@ -5,14 +5,14 @@ import '../services/product_services.dart';
 import '/data/network/repository/repository.dart';
 
 class ProductRepository extends Repository<Product>{
-  late ProductServices _productServices;
+  late ProductServices  _productServices = ProductServices();
   @override
   void close() {
     // TODO: implement close
   }
 
   @override
-  Future<void> deleteItem(int id) {
+  Future<void> deleteItem(String id) {
     // TODO: implement deleteItem
     throw UnimplementedError();
   }
@@ -32,7 +32,8 @@ class ProductRepository extends Repository<Product>{
   @override
   Future<Product> insertItem(Product object) async {
     DocumentReference<Object?> productDocument= await _productServices.addProduct(object);
-    Product product = Product.fromJson(await productDocument.get() as Map<String, dynamic>);
+    DocumentSnapshot<Object?> productSnapshot=await productDocument.get();
+    Product product = Product.fromJson(productSnapshot.data() as Map<String, dynamic>,productSnapshot.id);
     return product;
   }
 

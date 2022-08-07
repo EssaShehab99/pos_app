@@ -42,5 +42,9 @@
  "forget-password": "نسيت كلمة المرور",
  "change-password": "تغيير كلمة المرور",
  "add-category": "إضافة صنف",
- "add": "إضافة"
+ "add": "إضافة",
+ "delete-category": "حذف الصنف",
+ "are-you-sure": "هل أنت متأكد من حذف هذا الصنف؟",
+ "ok": "موافق",
+ "cancel": "إلغاء"
 }

@@ -15,7 +15,7 @@ class CategoryServices {
     return await collection.add(category.toJson());
   }
 
-  Future<void> removeCategory(String id) async {
+  Future<void> deleteCategory(String id) async {
     await collection.doc(id).delete();
   }
 

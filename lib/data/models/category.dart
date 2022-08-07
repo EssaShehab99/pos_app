@@ -3,15 +3,14 @@ class Category{
   String name;
 
   Category({required this.id, required this.name});
-  factory Category.fromJson(Map<String, dynamic> json){
+  factory Category.fromJson(Map<String, dynamic> json,id){
     return Category(
-      id: json['id'],
+      id: id,
       name: json['name']
     );
   }
   Map<String, dynamic> toJson(){
     return {
-      'id': id,
       'name': name
     };
   }

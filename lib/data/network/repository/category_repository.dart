@@ -5,8 +5,9 @@ import '../../models/category.dart';
 import '../services/category_services.dart';
 import '/data/network/repository/repository.dart';
 
-class CategoryRepository extends ChangeNotifier implements Repository<Category>{
- late CategoryServices _categoryServices=CategoryServices();
+class CategoryRepository extends ChangeNotifier
+    implements Repository<Category> {
+  late CategoryServices _categoryServices = CategoryServices();
 
   @override
   void close() {
@@ -14,31 +15,38 @@ class CategoryRepository extends ChangeNotifier implements Repository<Category>{
   }
 
   @override
-  Future<void> deleteItem(int id) {
-    // TODO: implement deleteItem
-    throw UnimplementedError();
+  Future<void> deleteItem(String id) async {
+    await _categoryServices.deleteCategory(id);
+    return Future.value(null);
   }
 
   @override
   Future<List<Category>> findAllItems() async {
-  List<DocumentReference<Object?>> categories=await _categoryServices.findAllCategories();
-  List<Category> categoriesList=[];
-for(var category in categories){
- categoriesList.add(Category.fromJson((await category.get()).data() as Map<String, dynamic>));
-}
+    List<DocumentReference<Object?>> categories =
+        await _categoryServices.findAllCategories();
+    List<Category> categoriesList = [];
+    for (var category in categories) {
+      DocumentSnapshot<Object?> categoryDocument = await category.get();
+      categoriesList.add(Category.fromJson(
+          categoryDocument.data() as Map<String, dynamic>,
+          categoryDocument.id));
+    }
     return categoriesList;
   }
 
- @override
- Future init() {
-   _categoryServices = CategoryServices();
-   return Future.value(null);
- }
+  @override
+  Future init() {
+    _categoryServices = CategoryServices();
+    return Future.value(null);
+  }
 
   @override
   Future<Category> insertItem(Category object) async {
-   DocumentReference<Object?> categoryDocument= await _categoryServices.addCategory(object);
-    Category category = Category.fromJson((await categoryDocument.get()).data() as Map<String, dynamic>);
+    DocumentReference<Object?> categoryDocument =
+        await _categoryServices.addCategory(object);
+    DocumentSnapshot<Object?> categorySnapshot = await categoryDocument.get();
+    Category category = Category.fromJson(
+        categorySnapshot.data() as Map<String, dynamic>, categorySnapshot.id);
     return category;
   }
 
@@ -53,5 +61,4 @@ for(var category in categories){
     // TODO: implement watchAllItems
     throw UnimplementedError();
   }
-
 }
