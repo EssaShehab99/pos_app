@@ -11,6 +11,7 @@ import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
 import 'package:provider/provider.dart';
 import 'data/network/services/auth_services.dart';
+import 'data/providers/product_manager.dart';
 import 'data/setting/config_app.dart';
 import 'modules/auth/login.dart';
 import 'modules/products.dart';
@@ -48,6 +49,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (_) =>AppStateManager()),
         ChangeNotifierProvider(create: (_) =>AuthServices()),
+        ChangeNotifierProvider(create: (_) =>ProductManager()),
       ],
       child: Consumer<AppStateManager>(
         builder: (_, loginManager, __) {
@@ -59,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           locale: context.locale,
           debugShowCheckedModeBanner: false,
           theme: ThemeApp.light,
-            initialRoute: Routes.LOGIN_PAGE,
+            initialRoute: Routes.PRODUCT_PAGE,
             onGenerateRoute: (RouteSettings settings) {
             return Routes.fadeThrough(settings, (context) {
               switch (settings.name) {

@@ -47,3 +47,7 @@ enum OTPType {
   FORGOT_PASSWORD,
   SIGN_UP
 }
+enum OperationsType{
+ADD,
+  EDIT
+}

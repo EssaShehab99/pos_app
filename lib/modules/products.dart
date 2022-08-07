@@ -2,12 +2,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/shared/custom_button.dart';
+import 'package:pos_app/shared/custom_dropdown.dart';
+import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../../../constants/constants_images.dart';
 import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
+import '../data/providers/product_manager.dart';
+import '../shared/component.dart';
+import 'add_category_dialog.dart';
 
 class Products extends StatefulWidget {
   const Products({Key? key}) : super(key: key);
@@ -18,9 +23,18 @@ class Products extends StatefulWidget {
 
 class _ProductsState extends State<Products> {
   final PanelController _pc1 = PanelController();
+  final controllerName = TextEditingController();
+  final controllerCategory = TextEditingController();
+  final controllerQuantity = TextEditingController();
+  final controllerSize = TextEditingController();
+  final controllerTax = TextEditingController();
+  final controllerPrice = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    ProductManager productManager = Provider.of<ProductManager>(context)..getCategories();
+    OperationsType operationsType = OperationsType.ADD;
     return SafeArea(
         child: Scaffold(
       backgroundColor: ColorsApp.primary,
@@ -219,66 +233,103 @@ class _ProductsState extends State<Products> {
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.all(ConstantsValues.padding),
-              child: Column(
-                children: [
-                  Flexible(
-                    child: CustomInput(
-                      controller: new TextEditingController(),
-                      hint: 'product-name'.tr(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ConstantsValues.padding,
-                  ),
-                  Flexible(
-                    child: CustomInput(
-                      controller: new TextEditingController(),
-                      hint: 'category'.tr(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: ConstantsValues.padding,
-                  ),
-                  Flexible(
-                      child: Row(
-                    children: [
-                      Flexible(
-                          child: CustomInput(
-                        controller: new TextEditingController(),
-                        hint: 'quantity'.tr(),
-                      )),
-                      SizedBox(
-                        width: 30,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: CustomInput(
+                        controller: controllerName,
+                        hint: 'product-name'.tr(),
                       ),
-                      Flexible(
-                          child: CustomInput(
-                        controller: new TextEditingController(),
-                        hint: 'size'.tr(),
-                      )),
-                    ],
-                  )),
-                  SizedBox(
-                    height: ConstantsValues.padding,
-                  ),
-                  Flexible(
+                    ),
+                    SizedBox(
+                      height: ConstantsValues.padding,
+                    ),
+                    Flexible(
                       child: Row(
-                    children: [
-                      Flexible(
-                          child: CustomInput(
-                        controller: new TextEditingController(),
-                        hint: 'tax'.tr(),
-                      )),
-                      SizedBox(
-                        width: 30,
+                        children: [
+                          Expanded(
+                            child: Consumer<ProductManager>(
+                              builder: (context, value, child) => CustomDropdown(
+                                items: [
+                                  {
+                                    'value': 1,
+                                    'data': "item.name",
+                                  },
+                                  for(var item in productManager.categories)
+                                    {
+                                      'value': item.id,
+                                      'data': item.name,
+                                    }
+                                ],
+                                hint: 'category'.tr(),
+                                onChanged: (value) {
+
+                                },
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: ConstantsValues.padding,),
+                          Expanded(
+                              flex: 0,child: Container(
+                              decoration: BoxDecoration(
+                                  color: ColorsApp.secondary,
+                                  borderRadius: BorderRadius.circular(
+                                      ConstantsValues.borderRadius * 0.5)),
+                              child:IconButton(
+                            icon:  Icon(Icons.add,color: ColorsApp.white,),
+                            onPressed: () {
+                             showDialog(context: context, builder: (context) => AddCategoryDialog());
+                            },
+                          ))),
+                        ],
                       ),
-                      Flexible(
-                          child: CustomInput(
-                        controller: new TextEditingController(),
-                        hint: 'price'.tr(),
-                      )),
-                    ],
-                  )),
-                ],
+                    ),
+                    SizedBox(
+                      height: ConstantsValues.padding,
+                    ),
+                    Flexible(
+                        child: Row(
+                      children: [
+                        Flexible(
+                            child: CustomInput(
+                          controller: controllerQuantity,
+                          hint: 'quantity'.tr(),
+                        )),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Flexible(
+                            child: CustomInput(
+                          controller: controllerSize,
+                          hint: 'size'.tr(),
+                        )),
+                      ],
+                    )),
+                    SizedBox(
+                      height: ConstantsValues.padding,
+                    ),
+                    Flexible(
+                        child: Row(
+                      children: [
+                        Flexible(
+                            child: CustomInput(
+                          controller: controllerTax,
+                          hint: 'tax'.tr(),
+                        )),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Flexible(
+                            child: CustomInput(
+                          controller: controllerPrice,
+                          hint: 'price'.tr(),
+                        )),
+                      ],
+                    )),
+                  ],
+                ),
               ),
             )),
             Expanded(
@@ -287,7 +338,13 @@ class _ProductsState extends State<Products> {
                   width: 100,
                   margin: EdgeInsets.all(ConstantsValues.padding),
                   child: CustomButton(
-                    onTap: () {},
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        if(operationsType==OperationsType.ADD) {
+
+                        }
+                      }
+                    },
                     isLoading: false,
                     text: "print".tr(),
                   ),

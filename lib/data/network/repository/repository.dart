@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 abstract class Repository<T> {
 
   Stream<List<T>> watchAllItems();
-  Future<int> insertItem(T employee);
-  Future<int> updateItem(T employee);
-  Future<int> deleteItem(int id);
+  Future<T> insertItem(T object);
+  Future<void> updateItem(T object);
+  Future<void> deleteItem(int id);
   Future<List<T>> findAllItems();
 
   Future init();

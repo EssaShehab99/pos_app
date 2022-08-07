@@ -147,6 +147,7 @@ class Register extends StatelessWidget {
                                           onChanged: (value) {
                                             selectedCountry = value;
                                           },
+                                          isCountry: true,
                                         );
                                       }))),
                         ],

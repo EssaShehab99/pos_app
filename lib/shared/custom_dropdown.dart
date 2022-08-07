@@ -7,6 +7,7 @@ class CustomDropdown extends StatelessWidget {
       {Key? key,
       required this.items,
       this.hint,
+      this.isCountry=false,
       this.validator,
       this.onChanged,
       this.enabled})
@@ -14,6 +15,7 @@ class CustomDropdown extends StatelessWidget {
   final List<Map<String, dynamic>>? items;
   final String? hint;
   final bool? enabled;
+  final bool isCountry;
   final FormFieldValidator<dynamic>? validator;
   final ValueChanged? onChanged;
 
@@ -26,7 +28,7 @@ class CustomDropdown extends StatelessWidget {
           value: item["value"],
           child: Center(
               child: Text(
-            item["value"] + " " + item["data"],
+                isCountry?item["value"] + " " + item["data"]:item["data"],
             textDirection: TextDirection.ltr,
           )),
         );
@@ -53,7 +55,7 @@ class CustomDropdown extends StatelessWidget {
         ),
         fillColor: ColorsApp.white,
         filled: true,
-        contentPadding: EdgeInsets.all(10),
+        contentPadding: const EdgeInsets.all(10),
         hintText: hint,
         hintStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
               color: ColorsApp.grey,

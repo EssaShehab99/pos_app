@@ -40,7 +40,9 @@
   "failed": "Failed",
   "verify-otp-failed": "Verify OTP Failed",
   "forget-password": "Forget Password",
-  "change-password": "Change Password"
+  "change-password": "Change Password",
+  "add-category": "Add Category",
+  "add": "Add"
 
 
 }

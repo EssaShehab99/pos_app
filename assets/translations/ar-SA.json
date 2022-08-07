@@ -40,5 +40,7 @@
  "failed": "فشل",
  "verify-otp-failed": "فشل في التحقق من OTP",
  "forget-password": "نسيت كلمة المرور",
- "change-password": "تغيير كلمة المرور"
+ "change-password": "تغيير كلمة المرور",
+ "add-category": "إضافة صنف",
+ "add": "إضافة"
 }
