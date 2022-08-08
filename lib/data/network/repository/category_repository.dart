@@ -16,14 +16,14 @@ class CategoryRepository extends ChangeNotifier
 
   @override
   Future<void> deleteItem(String id) async {
-    await _categoryServices.deleteCategory(id);
+    await _categoryServices.deleteItem(id);
     return Future.value(null);
   }
 
   @override
   Future<List<Category>> findAllItems() async {
     List<DocumentReference<Object?>> categories =
-        await _categoryServices.findAllCategories();
+        await _categoryServices.showCategories();
     List<Category> categoriesList = [];
     for (var category in categories) {
       DocumentSnapshot<Object?> categoryDocument = await category.get();

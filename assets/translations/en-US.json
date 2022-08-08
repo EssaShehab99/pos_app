@@ -44,9 +44,11 @@
   "add-category": "Add Category",
   "add": "Add",
   "delete-category": "Delete Category",
-  "are-you-sure": "Are you sure you want to delete this category?",
+  "are-you-sure": "Are you sure you want to delete this item?",
   "ok": "Ok",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "delete-product": "Delete Product",
+  "edit": "Edit"
 
 
 }

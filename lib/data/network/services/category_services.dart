@@ -6,16 +6,14 @@ import '../../models/category.dart';
 class CategoryServices {
   final CollectionReference collection =
       FirebaseFirestore.instance.collection('categories');
-  Future<List<DocumentReference<Object?>>> findAllCategories() async {
-    return await collection.get().then((value) {
-      return value.docs.map((e) => e.reference).toList();
-    });
+  Future<List<DocumentReference<Object?>>> showCategories() async {
+    return await collection.get().then((value) => value.docs.map((e) => e.reference).toList());
   }
   Future<DocumentReference<Object?>> addCategory(Category category) async {
     return await collection.add(category.toJson());
   }
 
-  Future<void> deleteCategory(String id) async {
+  Future<void> deleteItem(String id) async {
     await collection.doc(id).delete();
   }
 

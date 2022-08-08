@@ -43,7 +43,7 @@ class Component {
       {required String title,
       required String content,
       required Function onPressed,
-      required BuildContext context}) {
+      required BuildContext context,}) {
     return AlertDialog(
       title: Text(title),
       content: Column(

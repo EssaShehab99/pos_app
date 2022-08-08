@@ -12,15 +12,25 @@ class ProductRepository extends Repository<Product>{
   }
 
   @override
-  Future<void> deleteItem(String id) {
-    // TODO: implement deleteItem
-    throw UnimplementedError();
+  Future<void> deleteItem(String id) async {
+   await _productServices.deleteItem(id);
+   return Future.value(null);
   }
 
   @override
-  Future<List<Product>> findAllItems() {
-    // TODO: implement findAllItems
-    throw UnimplementedError();
+  Future<List<Product>> findAllItems() async {
+    List<DocumentReference<Object?>> products =
+        await _productServices.showProducts();
+    List<Product> productsList = [];
+    for (var product in products) {
+      DocumentSnapshot<Object?> productDocument = await product.get();
+      if(productDocument.data() != null){
+        productsList.add(Product.fromJson(
+            productDocument.data() as Map<String, dynamic>,
+            productDocument.id));
+      }
+    }
+    return productsList;
   }
 
   @override
@@ -39,8 +49,7 @@ class ProductRepository extends Repository<Product>{
 
   @override
   Future<void> updateItem(Product object) {
-    // TODO: implement updateItem
-    throw UnimplementedError();
+    return _productServices.updateProduct(object);
   }
 
   @override

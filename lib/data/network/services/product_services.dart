@@ -7,13 +7,13 @@ class ProductServices extends ChangeNotifier {
   final CollectionReference collection =
       FirebaseFirestore.instance.collection('products');
 
-  Future<QuerySnapshot<Object?>> showProducts() async{
-    return await collection.get();
+  Future<List<DocumentReference<Object?>>> showProducts() async{
+    return await collection.get().then((value) => value.docs.map((e) => e.reference).toList());
   }
   Future<DocumentReference<Object?>> addProduct(Product product) async{
  return  await collection.add(product.toJson());
   }
-  Future<void> removeProduct(String id) async{
+  Future<void> deleteItem(String id) async{
     await collection.doc(id).delete();
   }
   Future<void> updateProduct(Product product) async{
