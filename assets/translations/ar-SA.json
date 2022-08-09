@@ -48,5 +48,6 @@
  "ok": "موافق",
  "cancel": "إلغاء",
  "delete-product": "حذف المنتج",
- "edit": "تعديل"
+ "edit": "تعديل",
+ "delete-customer": "حذف العميل"
 }
