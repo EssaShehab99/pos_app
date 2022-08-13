@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_app/data/models/user.dart';
 import 'package:pos_app/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 import '../../constants/constants_images.dart';
 import '../../constants/constants_values.dart';
 import '../../data/network/services/auth_services.dart';
@@ -231,6 +232,7 @@ class Register extends StatelessWidget {
                                     });
                                     signUpRepository.user=UserModel(
                                         email: controllerEmail.text,
+                                        uuid: const Uuid().v4(),
                                         companyName:
                                         controllerCompanyName.text,
                                         password: controllerPassword.text,

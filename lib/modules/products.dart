@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pos_app/data/providers/app_state_manager.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:pos_app/shared/custom_dropdown.dart';
 import 'package:provider/provider.dart';
@@ -48,6 +49,7 @@ String id='';
   void initState() {
     super.initState();
     productManager = Provider.of<ProductManager>(context, listen: false);
+    productManager.init(Provider.of<AppStateManager>(context, listen: false).user.uuid);
   }
 Future<void> initialize() async {
   await productManager.getCategories();

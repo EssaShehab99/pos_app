@@ -12,6 +12,7 @@ import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
 import '../data/models/product.dart';
 import '../data/models/sales_invoice_model.dart';
+import '../data/providers/app_state_manager.dart';
 import '../data/providers/sales_invoice_manager.dart';
 
 class SalesInvoice extends StatelessWidget {
@@ -19,7 +20,7 @@ class SalesInvoice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SalesInvoiceManager salesManager = Provider.of<SalesInvoiceManager>(context, listen: false);
+    SalesInvoiceManager salesManager = Provider.of<SalesInvoiceManager>(context, listen: false)..init(Provider.of<AppStateManager>(context, listen: false).user.uuid);
     final searchController = TextEditingController();
     return SafeArea(
         child: Scaffold(
@@ -82,7 +83,9 @@ class SalesInvoice extends StatelessWidget {
                             child: IconButton(
                               icon: Icon(Icons.delete,
                                   color: ColorsApp.white, size: 30),
-                              onPressed: () {},
+                              onPressed: () {
+                                salesManager.deleteInvoice();
+                              },
                             ),
                           ),
                         ),
@@ -550,16 +553,26 @@ class SalesInvoice extends StatelessWidget {
                                   CircleAvatar(
                                     backgroundColor: ColorsApp.secondary,
                                     radius: 18,
-                                    child: Icon(Icons.keyboard_arrow_up_outlined,
-                                        color: ColorsApp.white),
+                                    child: InkWell(
+                                      onTap: () {
+                                        value.addLocalSalesInvoice(value.salesInvoice?.products[index].id);
+                                      },
+                                      child: Icon(Icons.keyboard_arrow_up_outlined,
+                                          color: ColorsApp.white),
+                                    ),
                                   ),
                                   Text(value.salesInvoice?.products[index].quantity.toString() ??"",
                                       style: Theme.of(context).textTheme.bodyText1),
                                   CircleAvatar(
                                     backgroundColor: ColorsApp.secondary,
                                     radius: 18,
-                                    child: Icon(Icons.keyboard_arrow_up_outlined,
-                                        color: ColorsApp.white),
+                                    child: InkWell(
+                                      onTap: () {
+                                        value.removeProduct(value.salesInvoice?.products[index].id);
+                                      },
+                                      child: Icon(Icons.keyboard_arrow_down_outlined,
+                                          color: ColorsApp.white),
+                                    ),
                                   ),
                                 ],
                               ),

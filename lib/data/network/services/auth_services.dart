@@ -22,7 +22,7 @@ class AuthServices extends ChangeNotifier {
 
   Future<Status> sendVerificationToResetPassword(String email) async {
     try {
-      this.user = UserModel(email: email);
+      user = UserModel(email: email,uuid: "");
       bool isExist = await checkIfExistEmail(email);
       if (isExist) {
         final status = await sendVerificationEmail(email);
@@ -31,8 +31,7 @@ class AuthServices extends ChangeNotifier {
         } else {
           return Status.FAILED;
         }
-      }
-      else{
+      } else {
         return Status.EXIST;
       }
     } catch (e) {
@@ -58,9 +57,28 @@ class AuthServices extends ChangeNotifier {
     }
   }
 
-  bool verifyCode(String code) {
+  Future<bool> verifyCode(String code) async {
     try {
-      return emailAuth.validateOtp(recipientMail: user.email, userOtp: code);
+      bool status =
+          emailAuth.validateOtp(recipientMail: user.email, userOtp: code);
+      if (otpType == OTPType.SIGN_UP) {
+        return status;
+      }
+      if (status) {
+        user = await collection
+            .where("email", isEqualTo: user.email)
+            .get()
+            .then((value) => value.docs
+                .map((e) => e.reference)
+                .toList()
+                .first
+                .get()
+                .then((value) => UserModel.fromJson(
+                    value.data() as Map<String, dynamic>, value.id)));
+        return true;
+      } else {
+        return false;
+      }
     } catch (_) {
       return false;
     }
@@ -68,8 +86,8 @@ class AuthServices extends ChangeNotifier {
 
   Future<bool> checkIfExistEmail(String email) async {
     try {
-      return collection.doc(email).get().then((value) {
-        if (value.exists) {
+      return collection.where("email", isEqualTo: email).get().then((value) {
+        if (value.docs.isNotEmpty) {
           return true;
         } else {
           return false;
@@ -83,8 +101,8 @@ class AuthServices extends ChangeNotifier {
   Future<Status> signUp(String code) async {
     Status status = Status.LOADING;
     try {
-      if (verifyCode(code)) {
-        await collection.doc(user.email).set(user.toJson()).then((value) {
+      if (await verifyCode(code)) {
+        await collection.add(user.toJson()).then((value) {
           status = Status.SUCCESS;
         });
       } else {
@@ -95,10 +113,13 @@ class AuthServices extends ChangeNotifier {
     }
     return status;
   }
+
   Future<Status> changePassword(String password) async {
     Status status = Status.LOADING;
     try {
-      await collection.doc(user.email).update({'password': password}).then((value) {
+      await collection
+          .doc(user.email)
+          .update({'password': password}).then((value) {
         status = Status.SUCCESS;
       });
     } catch (error) {
@@ -106,18 +127,20 @@ class AuthServices extends ChangeNotifier {
     }
     return status;
   }
+
   Future<UserModel?> signIn(String email, String password) async {
     try {
-      final user = await collection.doc(email).get();
-      if (user.exists) {
-        if ((user.data()as Map<String, dynamic>)['password'] == password) {
-          return UserModel.fromJson(user.data()as Map<String, dynamic>,email);
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
+      return await collection
+          .where("email", isEqualTo: email)
+          .where("password", isEqualTo: password)
+          .get()
+          .then((value) => value.docs
+              .map((e) => e.reference)
+              .toList()
+              .first
+              .get()
+              .then((value) => UserModel.fromJson(
+                  value.data() as Map<String, dynamic>, value.id)));
     } catch (error) {
       return null;
     }

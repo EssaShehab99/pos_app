@@ -10,7 +10,10 @@ import '../network/repository/category_repository.dart';
 
 class CustomerManager extends ChangeNotifier {
   List<Customer> customers = [];
-  final CustomerRepository _customerRepository = CustomerRepository();
+  late CustomerRepository _customerRepository;
+  void init(String companyUUid) {
+    _customerRepository = CustomerRepository()..init(companyUUid);
+  }
   Future<void> getCustomers() async {
     customers = await _customerRepository.findAllItems();
    if(customers.isNotEmpty){

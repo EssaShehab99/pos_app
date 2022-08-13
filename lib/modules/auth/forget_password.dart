@@ -133,7 +133,7 @@ class ForgetPassword extends StatelessWidget {
                                     setState(() {
                                       status = Status.LOADING;
                                     });
-                                 status=await   signUpRepository.changePassword(
+                                 status=await signUpRepository.changePassword(
                                             controllerPassword.text);
                                     if (status == Status.SUCCESS) {
                                       Navigator.pushNamed(

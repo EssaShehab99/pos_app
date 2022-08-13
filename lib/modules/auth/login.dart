@@ -7,6 +7,7 @@ import 'package:pos_app/data/models/user.dart';
 import 'package:pos_app/data/network/services/auth_services.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';
+import '../../data/providers/app_state_manager.dart';
 import '../../routes.dart';
 import '../../shared/component.dart';
 import '../../shared/custom_dropdown.dart';
@@ -202,10 +203,11 @@ class Login extends StatelessWidget {
                                         controllerPassword.text);
                                 setState(() {
                                   status = user==null?status=Status.FAILED:Status.SUCCESS;
-                                  print(user?.toJson());
                                 });
-                                if(status==Status.SUCCESS)
+                                if(status==Status.SUCCESS) {
+                                  Provider.of<AppStateManager>(context,listen: false).setUser(user!);
                                   Navigator.pushNamed(context, Routes.HOME_PAGE);
+                                }
                               }
                             },
                           );

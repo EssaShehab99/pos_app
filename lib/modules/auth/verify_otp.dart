@@ -18,12 +18,12 @@ class VerifyOtp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<TextEditingController> controller = [
-      new TextEditingController(),
-      new TextEditingController(),
-      new TextEditingController(),
-      new TextEditingController(),
-      new TextEditingController(),
-      new TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
+      TextEditingController(),
     ];
     Status status = Status.NONE;
     AuthServices signUpRepository =
@@ -149,18 +149,20 @@ class VerifyOtp extends StatelessWidget {
                                     status = Status.LOADING;
                                   });
                                   if (signUpRepository.otpType ==
-                                      OTPType.SIGN_UP)
+                                      OTPType.SIGN_UP) {
                                     status = await signUpRepository.signUp(
                                         "${controller[5].text}${controller[4].text}${controller[3].text}${controller[2].text}${controller[1].text}${controller[0].text}");
-                                  else if (signUpRepository.otpType ==
-                                      OTPType.FORGOT_PASSWORD)
-                                    status = signUpRepository.verifyCode(
+                                  } else if (signUpRepository.otpType ==
+                                      OTPType.FORGOT_PASSWORD) {
+                                    status =await signUpRepository.verifyCode(
                                         "${controller[5].text}${controller[4].text}${controller[3].text}${controller[2].text}${controller[1].text}${controller[0].text}")?Status.SUCCESS:Status.FAILED;
+                                  }
                                   if (status == Status.SUCCESS) {
-                                    if(signUpRepository.otpType == OTPType.SIGN_UP)
-                                      Navigator.pushNamed(context, Routes.HOME_PAGE);
-                                    else if(signUpRepository.otpType == OTPType.FORGOT_PASSWORD)
+                                    if(signUpRepository.otpType == OTPType.SIGN_UP) {
+                                      Navigator.pushNamed(context, Routes.LOGIN_PAGE);
+                                    } else if(signUpRepository.otpType == OTPType.FORGOT_PASSWORD) {
                                       Navigator.pushNamed(context, Routes.FORGOT_PASSWORD_PAGE);
+                                    }
                                   }
                                   setState(() {
                                     status = Status.NONE;

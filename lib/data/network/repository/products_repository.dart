@@ -5,7 +5,7 @@ import '../services/product_services.dart';
 import '/data/network/repository/repository.dart';
 
 class ProductRepository extends Repository<Product>{
-  late ProductServices  _productServices = ProductServices();
+  late ProductServices  _productServices ;
   @override
   void close() {
     // TODO: implement close
@@ -34,8 +34,8 @@ class ProductRepository extends Repository<Product>{
   }
 
   @override
-  Future init() {
-     _productServices = ProductServices();
+  Future init(String companyUUid) async {
+     _productServices = ProductServices(companyUUid);
       return Future.value(null);
   }
 

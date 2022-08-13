@@ -9,6 +9,7 @@ import '../models/category.dart';
 import '../models/product.dart';
 import '../models/sales_invoice_model.dart';
 import '../network/repository/category_repository.dart';
+import '../network/services/category_services.dart';
 
 class SalesInvoiceManager extends ChangeNotifier {
   List<Category> categories = [];
@@ -16,9 +17,12 @@ class SalesInvoiceManager extends ChangeNotifier {
   List<Product> products = [];
   List<Product> filterProducts = [];
   SalesInvoiceModel? salesInvoice;
-  final CategoryRepository _categoryRepository = CategoryRepository();
-  final ProductRepository _productRepository = ProductRepository();
-
+  late CategoryRepository _categoryRepository;
+  late ProductRepository _productRepository;
+  void init(String companyUUid) {
+    _categoryRepository = CategoryRepository()..init(companyUUid);
+    _productRepository = ProductRepository()..init(companyUUid);
+  }
   Future<void> getCategories() async {
     categories = await _categoryRepository.findAllItems();
     categories.insert(0,Category(id: "0", name: 'all'.tr()));
@@ -55,39 +59,76 @@ class SalesInvoiceManager extends ChangeNotifier {
     selectedCategoryId = id;
     notifyListeners();
   }
-  void addLocalSalesInvoice(String productID) {
+  void addLocalSalesInvoice(String? productID) {
+    if(productID != null) {
+      if (salesInvoice != null) {
+        for (var element in salesInvoice!.products) {
+          if (element.id == productID) {
+            element.quantity++;
+            salesInvoice!.total = salesInvoice!.products.fold(0,
+                (total, product) => total + product.price * product.quantity);
+            salesInvoice!.tax = salesInvoice!.total * 0.1;
+            salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+            notifyListeners();
+            return;
+          }
+        }
+        salesInvoice!.products.add(
+            products.firstWhere((product) => product.id == productID)
+              ..quantity = 1);
+        salesInvoice!.total = salesInvoice!.products.fold(
+            0, (total, product) => total + product.price * product.quantity);
+        salesInvoice!.tax = salesInvoice!.total * 0.1;
+        salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+        notifyListeners();
+        return;
+      } else {
+        salesInvoice = SalesInvoiceModel(
+          id: "",
+          products: [
+            products.firstWhere((product) => product.id == productID)
+              ..quantity = 1
+          ],
+          customerId: "",
+          total: 0,
+          tax: 0,
+          netTotal: 0,
+        );
+        salesInvoice!.total = salesInvoice!.products.fold(
+            0, (total, product) => total + product.price * product.quantity);
+        salesInvoice!.tax = salesInvoice!.total * 0.1;
+        salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+        notifyListeners();
+      }
+    }
+  }
+  void deleteInvoice() {
+    salesInvoice=null;
+    notifyListeners();
+  }
+  void removeProduct(String? productID) {
     if(salesInvoice!=null) {
       for (var element in salesInvoice!.products) {
-        print("${element.id} // ${productID}");
         if (element.id == productID) {
-          element.quantity++;
-          salesInvoice!.total = salesInvoice!.products.fold(0, (total, product) => total + product.price * product.quantity);
-          salesInvoice!.tax = salesInvoice!.total * 0.1;
-          salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
-          notifyListeners();
-          return;
+          if (element.quantity > 1) {
+            element.quantity--;
+            salesInvoice!.total = salesInvoice!.products.fold(0,
+                (total, product) => total + product.price * product.quantity);
+            salesInvoice!.tax = salesInvoice!.total * 0.1;
+            salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+            notifyListeners();
+            return;
+          } else {
+            salesInvoice!.products.remove(element);
+            salesInvoice!.total = salesInvoice!.products.fold(0,
+                (total, product) => total + product.price * product.quantity);
+            salesInvoice!.tax = salesInvoice!.total * 0.1;
+            salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+            notifyListeners();
+            return;
+          }
         }
       }
-      salesInvoice!.products.add(products.firstWhere((product) => product.id == productID)..quantity=1);
-      salesInvoice!.total = salesInvoice!.products.fold(0, (total, product) => total + product.price * product.quantity);
-      salesInvoice!.tax = salesInvoice!.total * 0.1;
-      salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
-      notifyListeners();
-      return;
-    }
-    else {
-      salesInvoice=SalesInvoiceModel(
-      id: "",
-      products: [products.firstWhere((product) => product.id == productID)..quantity=1],
-      customerId: "",
-      total: 0,
-      tax: 0,
-      netTotal: 0,
-    );
-      salesInvoice!.total = salesInvoice!.products.fold(0, (total, product) => total + product.price * product.quantity);
-      salesInvoice!.tax = salesInvoice!.total * 0.1;
-      salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
-      notifyListeners();
     }
   }
 }

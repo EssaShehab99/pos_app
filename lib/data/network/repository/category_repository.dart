@@ -7,7 +7,8 @@ import '/data/network/repository/repository.dart';
 
 class CategoryRepository extends ChangeNotifier
     implements Repository<Category> {
-  late CategoryServices _categoryServices = CategoryServices();
+
+  late CategoryServices _categoryServices;
 
   @override
   void close() {
@@ -35,8 +36,8 @@ class CategoryRepository extends ChangeNotifier
   }
 
   @override
-  Future init() {
-    _categoryServices = CategoryServices();
+  Future init(String companyUUid) async {
+    _categoryServices = CategoryServices(companyUUid);
     return Future.value(null);
   }
 

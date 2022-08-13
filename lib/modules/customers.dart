@@ -11,6 +11,7 @@ import '../../constants/constants_images.dart';
 import '../../constants/constants_values.dart';
 import '../../shared/custom_input.dart';
 import '../../styles/colors_app.dart';
+import '../data/providers/app_state_manager.dart';
 import '../shared/component.dart';
 
 class Customers extends StatefulWidget {
@@ -32,7 +33,7 @@ class _CustomersState extends State<Customers> {
   OperationsType operationsType = OperationsType.ADD;
   @override
   void initState() {
-    _customerManager = Provider.of<CustomerManager>(context,listen: false)..getCustomers();
+    _customerManager = Provider.of<CustomerManager>(context,listen: false)..init(Provider.of<AppStateManager>(context, listen: false).user.uuid)..getCustomers();
     super.initState();
   }
   @override

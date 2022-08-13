@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import '../../models/product.dart';
 
 class ProductServices extends ChangeNotifier {
-  final CollectionReference collection =
-      FirebaseFirestore.instance.collection('products');
-
+  late CollectionReference collection ;
+  ProductServices(String companyUUid){
+    collection = FirebaseFirestore.instance.collection('$companyUUid-products');
+  }
   Future<List<DocumentReference<Object?>>> showProducts() async{
     return await collection.get().then((value) => value.docs.map((e) => e.reference).toList());
   }

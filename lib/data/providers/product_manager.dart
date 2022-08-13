@@ -5,12 +5,19 @@ import 'package:pos_app/data/network/repository/products_repository.dart';
 import '../models/category.dart';
 import '../models/product.dart';
 import '../network/repository/category_repository.dart';
+import '../network/services/category_services.dart';
 
 class ProductManager extends ChangeNotifier {
   List<Category> categories = [];
   List<Product> products = [];
-  final CategoryRepository _categoryRepository = CategoryRepository();
-  final ProductRepository _productRepository = ProductRepository();
+ String companyUUid="";
+  late CategoryRepository _categoryRepository ;
+  late ProductRepository _productRepository;
+void init(String companyUUid) {
+  _categoryRepository = CategoryRepository()..init(companyUUid);
+  _productRepository = ProductRepository()..init(companyUUid);
+
+}
   Future<void> addCategory(Category category) async {
     categories.add(await _categoryRepository.insertItem(category));
     notifyListeners();
