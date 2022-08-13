@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pos_app/data/providers/sales_invoice_manager.dart';
 import 'package:pos_app/data/providers/customer_manager.dart';
 import 'package:pos_app/modules/auth/forget_password.dart';
 import 'package:pos_app/modules/home.dart';
@@ -52,6 +53,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) =>AuthServices()),
         ChangeNotifierProvider(create: (_) =>ProductManager()),
         ChangeNotifierProvider(create: (_) =>CustomerManager()),
+        ChangeNotifierProvider(create: (_) =>SalesInvoiceManager()),
       ],
       child: Consumer<AppStateManager>(
         builder: (_, loginManager, __) {
@@ -63,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           locale: context.locale,
           debugShowCheckedModeBanner: false,
           theme: ThemeApp.light,
-            initialRoute: Routes.CUSTOMER_PAGE,
+            initialRoute: Routes.LOGIN_PAGE,
             onGenerateRoute: (RouteSettings settings) {
             return Routes.fadeThrough(settings, (context) {
               switch (settings.name) {

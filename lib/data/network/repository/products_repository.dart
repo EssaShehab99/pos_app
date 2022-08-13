@@ -57,5 +57,18 @@ class ProductRepository extends Repository<Product>{
     // TODO: implement watchAllItems
     throw UnimplementedError();
   }
- 
+  Future<List<Product>> findAllItemsByCategory(String categoryName) async {
+    List<DocumentReference<Object?>> products =
+        await _productServices.showProductsByCategory(categoryName);
+    List<Product> productsList = [];
+    for (var product in products) {
+      DocumentSnapshot<Object?> productDocument = await product.get();
+      if(productDocument.data() != null){
+        productsList.add(Product.fromJson(
+            productDocument.data() as Map<String, dynamic>,
+            productDocument.id));
+      }
+    }
+    return productsList;
+  }
 }

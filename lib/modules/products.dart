@@ -335,7 +335,7 @@ Future<void> initialize() async {
                                   },
                                   hint: 'category'.tr(),
                                   onChanged: (value) {
-                                    category = value;
+                                    category = productManager.categories.firstWhere((element) => element.id== value).name;
                                   },
                                 );
                               },

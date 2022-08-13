@@ -49,6 +49,7 @@
   "cancel": "Cancel",
   "delete-product": "Delete Product",
   "edit": "Edit",
-  "delete-customer": "Delete Customer"
+  "delete-customer": "Delete Customer",
+  "all": "All"
 
 }

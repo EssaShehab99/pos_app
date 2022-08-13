@@ -7,7 +7,7 @@ class CustomDropdown extends StatelessWidget {
       {Key? key,
       required this.items,
       this.hint,
-      this.isCountry=false,
+      this.isCountry = false,
       this.validator,
       this.onChanged,
       this.onDeletePress,
@@ -29,30 +29,39 @@ class CustomDropdown extends StatelessWidget {
         return DropdownMenuItem(
           value: item["value"],
           child: Container(
-            alignment: Alignment.center,
+              alignment: Alignment.center,
               child: Row(
                 children: [
                   Expanded(
                     child: Align(
                       alignment: AlignmentDirectional.centerStart,
                       child: Text(
-                        isCountry?item["value"] + " " + item["data"]:item["data"],
-            textDirection: TextDirection.ltr,
-          ),
+                        isCountry
+                            ? item["value"] + " " + item["data"]
+                            : item["data"],
+                        textDirection: TextDirection.ltr,
+                      ),
                     ),
                   ),
-                  Expanded(child: Align(alignment:AlignmentDirectional.centerEnd,child: InkWell(
-                      onTap: () {
-                        if(onDeletePress!=null){
-                          onDeletePress!(item["value"]);
-                        }
-                      },
-                      child: Icon(Icons.delete,color: ColorsApp.secondary,)))),
+                  if (onDeletePress != null)
+                  Expanded(
+                      child: Align(
+                          alignment: AlignmentDirectional.centerEnd,
+                          child: InkWell(
+                              onTap: () {
+                                if (onDeletePress != null) {
+                                  onDeletePress!(item["value"]);
+                                }
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                color: ColorsApp.secondary,
+                              )))),
                 ],
               )),
         );
       }).toList(),
-      value: items != null&&items!.isNotEmpty ? items?.first["value"] : null,
+      value: items != null && items!.isNotEmpty ? items?.first["value"] : null,
       onChanged: onChanged,
       validator: validator,
       style: Theme.of(context).textTheme.bodyText1,

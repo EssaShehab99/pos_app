@@ -19,4 +19,7 @@ class ProductServices extends ChangeNotifier {
   Future<void> updateProduct(Product product) async{
     await collection.doc(product.id).update(product.toJson());
   }
+  Future<List<DocumentReference<Object?>>> showProductsByCategory(String categoryName) async{
+    return await collection.where('category',isEqualTo: categoryName).get().then((value) => value.docs.map((e) => e.reference).toList());
+  }
 }
