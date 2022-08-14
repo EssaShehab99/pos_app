@@ -6,7 +6,7 @@ import '../../models/category.dart';
 class CategoryServices {
   late CollectionReference collection ;
    CategoryServices(String companyUUid){
-    collection = FirebaseFirestore.instance.collection('$companyUUid-categories');
+    collection = FirebaseFirestore.instance.collection(companyUUid).doc('data').collection('categories');
   }
   Future<List<DocumentReference<Object?>>> showCategories() async {
     try{

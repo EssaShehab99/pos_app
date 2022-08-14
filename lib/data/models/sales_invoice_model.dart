@@ -18,9 +18,9 @@ class SalesInvoiceModel {
     required this.netTotal,
   });
 
-  factory SalesInvoiceModel.fromJson(Map<String, dynamic> json) {
+  factory SalesInvoiceModel.fromJson(Map<String, dynamic> json, String id) {
     return SalesInvoiceModel(
-      id: json['id'],
+      id: id,
       products: (json['products'] as List)
           .map((product) => Product.fromJson(product, json['id']))
           .toList(),

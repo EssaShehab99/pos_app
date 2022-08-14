@@ -6,7 +6,7 @@ import '../../models/product.dart';
 class ProductServices extends ChangeNotifier {
   late CollectionReference collection ;
   ProductServices(String companyUUid){
-    collection = FirebaseFirestore.instance.collection('$companyUUid-products');
+    collection = FirebaseFirestore.instance.collection(companyUUid).doc('data').collection('products');
   }
   Future<List<DocumentReference<Object?>>> showProducts() async{
     return await collection.get().then((value) => value.docs.map((e) => e.reference).toList());

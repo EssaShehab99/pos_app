@@ -24,7 +24,7 @@ class Register extends StatelessWidget {
     AuthServices signUpRepository =
         Provider.of<AuthServices>(context, listen: false);
     TextEditingController controllerEmail = TextEditingController();
-    TextEditingController controllerPhone = TextEditingController(text: "777339975");
+    TextEditingController controllerPhone = TextEditingController(text: "");
     TextEditingController controllerPassword = TextEditingController();
     TextEditingController controllerCompanyName = TextEditingController();
     String selectedCountry = '';

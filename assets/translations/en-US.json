@@ -50,6 +50,10 @@
   "delete-product": "Delete Product",
   "edit": "Edit",
   "delete-customer": "Delete Customer",
-  "all": "All"
+  "all": "All",
+  "select-customer": "Select Customer",
+  "customer": "Customer",
+  "number": "Number",
+  "net-total": "Net Total"
 
 }

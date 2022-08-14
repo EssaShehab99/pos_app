@@ -12,7 +12,7 @@
  "already-have-account": "لديك حساب بالفعل؟",
  "verify-otp": "التحقق من OTP",
  "verify": "التحقق",
- "invoice-sales": "فاتورة مبيعات",
+ "invoice-sales": "فواتير المبيعات",
  "return-invoice": "فاتورة مرتجع",
  "product-manager": "إدارة المنتجات",
  "customer-manager": "إدارة العملاء",
@@ -50,5 +50,9 @@
  "delete-product": "حذف المنتج",
  "edit": "تعديل",
  "delete-customer": "حذف العميل",
- "all": "الكل"
+ "all": "الكل",
+ "select-customer": "حدد العميل",
+ "customer": "العميل",
+ "number": "الرقم",
+ "net-total": "الصافي"
 }

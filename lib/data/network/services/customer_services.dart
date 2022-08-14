@@ -9,7 +9,7 @@ class CustomerServices extends ChangeNotifier {
 
   CustomerServices(String companyUUid) {
     collection =
-        FirebaseFirestore.instance.collection('$companyUUid-customers');
+        FirebaseFirestore.instance.collection(companyUUid).doc('data').collection('customers');
   }
 
   Future<List<DocumentReference<Object?>>> showCustomers() async {
@@ -17,7 +17,12 @@ class CustomerServices extends ChangeNotifier {
         .get()
         .then((value) => value.docs.map((e) => e.reference).toList());
   }
-
+  Future<List<DocumentReference<Object?>>> showCustomersByName(String name) async {
+    return await collection
+        .where('name', arrayContains: name)
+        .get()
+        .then((value) => value.docs.map((e) => e.reference).toList());
+  }
   Future<DocumentReference<Object?>> addCustomer(Customer customer) async {
     return await collection.add(customer.toJson());
   }
@@ -29,4 +34,5 @@ class CustomerServices extends ChangeNotifier {
   Future<void> updateCustomer(Customer customer) async {
     await collection.doc(customer.id).update(customer.toJson());
   }
+
 }

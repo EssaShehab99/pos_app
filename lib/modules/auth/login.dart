@@ -20,9 +20,9 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerEmail =
-        TextEditingController(text: "essa.shehab.dev@gmail.com");
+        TextEditingController(text: "");
     TextEditingController controllerPassword =
-        TextEditingController(text: "123456");
+        TextEditingController(text: "");
     Status status = Status.NONE;
     AuthServices signUpRepository=   Provider.of<
         AuthServices>(context,

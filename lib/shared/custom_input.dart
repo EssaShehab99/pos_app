@@ -12,10 +12,12 @@ class CustomInput extends StatelessWidget {
       this.hint,
       this.validator,
       this.keyboardType,
+      this.focusNode,
       this.enabled,
       this.textAlign,
       this.onChanged,
       this.contentPadding,
+      this.onFieldSubmitted,
       this.icon,
       this.maxLength,
       this.obscureText,
@@ -29,12 +31,14 @@ class CustomInput extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final TextInputType? keyboardType;
   final bool? obscureText;
+  final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final TextDirection? textDirection;
   final ValueChanged<String>? onChanged;
   final int? maxLength;
   final IconData? icon;
   final double? contentPadding;
+  final ValueChanged<String>? onFieldSubmitted;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +50,9 @@ class CustomInput extends StatelessWidget {
       obscureText: obscureText ?? false,
       keyboardType: keyboardType,
       enabled: enabled,
+      focusNode: focusNode,
       maxLength: maxLength,
+      onFieldSubmitted: onFieldSubmitted,
       textAlign: textAlign ?? TextAlign.start,
       onChanged: onChanged,
       style: Theme.of(context).textTheme.bodyText1,

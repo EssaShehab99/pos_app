@@ -8,6 +8,7 @@ import 'package:pos_app/modules/home.dart';
 import 'package:pos_app/modules/auth/register.dart';
 import 'package:pos_app/modules/auth/verify_otp.dart';
 import 'package:pos_app/modules/customers.dart';
+import 'package:pos_app/modules/show_sales_invoice.dart';
 import 'package:pos_app/routes.dart';
 import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
@@ -32,68 +33,69 @@ Future<void> main() async {
       fallbackLocale: const Locale('ar', 'SA'),
       startLocale: const Locale('ar', 'SA'),
       saveLocale: true,
-      child:  MyApp(token:await ConfigApp.getToken())));
+      child: MyApp(token: await ConfigApp.getToken())));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key,required this.token}) : super(key: key);
- final String? token;
+  const MyApp({Key? key, required this.token}) : super(key: key);
+  final String? token;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) =>AppStateManager()),
-        ChangeNotifierProvider(create: (_) =>AuthServices()),
-        ChangeNotifierProvider(create: (_) =>ProductManager()),
-        ChangeNotifierProvider(create: (_) =>CustomerManager()),
-        ChangeNotifierProvider(create: (_) =>SalesInvoiceManager()),
+        ChangeNotifierProvider(create: (_) => AppStateManager()),
+        ChangeNotifierProvider(create: (_) => AuthServices()),
+        ChangeNotifierProvider(create: (_) => ProductManager()),
+        ChangeNotifierProvider(create: (_) => CustomerManager()),
+        ChangeNotifierProvider(create: (_) => SalesInvoiceManager()),
       ],
       child: Consumer<AppStateManager>(
         builder: (_, loginManager, __) {
           // print(loginManager.user?.token);
           return MaterialApp(
-          title: 'POS App',
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeApp.light,
+            title: 'POS App',
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeApp.light,
             initialRoute: Routes.LOGIN_PAGE,
             onGenerateRoute: (RouteSettings settings) {
-            return Routes.fadeThrough(settings, (context) {
-              switch (settings.name) {
-                case Routes.LOGIN_PAGE:
-                  return const Login();
-                case Routes.REGISTER_PAGE:
-                  return const Register();
-                case Routes.VERIFY_OTP_PAGE:
-                  return  VerifyOtp();
-                case Routes.HOME_PAGE:
-                  return const Home();
-                case Routes.SALES_INVOICE_PAGE:
-                  return const SalesInvoice();
-                case Routes.SALES_RETURNED_INVOICE:
-                  return const ReturnedInvoice();
-                case Routes.CUSTOMER_PAGE:
-                  return  Customers();
-                case Routes.PRODUCT_PAGE:
-                  return  Products();
-                case Routes.FORGOT_PASSWORD_PAGE:
-                  return  ForgetPassword();
+              return Routes.fadeThrough(settings, (context) {
+                switch (settings.name) {
+                  case Routes.LOGIN_PAGE:
+                    return const Login();
+                  case Routes.REGISTER_PAGE:
+                    return const Register();
+                  case Routes.VERIFY_OTP_PAGE:
+                    return VerifyOtp();
+                  case Routes.HOME_PAGE:
+                    return const Home();
+                  case Routes.SALES_INVOICE_PAGE:
+                    return SalesInvoice();
+                  case Routes.SHOW_SALES_INVOICE_PAGE:
+                    return const ShowSalesInvoice();
+                  case Routes.SALES_RETURNED_INVOICE:
+                    return const ReturnedInvoice();
+                  case Routes.CUSTOMER_PAGE:
+                    return Customers();
+                  case Routes.PRODUCT_PAGE:
+                    return Products();
+                  case Routes.FORGOT_PASSWORD_PAGE:
+                    return ForgetPassword();
 
                   default:
                     return const Login();
-              }
-            });
-          },
-        );
+                }
+              });
+            },
+          );
         },
       ),
     );

@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/data/models/category.dart';
+import 'package:pos_app/modules/select_customer_dialog.dart';
 import 'package:pos_app/modules/shimmer/home_shimmer.dart';
+import 'package:pos_app/routes.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -14,30 +16,40 @@ import '../data/models/product.dart';
 import '../data/models/sales_invoice_model.dart';
 import '../data/providers/app_state_manager.dart';
 import '../data/providers/sales_invoice_manager.dart';
+import 'add_category_dialog.dart';
 
 class SalesInvoice extends StatelessWidget {
-  const SalesInvoice({Key? key}) : super(key: key);
+  SalesInvoice({Key? key}) : super(key: key);
+
+  final searchController = TextEditingController();
+
+  final cashController = TextEditingController();
+
+  final creditController = TextEditingController();
+  final nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    SalesInvoiceManager salesManager = Provider.of<SalesInvoiceManager>(context, listen: false)..init(Provider.of<AppStateManager>(context, listen: false).user.uuid);
-    final searchController = TextEditingController();
+    SalesInvoiceManager salesManager = Provider.of<SalesInvoiceManager>(context,
+        listen: false)
+      ..init(Provider.of<AppStateManager>(context, listen: false).user.uuid);
+
     return SafeArea(
-        child: Scaffold(
-      backgroundColor: ColorsApp.primary,
-      body: SlidingUpPanel(
-        borderRadius: BorderRadiusDirectional.only(
-            topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
-        boxShadow: [
-          BoxShadow(
-            color: ColorsApp.shadow,
-            blurRadius: 1,
-            spreadRadius: 1,
-          )
-        ],
-        maxHeight: 700,
-        backdropColor: Colors.white.withOpacity(0.0),
-        body:  Column(
+      child: Scaffold(
+        backgroundColor: ColorsApp.white,
+        body: SlidingUpPanel(
+          borderRadius: const BorderRadiusDirectional.only(
+              topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
+          boxShadow: [
+            BoxShadow(
+              color: ColorsApp.shadow,
+              blurRadius: 1,
+              spreadRadius: 1,
+            )
+          ],
+          maxHeight: MediaQuery.of(context).size.height * 0.8,
+          backdropColor: Colors.white.withOpacity(0.0),
+          body: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
@@ -81,10 +93,10 @@ class SalesInvoice extends StatelessWidget {
                             margin: EdgeInsetsDirectional.only(
                                 end: ConstantsValues.padding * 0.5),
                             child: IconButton(
-                              icon: Icon(Icons.delete,
+                              icon: Icon(Icons.list_alt_rounded,
                                   color: ColorsApp.white, size: 30),
                               onPressed: () {
-                                salesManager.deleteInvoice();
+                                Navigator.pushNamed(context, Routes.SHOW_SALES_INVOICE_PAGE);
                               },
                             ),
                           ),
@@ -97,8 +109,6 @@ class SalesInvoice extends StatelessWidget {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: ColorsApp.grey,
-                  borderRadius: BorderRadiusDirectional.only(
-                      topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
                 ),
                 child: Column(
                   children: [
@@ -120,44 +130,60 @@ class SalesInvoice extends StatelessWidget {
                     Expanded(
                       child: FutureBuilder(
                           future: salesManager.getProductsAndCategories(),
-                          builder:(context, snapshot) {
-                            if(snapshot.connectionState == ConnectionState.waiting) {
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const HomeShimmer();
                             }
-                          return Container(
-                            margin: EdgeInsets.all(ConstantsValues.padding),
-                            child: ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(ConstantsValues.borderRadius),
-                              child: Selector<SalesInvoiceManager,List<Product>>(
-            selector: (context, salesManager) => salesManager.filterProducts,
-            builder:(context, value, child) => CustomScrollView(
-                                  slivers: [
-                                    SliverFixedExtentList(
-                                      delegate: SliverChildListDelegate([
-                                        Container(
-                                          height: 60,
-                                          color: ColorsApp.primary,
-                                          child: ListView(
-                                            scrollDirection: Axis.horizontal,
-                                            children: salesManager.categories.map((e) => buildFilterButton(e, salesManager.getProductsByCategory,e.id==salesManager.selectedCategoryId)).toList(),
+                            return Container(
+                              margin:
+                                  const EdgeInsets.all(ConstantsValues.padding),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                    ConstantsValues.borderRadius),
+                                child: Selector<SalesInvoiceManager,
+                                    List<Product>>(
+                                  selector: (context, salesManager) =>
+                                      salesManager.filterProducts,
+                                  builder: (context, value, child) =>
+                                      CustomScrollView(
+                                    slivers: [
+                                      SliverFixedExtentList(
+                                        delegate: SliverChildListDelegate([
+                                          Container(
+                                            height: 60,
+                                            color: ColorsApp.primary,
+                                            child: ListView(
+                                              scrollDirection: Axis.horizontal,
+                                              children: salesManager.categories
+                                                  .map((e) => buildFilterButton(
+                                                      e,
+                                                      salesManager
+                                                          .getProductsByCategory,
+                                                      e.id ==
+                                                          salesManager
+                                                              .selectedCategoryId))
+                                                  .toList(),
+                                            ),
                                           ),
-                                        ),
-                                      ]),
-                                      itemExtent: 60,
-                                    ),
-                                    SliverList(
-                                      delegate: SliverChildBuilderDelegate(
-                                        (context, index) =>  Container(
+                                        ]),
+                                        itemExtent: 60,
+                                      ),
+                                      SliverList(
+                                        delegate: SliverChildBuilderDelegate(
+                                          (context, index) => Container(
                                             color: ColorsApp.white,
                                             child: Container(
                                                 height: 120,
                                                 margin: const EdgeInsets.all(
-                                                    ConstantsValues.padding * 0.5),
+                                                    ConstantsValues.padding *
+                                                        0.5),
                                                 decoration: BoxDecoration(
                                                   color: ColorsApp.white,
-                                                  borderRadius: BorderRadius.circular(
-                                                      ConstantsValues.borderRadius),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          ConstantsValues
+                                                              .borderRadius),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       color: ColorsApp.shadow
@@ -169,31 +195,37 @@ class SalesInvoice extends StatelessWidget {
                                                 ),
                                                 child: Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       Flexible(
                                                         child: Container(
                                                           height: 60,
                                                           width: 60,
-                                                          margin:
-                                                          EdgeInsetsDirectional.only(
+                                                          margin: EdgeInsetsDirectional.only(
                                                               start: ConstantsValues
-                                                                  .padding *
+                                                                      .padding *
                                                                   0.5),
-                                                          decoration: BoxDecoration(
-                                                            color: ColorsApp.white,
-                                                            shape: BoxShape.circle,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                ColorsApp.white,
+                                                            shape:
+                                                                BoxShape.circle,
                                                             boxShadow: [
                                                               BoxShadow(
-                                                                color: ColorsApp.shadow
-                                                                    .withOpacity(0.05),
+                                                                color: ColorsApp
+                                                                    .shadow
+                                                                    .withOpacity(
+                                                                        0.05),
                                                                 blurRadius: 5,
                                                                 spreadRadius: 5,
                                                               ),
                                                             ],
                                                           ),
                                                           child: Center(
-                                                            child: Image.network(
+                                                            child:
+                                                                Image.network(
                                                               "https://pngimg.com/uploads/mug_coffee/mug_coffee_PNG16839.png",
                                                               width: 30,
                                                               height: 30,
@@ -204,24 +236,29 @@ class SalesInvoice extends StatelessWidget {
                                                       Flexible(
                                                         flex: 2,
                                                         child: Container(
-                                                          margin:
-                                                          EdgeInsetsDirectional.only(
+                                                          margin: EdgeInsetsDirectional.only(
                                                               start: ConstantsValues
-                                                                  .padding *
+                                                                      .padding *
                                                                   0.5),
                                                           child: Column(
                                                             mainAxisAlignment:
-                                                            MainAxisAlignment.center,
+                                                                MainAxisAlignment
+                                                                    .center,
                                                             crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Flexible(
                                                                 child: Text(
-                                                                  value[index].name,
-                                                                  style: TextStyle(
-                                                                    fontSize: 16,
+                                                                  value[index]
+                                                                      .name,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16,
                                                                     fontWeight:
-                                                                    FontWeight.bold,
+                                                                        FontWeight
+                                                                            .bold,
                                                                   ),
                                                                 ),
                                                               ),
@@ -229,21 +266,22 @@ class SalesInvoice extends StatelessWidget {
                                                                 child: Text(
                                                                   "السعر: ${value[index].price}",
                                                                   style: Theme.of(
-                                                                      context)
+                                                                          context)
                                                                       .textTheme
                                                                       .bodyText1
                                                                       ?.copyWith(
-                                                                    fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                  ),
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
                                                                 ),
                                                               ),
                                                               Flexible(
                                                                 child: Text(
                                                                   'الوحدة: ${value[index].size}',
-                                                                  style: TextStyle(
-                                                                    fontSize: 14,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        14,
                                                                     color: ColorsApp
                                                                         .secondary,
                                                                   ),
@@ -255,343 +293,273 @@ class SalesInvoice extends StatelessWidget {
                                                       ),
                                                       Flexible(
                                                           child: InkWell(
-                                                            onTap: () {
-                                                              salesManager.addLocalSalesInvoice(value[index].id);
-                                                            },
-                                                            child: Container(
-                                                              width: 40,
-                                                              height: 40,
-                                                              margin:
-                                                              EdgeInsetsDirectional.only(
-                                                                  end: ConstantsValues
+                                                        onTap: () {
+                                                          salesManager
+                                                              .addLocalSalesInvoice(
+                                                                  value[index]
+                                                                      .id);
+                                                        },
+                                                        child: Container(
+                                                          width: 40,
+                                                          height: 40,
+                                                          margin: EdgeInsetsDirectional.only(
+                                                              end: ConstantsValues
                                                                       .padding *
-                                                                      0.5),
-                                                              decoration: BoxDecoration(
-                                                                color: ColorsApp.secondary,
-                                                                shape: BoxShape.circle,
-                                                              ),
-                                                              child: Icon(
-                                                                Icons.add,
-                                                                color: ColorsApp.white,
-                                                                size: 20,
-                                                              ),
-                                                            ),
-                                                          ))
+                                                                  0.5),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: ColorsApp
+                                                                .secondary,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.add,
+                                                            color:
+                                                                ColorsApp.white,
+                                                            size: 20,
+                                                          ),
+                                                        ),
+                                                      ))
                                                     ])),
                                           ),
-                                        childCount: value.length,
-                                      ),
-                                    ),
-                                    SliverPadding(
-                                      padding: EdgeInsets.all(
-                                          ConstantsValues.padding *2.5),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              /*   child: Column(
-                                children: [
-                                  Expanded(
-                                      flex: 0,
-                                      child: Container(
-                                        height: 60,
-                                        color: ColorsApp.primary,
-                                        child: ListView(
-                                          scrollDirection: Axis.horizontal,
-                                          children: List<Widget>.generate(
-                                              categories.length,
-                                              (index) => Container(
-                                                    width: 100,
-                                                    height: 100,
-                                                    margin:
-                                                        EdgeInsetsDirectional.only(
-                                                            top: ConstantsValues
-                                                                    .padding *
-                                                                0.5,
-                                                            end: ConstantsValues
-                                                                    .padding *
-                                                                0.5,
-                                                            start: ConstantsValues
-                                                                    .padding *
-                                                                0.5),
-                                                    decoration: BoxDecoration(
-                                                        color: ColorsApp.white,
-                                                        borderRadius:
-                                                            BorderRadius.vertical(
-                                                                top: Radius.circular(
-                                                                    ConstantsValues
-                                                                            .borderRadius *
-                                                                        0.5))),
-                                                    child: Center(
-                                                      child: Text(categories[index]),
-                                                    ),
-                                                  )).toList(),
+                                          childCount: value.length,
                                         ),
-                                      )),
-                                  Expanded(
-                                      child: Container(
-                                    color: ColorsApp.white,
-                                    child: ListView.builder(
-                                      itemCount: 10,
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                            height: 120,
-                                            margin: EdgeInsets.all(
-                                                ConstantsValues.padding * 0.5),
-                                            decoration: BoxDecoration(
-                                              color: ColorsApp.white,
-                                              borderRadius: BorderRadius.circular(
-                                                  ConstantsValues.borderRadius),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: ColorsApp.shadow
-                                                      .withOpacity(0.05),
-                                                  blurRadius: 5,
-                                                  spreadRadius: 5,
-                                                ),
-                                              ],
-                                            ),
-                                            child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Flexible(
-                                                    child: Container(
-                                                      height: 60,
-                                                      width: 60,
+                                      ),
+                                      SliverPadding(
+                                        padding: EdgeInsets.all(
+                                            ConstantsValues.padding * 2.5),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                /*   child: Column(
+                                  children: [
+                                    Expanded(
+                                        flex: 0,
+                                        child: Container(
+                                          height: 60,
+                                          color: ColorsApp.primary,
+                                          child: ListView(
+                                            scrollDirection: Axis.horizontal,
+                                            children: List<Widget>.generate(
+                                                categories.length,
+                                                (index) => Container(
+                                                      width: 100,
+                                                      height: 100,
                                                       margin:
                                                           EdgeInsetsDirectional.only(
+                                                              top: ConstantsValues
+                                                                      .padding *
+                                                                  0.5,
+                                                              end: ConstantsValues
+                                                                      .padding *
+                                                                  0.5,
                                                               start: ConstantsValues
                                                                       .padding *
                                                                   0.5),
                                                       decoration: BoxDecoration(
-                                                        color: ColorsApp.white,
-                                                        shape: BoxShape.circle,
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: ColorsApp.shadow
-                                                                .withOpacity(0.05),
-                                                            blurRadius: 5,
-                                                            spreadRadius: 5,
-                                                          ),
-                                                        ],
-                                                      ),
+                                                          color: ColorsApp.white,
+                                                          borderRadius:
+                                                              BorderRadius.vertical(
+                                                                  top: Radius.circular(
+                                                                      ConstantsValues
+                                                                              .borderRadius *
+                                                                          0.5))),
                                                       child: Center(
-                                                        child: Image.network(
-                                                          "https://pngimg.com/uploads/mug_coffee/mug_coffee_PNG16839.png",
-                                                          width: 30,
-                                                          height: 30,
+                                                        child: Text(categories[index]),
+                                                      ),
+                                                    )).toList(),
+                                          ),
+                                        )),
+                                    Expanded(
+                                        child: Container(
+                                      color: ColorsApp.white,
+                                      child: ListView.builder(
+                                        itemCount: 10,
+                                        itemBuilder: (context, index) {
+                                          return Container(
+                                              height: 120,
+                                              margin: EdgeInsets.all(
+                                                  ConstantsValues.padding * 0.5),
+                                              decoration: BoxDecoration(
+                                                color: ColorsApp.white,
+                                                borderRadius: BorderRadius.circular(
+                                                    ConstantsValues.borderRadius),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: ColorsApp.shadow
+                                                        .withOpacity(0.05),
+                                                    blurRadius: 5,
+                                                    spreadRadius: 5,
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Flexible(
+                                                      child: Container(
+                                                        height: 60,
+                                                        width: 60,
+                                                        margin:
+                                                            EdgeInsetsDirectional.only(
+                                                                start: ConstantsValues
+                                                                        .padding *
+                                                                    0.5),
+                                                        decoration: BoxDecoration(
+                                                          color: ColorsApp.white,
+                                                          shape: BoxShape.circle,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: ColorsApp.shadow
+                                                                  .withOpacity(0.05),
+                                                              blurRadius: 5,
+                                                              spreadRadius: 5,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Center(
+                                                          child: Image.network(
+                                                            "https://pngimg.com/uploads/mug_coffee/mug_coffee_PNG16839.png",
+                                                            width: 30,
+                                                            height: 30,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Flexible(
-                                                    flex: 2,
-                                                    child: Container(
-                                                      margin:
-                                                          EdgeInsetsDirectional.only(
-                                                              start: ConstantsValues
-                                                                      .padding *
-                                                                  0.5),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment.center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
-                                                        children: [
-                                                          Flexible(
-                                                            child: Text(
-                                                              'قهوة عمانية',
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight.bold,
+                                                    Flexible(
+                                                      flex: 2,
+                                                      child: Container(
+                                                        margin:
+                                                            EdgeInsetsDirectional.only(
+                                                                start: ConstantsValues
+                                                                        .padding *
+                                                                    0.5),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment.center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment.start,
+                                                          children: [
+                                                            Flexible(
+                                                              child: Text(
+                                                                'قهوة عمانية',
+                                                                style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight.bold,
+                                                                ),
                                                               ),
                                                             ),
-                                                          ),
-                                                          Flexible(
-                                                            child: Row(
-                                                              children: [
-                                                                Flexible(
-                                                                  child: Text(
-                                                                    'الحجم: وسط',
-                                                                    style: TextStyle(
-                                                                      fontSize: 14,
-                                                                      color: ColorsApp
-                                                                          .secondary,
+                                                            Flexible(
+                                                              child: Row(
+                                                                children: [
+                                                                  Flexible(
+                                                                    child: Text(
+                                                                      'الحجم: وسط',
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        color: ColorsApp
+                                                                            .secondary,
+                                                                      ),
                                                                     ),
                                                                   ),
-                                                                ),
-                                                                Flexible(
-                                                                    child: SizedBox(
-                                                                        width: ConstantsValues
-                                                                            .padding)),
-                                                                Flexible(
-                                                                  child: Text(
-                                                                    '2 SAR',
-                                                                    style: Theme.of(
-                                                                            context)
-                                                                        .textTheme
-                                                                        .bodyText1
-                                                                        ?.copyWith(
-                                                                          fontWeight:
-                                                                              FontWeight
-                                                                                  .bold,
-                                                                        ),
+                                                                  Flexible(
+                                                                      child: SizedBox(
+                                                                          width: ConstantsValues
+                                                                              .padding)),
+                                                                  Flexible(
+                                                                    child: Text(
+                                                                      '2 SAR',
+                                                                      style: Theme.of(
+                                                                              context)
+                                                                          .textTheme
+                                                                          .bodyText1
+                                                                          ?.copyWith(
+                                                                            fontWeight:
+                                                                                FontWeight
+                                                                                    .bold,
+                                                                          ),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          Flexible(
-                                                            child: Text(
-                                                              'الوحدة: حبة',
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                color: ColorsApp
-                                                                    .secondary,
+                                                                ],
                                                               ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                            Flexible(
+                                                              child: Text(
+                                                                'الوحدة: حبة',
+                                                                style: TextStyle(
+                                                                  fontSize: 14,
+                                                                  color: ColorsApp
+                                                                      .secondary,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Flexible(
-                                                      child: Container(
-                                                    width: 40,
-                                                    height: 40,
-                                                    margin:
-                                                        EdgeInsetsDirectional.only(
-                                                            end: ConstantsValues
-                                                                    .padding *
-                                                                0.5),
-                                                    decoration: BoxDecoration(
-                                                      color: ColorsApp.secondary,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      color: ColorsApp.white,
-                                                      size: 20,
-                                                    ),
-                                                  ))
-                                                ]));
-                                      },
-                                    ),
-                                  )),
-                                ],
-                              ),*/
-                            ),
-                          );
-                        }
-                      ),
+                                                    Flexible(
+                                                        child: Container(
+                                                      width: 40,
+                                                      height: 40,
+                                                      margin:
+                                                          EdgeInsetsDirectional.only(
+                                                              end: ConstantsValues
+                                                                      .padding *
+                                                                  0.5),
+                                                      decoration: BoxDecoration(
+                                                        color: ColorsApp.secondary,
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                      child: Icon(
+                                                        Icons.add,
+                                                        color: ColorsApp.white,
+                                                        size: 20,
+                                                      ),
+                                                    ))
+                                                  ]));
+                                        },
+                                      ),
+                                    )),
+                                  ],
+                                ),*/
+                              ),
+                            );
+                          }),
                     ),
                   ],
                 ),
               ))
             ],
           ),
-        panel: Consumer<SalesInvoiceManager>(
-            builder:(context, value, child) => Column(
-            children: [
-              Expanded(
-                  flex: 0,
-                  child: Container(
+          panel: Consumer<SalesInvoiceManager>(
+            builder: (context, value, child) => SizedBox(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Flexible(
+                      child: Container(
                     width: 100,
-                    margin: EdgeInsets.all(ConstantsValues.padding),
+                    margin: const EdgeInsets.all(ConstantsValues.padding),
                     child: CustomButton(
-                      onTap: () {},
+                      onTap: () {
+                        if (salesManager.salesInvoice != null &&
+                            salesManager.products.isNotEmpty) {
+                          showDialog(
+                              context: context,
+                              builder: (context) => SelectCustomerDialog());
+                        }
+                      },
                       isLoading: false,
                       text: "print".tr(),
                     ),
                   )),
-              Expanded(
-                  flex: 4,
-                  child: Container(
-                    height: double.infinity,
-                    padding: EdgeInsets.all(ConstantsValues.padding),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadiusDirectional.only(
-                            topEnd: Radius.circular(
-                                ConstantsValues.borderRadius * 2)),
-                        color: ColorsApp.grey),
-                    child: ListView.builder(
-                        itemCount: value.salesInvoice?.products.length ?? 0,
-                        itemBuilder: (context, index) => Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: ConstantsValues.padding * 0.5),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(color: ColorsApp.shadow))),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(
-                                    ConstantsValues.padding * 0.5),
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  backgroundColor: ColorsApp.secondary,
-                                ),
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(value.salesInvoice?.products[index].name ??"",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          ?.copyWith(fontSize: 15)),
-                                  Text("الوحدة: ${value.salesInvoice?.products[index].size ??""}",
-                                      style: Theme.of(context).textTheme.bodyText1),
-                                ],
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: ColorsApp.secondary,
-                                    radius: 18,
-                                    child: InkWell(
-                                      onTap: () {
-                                        value.addLocalSalesInvoice(value.salesInvoice?.products[index].id);
-                                      },
-                                      child: Icon(Icons.keyboard_arrow_up_outlined,
-                                          color: ColorsApp.white),
-                                    ),
-                                  ),
-                                  Text(value.salesInvoice?.products[index].quantity.toString() ??"",
-                                      style: Theme.of(context).textTheme.bodyText1),
-                                  CircleAvatar(
-                                    backgroundColor: ColorsApp.secondary,
-                                    radius: 18,
-                                    child: InkWell(
-                                      onTap: () {
-                                        value.removeProduct(value.salesInvoice?.products[index].id);
-                                      },
-                                      child: Icon(Icons.keyboard_arrow_down_outlined,
-                                          color: ColorsApp.white),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(value.salesInvoice?.products[index].price.toString() ??"",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1
-                                      ?.copyWith(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal)),
-                            ],
-                          ),
-                        ),
-                      ),
-                  )),
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    padding: EdgeInsets.all(ConstantsValues.padding),
+                  Flexible(
+                      child: Container(
+                    padding: EdgeInsets.all(ConstantsValues.padding * 0.2),
                     margin: EdgeInsets.all(ConstantsValues.padding),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(
@@ -600,62 +568,77 @@ class SalesInvoice extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Flexible(
-                                child: Text("الاجمالي",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.copyWith(fontSize: 15))),
-                            Flexible(
-                                child: Text("الضريبة",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.copyWith(fontSize: 15))),
-                            Flexible(
-                                child: Text("الاجمالي مع الضريبة",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.copyWith(fontSize: 15))),
-                          ],
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: FittedBox(
+                                    child: Text("الاجمالي",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15))),
+                              ),
+                              Flexible(
+                                child: FittedBox(
+                                    child: Text("الضريبة",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15))),
+                              ),
+                              Flexible(
+                                child: FittedBox(
+                                    child: Text("الاجمالي مع الضريبة",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15))),
+                              ),
+                            ],
+                          ),
                         ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Flexible(
-                                child: Text(value.salesInvoice?.total.toString() ?? "",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.copyWith(fontSize: 15))),
-                            Flexible(
-                                child: Text(value.salesInvoice?.tax.toString() ?? "",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.copyWith(fontSize: 15))),
-                            Flexible(
-                                child: Text(value.salesInvoice?.netTotal.toString() ?? "",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline1
-                                        ?.copyWith(fontSize: 15))),
-                          ],
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Flexible(
+                                  child: Text(
+                                      value.salesInvoice?.total.toString() ??
+                                          "0.0",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(fontSize: 15))),
+                              Flexible(
+                                  child: Text(
+                                      value.salesInvoice?.tax.toString() ??
+                                          "0.0",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(fontSize: 15))),
+                              Flexible(
+                                  child: Text(
+                                      value.salesInvoice?.netTotal.toString() ??
+                                          "0.0",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1
+                                          ?.copyWith(fontSize: 15))),
+                            ],
+                          ),
                         )
                       ],
                     ),
                   )),
-              Expanded(
-                  flex: 0,
-                  child: Container(
+                  Flexible(
+                      child: Container(
                     padding: EdgeInsets.all(ConstantsValues.padding * 0.5),
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                         right: ConstantsValues.padding,
                         left: ConstantsValues.padding,
                         bottom: ConstantsValues.padding),
@@ -671,29 +654,38 @@ class SalesInvoice extends StatelessWidget {
                             child: Row(
                           children: [
                             Flexible(
-                                child: Checkbox(
-                              onChanged: (_) {},
-                              activeColor: ColorsApp.secondary,
-                              value: true,
+                                child: Selector<SalesInvoiceManager, bool>(
+                              selector: (context, value) => value.isCash,
+                              builder: (context, value, child) => Radio<bool>(
+                                groupValue: value,
+                                onChanged: (value) {
+                                  salesManager.selectPaymentMethod(value!);
+                                },
+                                activeColor: ColorsApp.secondary,
+                                value: true,
+                              ),
                             )),
-                            Flexible(child: Text("نقد")),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            const Flexible(child: Text("نقد")),
+                            const SizedBox(width: 10),
                             Flexible(
                                 flex: 3,
-                                child: CustomInput(
-                                    controller: new TextEditingController())),
+                                child: CustomInput(controller: cashController)),
                           ],
                         )),
                         Flexible(
                             child: Row(
                           children: [
                             Flexible(
-                                child: Checkbox(
-                              onChanged: (_) {},
-                              activeColor: ColorsApp.secondary,
-                              value: false,
+                                child: Selector<SalesInvoiceManager, bool>(
+                              selector: (context, value) => value.isCash,
+                              builder: (context, value, child) => Radio<bool>(
+                                groupValue: value,
+                                onChanged: (value) {
+                                  salesManager.selectPaymentMethod(value!);
+                                },
+                                activeColor: ColorsApp.secondary,
+                                value: false,
+                              ),
                             )),
                             Flexible(child: Text("آجل")),
                             SizedBox(
@@ -701,65 +693,172 @@ class SalesInvoice extends StatelessWidget {
                             ),
                             Flexible(
                                 flex: 3,
-                                child: CustomInput(
-                                    controller: new TextEditingController())),
+                                child:
+                                    CustomInput(controller: creditController)),
                           ],
                         )),
                       ],
                     ),
-                  ))
-            ],
+                  )),
+                  Flexible(
+                      flex: 2,
+                      child: Container(
+                        height: double.infinity,
+                        padding: EdgeInsets.all(ConstantsValues.padding),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadiusDirectional.only(
+                                topEnd: Radius.circular(
+                                    ConstantsValues.borderRadius * 2)),
+                            color: ColorsApp.grey),
+                        child: ListView.builder(
+                          itemCount: value.salesInvoice?.products.length ?? 0,
+                          itemBuilder: (context, index) => Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: ConstantsValues.padding * 0.5),
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    bottom:
+                                        BorderSide(color: ColorsApp.shadow))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(
+                                      ConstantsValues.padding * 0.5),
+                                  child: CircleAvatar(
+                                    radius: 30,
+                                    backgroundColor: ColorsApp.secondary,
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                        value.salesInvoice?.products[index]
+                                                .name ??
+                                            "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15)),
+                                    Text(
+                                        "الوحدة: ${value.salesInvoice?.products[index].size ?? ""}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1),
+                                  ],
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: ColorsApp.secondary,
+                                      radius: 18,
+                                      child: InkWell(
+                                        onTap: () {
+                                          value.addLocalSalesInvoice(value
+                                              .salesInvoice
+                                              ?.products[index]
+                                              .id);
+                                        },
+                                        child: Icon(
+                                            Icons.keyboard_arrow_up_outlined,
+                                            color: ColorsApp.white),
+                                      ),
+                                    ),
+                                    Text(
+                                        value.salesInvoice?.products[index]
+                                                .quantity
+                                                .toString() ??
+                                            "",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText1),
+                                    CircleAvatar(
+                                      backgroundColor: ColorsApp.secondary,
+                                      radius: 18,
+                                      child: InkWell(
+                                        onTap: () {
+                                          value.removeProduct(value.salesInvoice
+                                              ?.products[index].id);
+                                        },
+                                        child: Icon(
+                                            Icons.keyboard_arrow_down_outlined,
+                                            color: ColorsApp.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                    value.salesInvoice?.products[index].price
+                                            .toString() ??
+                                        "",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline1
+                                        ?.copyWith(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 
-  Widget buildFilterButton(Category category,Future<void> Function(Category) onPressed,bool isSelected) {
-    bool isLoading=false;
+  Widget buildFilterButton(Category category,
+      Future<void> Function(Category) onPressed, bool isSelected) {
+    bool isLoading = false;
     return StatefulBuilder(
-      builder: (context, setState) => InkWell(
-                                                onTap: ()async{
-                                                  setState(() {
-                                                    isLoading=true;
-                                                  });
-                                                  await onPressed(category);
-                                                  setState(() {
-                                                    isLoading=true;
-                                                  });
-                                                },
-                                                child: Selector<SalesInvoiceManager,String?>(
-                                                  selector: (context, salesManager) => salesManager.selectedCategoryId,
-                                                  builder: (context, value, child) => Container(
-                                                        width: 100,
-                                                        height: 100,
-                                                        margin:
-                                                            const EdgeInsetsDirectional.only(
-                                                                top: ConstantsValues
-                                                                        .padding *
-                                                                    0.5,
-                                                                end: ConstantsValues
-                                                                        .padding *
-                                                                    0.5,
-                                                                start: ConstantsValues
-                                                                        .padding *
-                                                                    0.5),
-                                                        decoration: BoxDecoration(
-                                                            color: isSelected?ColorsApp.secondary:ColorsApp.white,
-                                                            borderRadius:
-                                                                BorderRadius.vertical(
-                                                                    top: Radius.circular(
-                                                                        ConstantsValues
-                                                                                .borderRadius *
-                                                                            0.5))),
-                                                        child: Center(
-                                                          child:isLoading?CircularProgressIndicator(color: ColorsApp.primary,): Text(category.name,style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                                                            color: isSelected?ColorsApp.white:ColorsApp.secondary,
-                                                          ),),
-                                                        ),
-                                                      ),
-                                                ),
-                                              )
-    );
+        builder: (context, setState) => InkWell(
+              onTap: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await onPressed(category);
+                setState(() {
+                  isLoading = true;
+                });
+              },
+              child: Selector<SalesInvoiceManager, String?>(
+                selector: (context, salesManager) =>
+                    salesManager.selectedCategoryId,
+                builder: (context, value, child) => Container(
+                  width: 100,
+                  height: 100,
+                  margin: const EdgeInsetsDirectional.only(
+                      top: ConstantsValues.padding * 0.5,
+                      end: ConstantsValues.padding * 0.5,
+                      start: ConstantsValues.padding * 0.5),
+                  decoration: BoxDecoration(
+                      color: isSelected ? ColorsApp.secondary : ColorsApp.white,
+                      borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(
+                              ConstantsValues.borderRadius * 0.5))),
+                  child: Center(
+                    child: isLoading
+                        ? CircularProgressIndicator(
+                            color: ColorsApp.primary,
+                          )
+                        : Text(
+                            category.name,
+                            style:
+                                Theme.of(context).textTheme.bodyText1?.copyWith(
+                                      color: isSelected
+                                          ? ColorsApp.white
+                                          : ColorsApp.secondary,
+                                    ),
+                          ),
+                  ),
+                ),
+              ),
+            ));
   }
 }

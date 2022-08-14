@@ -25,6 +25,20 @@ class CustomerRepository extends Repository<Customer>{
         await _customerServices.showCustomers();
     List<Customer> customersList = [];
     for (var customer in customers) {
+      DocumentSnapshot<Object?> customerDocument = await customer.get();
+      if(customerDocument.data() != null){
+        customersList.add(Customer.fromJson(
+            customerDocument.data() as Map<String, dynamic>,
+            customerDocument.id));
+      }
+    }
+    return customersList;
+  }
+  Future<List<Customer>> findAllItemsByName(String name) async {
+    List<DocumentReference<Object?>> customers =
+        await _customerServices.showCustomers();
+    List<Customer> customersList = [];
+    for (var customer in customers) {
       DocumentSnapshot<Object?> productDocument = await customer.get();
       if(productDocument.data() != null){
         customersList.add(Customer.fromJson(
@@ -34,7 +48,6 @@ class CustomerRepository extends Repository<Customer>{
     }
     return customersList;
   }
-
   @override
   Future init(String companyUUid) async {
       _customerServices = CustomerServices(companyUUid);
