@@ -54,6 +54,9 @@
   "select-customer": "Select Customer",
   "customer": "Customer",
   "number": "Number",
-  "net-total": "Net Total"
+  "net-total": "Net Total",
+  "cash": "Cash",
+  "debit": "Debit",
+  "credit": "Credit"
 
 }

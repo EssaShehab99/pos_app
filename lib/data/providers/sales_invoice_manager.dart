@@ -168,6 +168,15 @@ class SalesInvoiceManager extends ChangeNotifier {
   }
   Future<void> saveInvoice() async {
     if (salesInvoice != null) {
+      Customer customer = customers.firstWhere((customer) =>
+      customer.id == salesInvoice?.customerId);
+      if(isCash) {
+        customer.debit = customer.debit! + salesInvoice!.netTotal;
+        customer.credit = customer.credit! + salesInvoice!.netTotal;
+      }else{
+        customer.debit = customer.debit! + salesInvoice!.netTotal;
+      }
+      await _customerRepository.updateItem(customer);
       await _salesInvoiceRepository.insertItem(salesInvoice!);
     }
   }

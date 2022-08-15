@@ -23,11 +23,6 @@ class SalesInvoice extends StatelessWidget {
 
   final searchController = TextEditingController();
 
-  final cashController = TextEditingController();
-
-  final creditController = TextEditingController();
-  final nameController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     SalesInvoiceManager salesManager = Provider.of<SalesInvoiceManager>(context,
@@ -90,7 +85,7 @@ class SalesInvoice extends StatelessWidget {
                         Flexible(
                           child: Container(
                             alignment: AlignmentDirectional.centerEnd,
-                            margin: EdgeInsetsDirectional.only(
+                            margin: const EdgeInsetsDirectional.only(
                                 end: ConstantsValues.padding * 0.5),
                             child: IconButton(
                               icon: Icon(Icons.list_alt_rounded,
@@ -539,8 +534,10 @@ class SalesInvoice extends StatelessWidget {
             builder: (context, value, child) => SizedBox(
               width: double.infinity,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Flexible(
+                  Expanded(
+                    flex: 0,
                       child: Container(
                     width: 100,
                     margin: const EdgeInsets.all(ConstantsValues.padding),
@@ -557,7 +554,8 @@ class SalesInvoice extends StatelessWidget {
                       text: "print".tr(),
                     ),
                   )),
-                  Flexible(
+                  Expanded(
+                      flex: 0,
                       child: Container(
                     padding: EdgeInsets.all(ConstantsValues.padding * 0.2),
                     margin: EdgeInsets.all(ConstantsValues.padding),
@@ -606,36 +604,43 @@ class SalesInvoice extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Flexible(
-                                  child: Text(
-                                      value.salesInvoice?.total.toString() ??
-                                          "0.0",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          ?.copyWith(fontSize: 15))),
+                                  child: FittedBox(
+                                    child: Text(
+                                        value.salesInvoice?.total.toString() ??
+                                            "0.0",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15)),
+                                  )),
                               Flexible(
-                                  child: Text(
-                                      value.salesInvoice?.tax.toString() ??
-                                          "0.0",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          ?.copyWith(fontSize: 15))),
+                                  child: FittedBox(
+                                    child: Text(
+                                        value.salesInvoice?.tax.toString() ??
+                                            "0.0",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15)),
+                                  )),
                               Flexible(
-                                  child: Text(
-                                      value.salesInvoice?.netTotal.toString() ??
-                                          "0.0",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1
-                                          ?.copyWith(fontSize: 15))),
+                                  child: FittedBox(
+                                    child: Text(
+                                        value.salesInvoice?.netTotal.toString() ??
+                                            "0.0",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline1
+                                            ?.copyWith(fontSize: 15)),
+                                  )),
                             ],
                           ),
                         )
                       ],
                     ),
                   )),
-                  Flexible(
+                  Expanded(
+                      flex: 0,
                       child: Container(
                     padding: EdgeInsets.all(ConstantsValues.padding * 0.5),
                     margin: const EdgeInsets.only(
@@ -656,20 +661,20 @@ class SalesInvoice extends StatelessWidget {
                             Flexible(
                                 child: Selector<SalesInvoiceManager, bool>(
                               selector: (context, value) => value.isCash,
-                              builder: (context, value, child) => Radio<bool>(
-                                groupValue: value,
-                                onChanged: (value) {
-                                  salesManager.selectPaymentMethod(value!);
-                                },
-                                activeColor: ColorsApp.secondary,
-                                value: true,
+                              builder: (context, value, child) => Center(
+                                child: Radio<bool>(
+                                  groupValue: value,
+                                  onChanged: (value) {
+                                    salesManager.selectPaymentMethod(value!);
+                                  },
+                                  activeColor: ColorsApp.secondary,
+                                  value: true,
+                                ),
                               ),
                             )),
-                            const Flexible(child: Text("نقد")),
+                             Flexible(child: Text("cash".tr())),
                             const SizedBox(width: 10),
-                            Flexible(
-                                flex: 3,
-                                child: CustomInput(controller: cashController)),
+
                           ],
                         )),
                         Flexible(
@@ -678,29 +683,27 @@ class SalesInvoice extends StatelessWidget {
                             Flexible(
                                 child: Selector<SalesInvoiceManager, bool>(
                               selector: (context, value) => value.isCash,
-                              builder: (context, value, child) => Radio<bool>(
-                                groupValue: value,
-                                onChanged: (value) {
-                                  salesManager.selectPaymentMethod(value!);
-                                },
-                                activeColor: ColorsApp.secondary,
-                                value: false,
+                              builder: (context, value, child) => Center(
+                                child: Radio<bool>(
+                                  groupValue: value,
+                                  onChanged: (value) {
+                                    salesManager.selectPaymentMethod(value!);
+                                  },
+                                  activeColor: ColorsApp.secondary,
+                                  value: false,
+                                ),
                               ),
                             )),
                             Flexible(child: Text("آجل")),
                             SizedBox(
                               width: 10,
                             ),
-                            Flexible(
-                                flex: 3,
-                                child:
-                                    CustomInput(controller: creditController)),
                           ],
                         )),
                       ],
                     ),
                   )),
-                  Flexible(
+                  Expanded(
                       flex: 2,
                       child: Container(
                         height: double.infinity,

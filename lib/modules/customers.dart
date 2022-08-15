@@ -27,6 +27,8 @@ class _CustomersState extends State<Customers> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _debitController = TextEditingController();
+  final TextEditingController _creditController = TextEditingController();
   String id='';
 
   bool isLoading = false;
@@ -52,7 +54,7 @@ class _CustomersState extends State<Customers> {
                 spreadRadius: 1,
               )
             ],
-            maxHeight: 300,
+            maxHeight: 450,
             backdropColor: Colors.white.withOpacity(0.0),
             body: Column(
               mainAxisSize: MainAxisSize.min,
@@ -227,6 +229,12 @@ class _CustomersState extends State<Customers> {
                                                               _phoneController
                                                                   .text =
                                                                   item.phone;
+                                                              _debitController
+                                                                  .text =
+                                                                  item.debit.toString();
+                                                              _creditController
+                                                                  .text =
+                                                                  item.credit.toString();
                                                             });
                                                             _pc1.open();
                                                           },
@@ -293,6 +301,29 @@ class _CustomersState extends State<Customers> {
                             SizedBox(
                               height: ConstantsValues.padding,
                             ),
+                            Flexible(
+                              child: CustomInput(
+                                controller: _debitController,
+                                hint: 'debit'.tr(),
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                            SizedBox(
+                              height: ConstantsValues.padding,
+                            ),
+                            SizedBox(
+                              height: ConstantsValues.padding,
+                            ),
+                            Flexible(
+                              child: CustomInput(
+                                controller: _creditController,
+                                hint: 'credit'.tr(),
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                            SizedBox(
+                              height: ConstantsValues.padding,
+                            ),
                           ],
                         ),
                       ),
@@ -319,6 +350,8 @@ class _CustomersState extends State<Customers> {
                                         id: "",
                                         name: _nameController.text,
                                         phone: _phoneController.text,
+                                        credit: double.parse(_creditController.text),
+                                        debit: double.parse(_debitController.text),
                                       ));
                                       setStateButton(() {
                                         isLoading = false;
@@ -329,6 +362,8 @@ class _CustomersState extends State<Customers> {
                                         id: id,
                                         name: _nameController.text,
                                         phone: _phoneController.text,
+                                        credit: double.parse(_creditController.text),
+                                        debit: double.parse(_debitController.text),
                                       ));
                                       setStateButton(() {
                                         isLoading = false;

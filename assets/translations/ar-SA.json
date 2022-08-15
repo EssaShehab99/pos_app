@@ -54,5 +54,8 @@
  "select-customer": "حدد العميل",
  "customer": "العميل",
  "number": "الرقم",
- "net-total": "الصافي"
+ "net-total": "الصافي",
+ "cash": "نقدي",
+ "debit": "مدين",
+ "credit": "دائن"
 }
