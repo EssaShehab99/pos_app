@@ -57,6 +57,10 @@
   "net-total": "Net Total",
   "cash": "Cash",
   "debit": "Debit",
-  "credit": "Credit"
+  "credit": "Credit",
+  "no-product-found": "No product found",
+  "not-enough-quantity": "Not enough quantity",
+  "invoice-return": "Invoice Return"
+
 
 }

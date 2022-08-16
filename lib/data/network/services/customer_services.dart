@@ -34,5 +34,7 @@ class CustomerServices extends ChangeNotifier {
   Future<void> updateCustomer(Customer customer) async {
     await collection.doc(customer.id).update(customer.toJson());
   }
-
+  Future<DocumentSnapshot<Object?>> findCustomerById(String id) async {
+    return await collection.doc(id).get();
+  }
 }

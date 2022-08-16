@@ -35,5 +35,7 @@ class CustomerManager extends ChangeNotifier {
     customers.removeWhere((category) => category.id == id);
     notifyListeners();
   }
-
+  String? getCustomerName(String id) {
+    return customers.firstWhereOrNull((customer) => customer.id == id)?.name;
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pos_app/data/data_response.dart';
 import 'package:pos_app/data/models/category.dart';
 import 'package:pos_app/modules/select_customer_dialog.dart';
 import 'package:pos_app/modules/shimmer/home_shimmer.dart';
@@ -289,10 +290,17 @@ class SalesInvoice extends StatelessWidget {
                                                       Flexible(
                                                           child: InkWell(
                                                         onTap: () {
-                                                          salesManager
+                                                         Result result= salesManager
                                                               .addLocalSalesInvoice(
                                                                   value[index]
                                                                       .id);
+                                                         if(result is Error){
+                                                           ScaffoldMessenger.of(context).showSnackBar(
+                                                               SnackBar(
+                                                                 content: Text((result).exception.toString().substring(11)),
+                                                                 duration: const Duration(seconds: 1),
+                                                               ));
+                                                         }
                                                         },
                                                         child: Container(
                                                           width: 40,
@@ -759,10 +767,17 @@ class SalesInvoice extends StatelessWidget {
                                       radius: 18,
                                       child: InkWell(
                                         onTap: () {
-                                          value.addLocalSalesInvoice(value
+                                          Result result=   value.addLocalSalesInvoice(value
                                               .salesInvoice
                                               ?.products[index]
                                               .id);
+                                          if(result is Error){
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text((result).exception.toString().substring(11)),
+                                                  duration: const Duration(seconds: 1),
+                                                ));
+                                          }
                                         },
                                         child: Icon(
                                             Icons.keyboard_arrow_up_outlined,

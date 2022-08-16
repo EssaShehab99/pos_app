@@ -7,7 +7,7 @@ abstract class Repository<T> {
   Future<void> updateItem(T object);
   Future<void> deleteItem(String id);
   Future<List<T>> findAllItems();
-
+  Future<T?> findItemById(String id);
   Future init(String companyUUid);
   void close();
 

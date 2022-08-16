@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Product {
-  String id;
-  String name;
-  String category;
+final  String id;
+final  String name;
+final  String category;
   int quantity;
-  String size;
-  double tax;
-  double price;
+final  String size;
+final double tax;
+final  double price;
 
   Product(
       {required this.id,

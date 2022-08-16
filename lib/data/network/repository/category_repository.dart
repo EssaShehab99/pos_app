@@ -62,4 +62,12 @@ class CategoryRepository extends ChangeNotifier
     // TODO: implement watchAllItems
     throw UnimplementedError();
   }
+
+  @override
+  Future<Category?> findItemById(String id) async {
+    var category =await _categoryServices.findCategoryById(id);
+    if(category.data() != null){
+      return Category.fromJson(category.data() as Map<String, dynamic>,category.id);
+    }
+  }
 }

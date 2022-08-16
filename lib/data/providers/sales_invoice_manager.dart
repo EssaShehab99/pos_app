@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:pos_app/data/data_response.dart';
 import 'package:pos_app/data/models/customer.dart';
 import 'package:pos_app/data/network/repository/customer_repository.dart';
 import 'package:pos_app/data/network/repository/products_repository.dart';
@@ -13,7 +14,6 @@ import '../network/repository/category_repository.dart';
 import '../network/services/category_services.dart';
 
 class SalesInvoiceManager extends ChangeNotifier {
-
   List<Customer> customers = [];
   List<Category> categories = [];
   String? selectedCategoryId;
@@ -65,69 +65,112 @@ class SalesInvoiceManager extends ChangeNotifier {
     selectCategory(category.id);
     notifyListeners();
   }
-
   Future<void> getProductsAndCategories() async {
     await getCategories();
     await getProducts();
     await getCustomers();
     filterProduct();
   }
-
   void filterProduct({String search = ""}) {
     filterProducts =
         products.where((product) => product.name.contains(search)).toList();
     notifyListeners();
   }
-
   void selectCategory(String id) {
     selectedCategoryId = id;
     notifyListeners();
   }
 
-  void addLocalSalesInvoice(String? productID) {
+  Result<bool> addLocalSalesInvoice(String? productID) {
     if (productID != null) {
+     late bool status;
+      Product product = products.firstWhere((product) => product.id == productID);
       if (salesInvoice != null) {
         for (var element in salesInvoice!.products) {
           if (element.id == productID) {
-            element.quantity++;
-            salesInvoice!.total = salesInvoice!.products.fold(0,
-                (total, product) => total + product.price * product.quantity);
-            salesInvoice!.tax = salesInvoice!.total * 0.1;
-            salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
-            notifyListeners();
-            return;
+            status=checkEnoughQuantity(productID, element.quantity+1);
+              if(status) {
+                element.quantity++;
+                salesInvoice!.total = salesInvoice!.products.fold(0,
+                        (total, product) =>
+                    total + product.price * (product.quantity));
+                salesInvoice!.tax = salesInvoice!.total * 0.1;
+                salesInvoice!.netTotal =
+                    salesInvoice!.total + salesInvoice!.tax;
+                notifyListeners();
+                return Success(true);
+              }
+              else{
+                notifyListeners();
+                return Error(exception: Exception('not-enough-quantity'.tr()));
+              }
           }
         }
-        salesInvoice!.products.add(
-            products.firstWhere((product) => product.id == productID)
-              ..quantity = 1);
-        salesInvoice!.total = salesInvoice!.products.fold(
-            0, (total, product) => total + product.price * product.quantity);
-        salesInvoice!.tax = salesInvoice!.total * 0.1;
-        salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
-        notifyListeners();
-        return;
+        status=checkEnoughQuantity(productID, 1);
+        if(status) {
+          salesInvoice!.products.add(
+              Product(id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  tax: product.tax,
+                  quantity: 1,
+                  category: product.category,
+                  size: product.size));
+          salesInvoice!.total = salesInvoice!.products.fold(
+              0, (total, product) => total + product.price * product.quantity);
+          salesInvoice!.tax = salesInvoice!.total * 0.1;
+          salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+          notifyListeners();
+          return Success(true);
+        }
+        else{
+          notifyListeners();
+          return Error(exception: Exception('not-enough-quantity'.tr()));
+        }
       } else {
-        salesInvoice = SalesInvoiceModel(
-          id: "",
-          products: [
-            products.firstWhere((product) => product.id == productID)
-              ..quantity = 1
-          ],
-          customerId: "",
-          total: 0,
-          tax: 0,
-          netTotal: 0,
-        );
-        salesInvoice!.total = salesInvoice!.products.fold(
-            0, (total, product) => total + product.price * product.quantity);
-        salesInvoice!.tax = salesInvoice!.total * 0.1;
-        salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
-        notifyListeners();
+        bool status=checkEnoughQuantity(productID, 1);
+         if(status) {
+           salesInvoice = SalesInvoiceModel(
+             id: "",
+             status: "sale",
+             products: [
+               Product(id: product.id,
+                   name: product.name,
+                   price: product.price,
+                   tax: product.tax,
+                   quantity: 1,
+                   category: product.category,
+                   size: product.size)
+             ],
+             customerId: "",
+             total: 0,
+             tax: 0,
+             netTotal: 0,
+           );
+           salesInvoice!.total = salesInvoice!.products.fold(
+               0, (total, product) => total + product.price * product.quantity);
+           salesInvoice!.tax = salesInvoice!.total * 0.1;
+           salesInvoice!.netTotal = salesInvoice!.total + salesInvoice!.tax;
+           notifyListeners();
+           return Success(true);
+         }
+         else{
+           notifyListeners();
+           return Error(exception: Exception('not-enough-quantity'.tr()));
+         }
       }
     }
+    notifyListeners();
+    return Error(exception: Exception('product-not-found'.tr()));
   }
-
+bool checkEnoughQuantity(String productID, int quantity) {
+    Product product = products.firstWhere((product) => product.id == productID);
+    if (product.quantity >= quantity) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   void deleteInvoice() {
     salesInvoice = null;
     notifyListeners();
@@ -166,19 +209,31 @@ class SalesInvoiceManager extends ChangeNotifier {
   void setCustomer(Customer customer) async {
   salesInvoice?.customerId=customer.id;
   }
-  Future<void> saveInvoice() async {
+  Future<Result<bool>> saveInvoice() async {
     if (salesInvoice != null) {
-      Customer customer = customers.firstWhere((customer) =>
-      customer.id == salesInvoice?.customerId);
-      if(isCash) {
-        customer.debit = customer.debit! + salesInvoice!.netTotal;
-        customer.credit = customer.credit! + salesInvoice!.netTotal;
-      }else{
-        customer.debit = customer.debit! + salesInvoice!.netTotal;
+      try{
+        Customer customer = customers
+            .firstWhere((customer) => customer.id == salesInvoice?.customerId);
+        if (isCash) {
+          customer.debit = customer.debit! + salesInvoice!.netTotal;
+          customer.credit = customer.credit! + salesInvoice!.netTotal;
+        } else {
+          customer.debit = customer.debit! + salesInvoice!.netTotal;
+        }
+        for (var product in salesInvoice!.products) {
+          Product mainProduct =
+              products.firstWhere((item) => item.id == product.id);
+          mainProduct.quantity = mainProduct.quantity - product.quantity;
+          await _productRepository.updateItem(mainProduct);
+        }
+        await _customerRepository.updateItem(customer);
+        await _salesInvoiceRepository.insertItem(salesInvoice!);
+        return Success(true);
+      }catch(e){
+        return Error(exception: Exception(e));
       }
-      await _customerRepository.updateItem(customer);
-      await _salesInvoiceRepository.insertItem(salesInvoice!);
     }
+    return Error(exception: Exception("no-product-found".tr()));
   }
   Future<List<SalesInvoiceModel>> getSalesInvoice() async {
     await getCustomers();
@@ -186,5 +241,9 @@ class SalesInvoiceManager extends ChangeNotifier {
   }
   String getCustomerById(String id) {
     return customers.firstWhere((customer) => customer.id == id).name;
+  }
+
+  String? getCustomerName(String id) {
+    return customers.firstWhereOrNull((customer) => customer.id == id)?.name;
   }
 }

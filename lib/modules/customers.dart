@@ -198,18 +198,16 @@ class _CustomersState extends State<Customers> {
                                                             showDialog(
                                                                 context: context,
                                                                 builder: (context) => Component
-                                                                    .ConfirmDialog(
+                                                                    .confirmDialog(
                                                                     title:
                                                                     'delete-customer'
                                                                         .tr(),
                                                                     content:
                                                                     'are-you-sure'
                                                                         .tr(),
-                                                                    onPressed: () {
-                                                                      _customerManager
-                                                                          .deleteCustomer(
-                                                                          item.id);
-                                                                    },
+                                                                    onPressed: ()async{await _customerManager
+                                                                        .deleteCustomer(
+                                                                        item.id);},
                                                                     context:
                                                                     context));
                                                           },

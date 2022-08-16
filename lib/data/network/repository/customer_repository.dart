@@ -73,5 +73,14 @@ class CustomerRepository extends Repository<Customer>{
     throw UnimplementedError();
   }
 
+  @override
+  Future<Customer?> findItemById(String id) async {
+    var customerDocument = await _customerServices.findCustomerById(id);
+    if(customerDocument.data() != null){
+      return Customer.fromJson(customerDocument.data() as Map<String, dynamic>,customerDocument.id);
+    }
+    return Future.value(null);
+  }
+
 
 }

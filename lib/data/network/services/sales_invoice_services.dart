@@ -30,5 +30,7 @@ class SalesInvoiceServices extends ChangeNotifier {
   Future<void> updateSalesInvoice(SalesInvoiceModel salesInvoice) async {
     await collection.doc(salesInvoice.id).update(salesInvoice.toJson());
   }
-
+  Future<DocumentSnapshot<Object?>> findSalesInvoiceById(String id) async {
+    return await collection.doc(id).get();
+  }
 }

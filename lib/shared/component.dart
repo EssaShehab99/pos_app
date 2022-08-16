@@ -39,11 +39,12 @@ class Component {
     );
   }
 
- static Widget ConfirmDialog(
+ static Widget confirmDialog(
       {required String title,
       required String content,
-      required Function onPressed,
+      required Future<void> Function() onPressed,
       required BuildContext context,}) {
+    bool isLoading = false;
     return AlertDialog(
       title: Text(title),
       content: Column(
@@ -70,12 +71,21 @@ class Component {
               Flexible(
                 child: SizedBox(
                 height: 50,
-                  child: CustomButton(
-                    text: 'ok'.tr(),
-                    onTap: () {
-                      onPressed();
-                      Navigator.pop(context);
-                    },
+                  child: StatefulBuilder(
+                    builder:(context, setState) => CustomButton(
+                      text: 'ok'.tr(),
+                      isLoading: isLoading,
+                      onTap: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await onPressed();
+                        setState(() {
+                          isLoading = false;
+                        });
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                 ),
               ),

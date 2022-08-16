@@ -28,4 +28,7 @@ class CategoryServices {
   Future<void> updateCategory(Category category) async {
     await collection.doc(category.id).update(category.toJson());
   }
+  Future<DocumentSnapshot<Object?>> findCategoryById(String id) async {
+    return await collection.doc(id).get();
+  }
 }

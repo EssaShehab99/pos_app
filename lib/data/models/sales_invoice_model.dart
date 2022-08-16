@@ -8,7 +8,7 @@ class SalesInvoiceModel {
   double total;
   double tax;
   double netTotal;
-
+  String status;
   SalesInvoiceModel({
     required this.id,
     required this.products,
@@ -16,18 +16,20 @@ class SalesInvoiceModel {
     required this.total,
     required this.tax,
     required this.netTotal,
+    required this.status,
   });
 
   factory SalesInvoiceModel.fromJson(Map<String, dynamic> json, String id) {
     return SalesInvoiceModel(
       id: id,
       products: (json['products'] as List)
-          .map((product) => Product.fromJson(product, json['id']))
+          .map((product) => Product.fromJson(product, product['id']))
           .toList(),
       customerId: json['customerId'],
       total: json['total'],
       tax: json['tax'],
       netTotal: json['netTotal'],
+      status: json['status'] ?? 'sale',
     );
   }
   Map<String, dynamic> toJson() {
@@ -38,6 +40,7 @@ class SalesInvoiceModel {
       'total': total,
       'tax': tax,
       'netTotal': netTotal,
+      'status': status,
     };
   }
 }

@@ -71,4 +71,13 @@ class ProductRepository extends Repository<Product>{
     }
     return productsList;
   }
+
+  @override
+  Future<Product?> findItemById(String id) async {
+    var product =await _productServices.findProductById(id);
+    if(product.data() != null){
+      return Future.value(Product.fromJson(product.data() as Map<String, dynamic>,product.id));
+    }
+    return Future.value(null);
+  }
 }

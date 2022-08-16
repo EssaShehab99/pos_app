@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pos_app/data/providers/return_invoice_manager.dart';
 import 'package:pos_app/data/providers/sales_invoice_manager.dart';
 import 'package:pos_app/data/providers/customer_manager.dart';
 import 'package:pos_app/modules/auth/forget_password.dart';
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => ProductManager()),
         ChangeNotifierProvider(create: (_) => CustomerManager()),
         ChangeNotifierProvider(create: (_) => SalesInvoiceManager()),
+        ChangeNotifierProvider(create: (_) => ReturnInvoiceManager()),
       ],
       child: Consumer<AppStateManager>(
         builder: (_, loginManager, __) {

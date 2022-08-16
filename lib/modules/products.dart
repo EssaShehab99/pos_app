@@ -210,18 +210,16 @@ Future<void> initialize() async {
                                                     showDialog(
                                                         context: context,
                                                         builder: (context) => Component
-                                                            .ConfirmDialog(
+                                                            .confirmDialog(
                                                                 title:
                                                                     'delete-product'
                                                                         .tr(),
                                                                 content:
                                                                     'are-you-sure'
                                                                         .tr(),
-                                                                onPressed: () {
-                                                                  productManager
-                                                                      .deleteProduct(
-                                                                          item.id);
-                                                                },
+                                                                onPressed: ()async{productManager
+                                                                    .deleteProduct(
+                                                                    item.id);},
                                                                 context:
                                                                     context));
                                                   },
@@ -320,11 +318,11 @@ Future<void> initialize() async {
                                     showDialog(
                                         context: context,
                                         builder: (context) =>
-                                            Component.ConfirmDialog(
+                                            Component.confirmDialog(
                                                 title: 'delete-category'.tr(),
                                                 content: 'are-you-sure'.tr(),
-                                                onPressed: () {
-                                                  productManager
+                                                onPressed: () async {
+                                                await  productManager
                                                       .deleteCategory(value);
                                                 },
                                                 context: context));

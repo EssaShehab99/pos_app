@@ -22,7 +22,7 @@
  "returned-invoice": "فاتورة مرتجع",
  "invoice-number": "رقم الفاتورة",
  "customer-name": "اسم العميل",
- "total": "المجموع",
+ "total": "الاجمالي",
  "operations": "العمليات",
  "customers":"العملاء",
  "customer-number":"رقم العميل",
@@ -57,5 +57,8 @@
  "net-total": "الصافي",
  "cash": "نقدي",
  "debit": "مدين",
- "credit": "دائن"
+ "credit": "دائن",
+ "no-product-found": "لا يوجد منتج",
+ "not-enough-quantity": "لا يوجد كمية كافية",
+ "invoice-return": "ارجاع الفاتورة"
 }

@@ -61,5 +61,14 @@ class SalesInvoiceRepository extends Repository<SalesInvoiceModel>{
     throw UnimplementedError();
   }
 
+  @override
+  Future<SalesInvoiceModel?> findItemById(String id) async {
+    var invoice =await _invoiceServices.findSalesInvoiceById(id);
+    if(invoice.data() != null){
+      return SalesInvoiceModel.fromJson(invoice.data() as Map<String, dynamic>,invoice.id);
+    }
+    return null;
+  }
+
 
 }
