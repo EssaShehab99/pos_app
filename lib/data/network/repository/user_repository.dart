@@ -45,7 +45,17 @@ class UserRepository extends ChangeNotifier
     }
     return null;
   }
-
+  Future<List<UserModel>> findItemByEmail(String email) async {
+    List<DocumentReference<Object?>> users =
+        await _usersServices.findUserByEmail(email);
+    List<UserModel> usersList = [];
+    for (var user in users) {
+      DocumentSnapshot<Object?> userDocument = await user.get();
+      usersList.add(UserModel.fromJson(
+          userDocument.data() as Map<String, dynamic>, userDocument.id));
+    }
+    return usersList;
+  }
   Future<List<UserModel>> findItemByUuid(String uuid) async {
     var users =await _usersServices.findItemByUuid(uuid);
     List<UserModel> usersList = [];

@@ -10,19 +10,23 @@ class AccountsManager extends ChangeNotifier{
   List<PendingModel> pending = [];
   late UserRepository _userRepository;
   late PendingRepository _pendingRepository;
- late String companyUUid;
-  void init(String companyUUid) {
-    this.companyUUid = companyUUid;
-    _userRepository = UserRepository()..init(companyUUid);
-    _pendingRepository = PendingRepository()..init(companyUUid);
+ late UserModel userModel;
+ late PendingModel pendingModel;
+  void init(UserModel userModel) {
+    this.userModel = userModel;
+    _userRepository = UserRepository()..init(userModel.uuid!);
+    _pendingRepository = PendingRepository()..init(userModel.uuid!);
   }
   Future<void> getUsers() async {
-    users = await _userRepository.findItemByUuid(companyUUid);
+    users = await _userRepository.findItemByUuid(userModel.uuid!);
     if(users.isNotEmpty){
       notifyListeners();
     }
   }
-  
+  Future<List<UserModel>> getUsersByEmail(String email) async {
+    users = await _userRepository.findItemByEmail(email);
+    return users;
+  }
   Future<void> getPending() async {
     pending = await _pendingRepository.findAllItems();
     if(pending.isNotEmpty){
@@ -49,6 +53,14 @@ class AccountsManager extends ChangeNotifier{
   Future<void> deletePending(String id) async {
     await _pendingRepository.deleteItem(id);
     pending.removeWhere((category) => category.id == id);
+    notifyListeners();
+  }
+  void setUserPending(String accountReceiver) async {
+    pendingModel = PendingModel(id: "", accountSender: userModel.id??'', accountReceiver: accountReceiver,companyUUid: userModel.uuid!);
+    notifyListeners();
+  }
+  Future<void> insertPending() async {
+  await  _pendingRepository.insertItem(pendingModel);
     notifyListeners();
   }
 }

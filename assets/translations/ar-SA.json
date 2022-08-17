@@ -61,5 +61,6 @@
  "no-product-found": "لا يوجد منتج",
  "not-enough-quantity": "لا يوجد كمية كافية",
  "invoice-return": "ارجاع الفاتورة",
- "users-manager": "إدارة المستخدمين"
+ "users-manager": "إدارة المستخدمين",
+ "select-user": "حدد المستخدم"
 }

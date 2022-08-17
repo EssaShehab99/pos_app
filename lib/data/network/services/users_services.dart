@@ -28,6 +28,16 @@ class UsersServices {
       return [];
     }
   }
+  Future<List<DocumentReference<Object?>>> findUserByEmail(String email) async {
+    try{
+      return await collection
+          .where('email', isEqualTo: email)
+          .get()
+          .then((value) => value.docs.map((e) => e.reference).toList());
+    }catch(e){
+      return [];
+    }
+  }
   Future<DocumentReference<Object?>> addUser(UserModel user) async {
     return await collection.add(user.toJson());
   }

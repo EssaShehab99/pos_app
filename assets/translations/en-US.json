@@ -61,7 +61,8 @@
   "no-product-found": "No product found",
   "not-enough-quantity": "Not enough quantity",
   "invoice-return": "Invoice Return",
-  "users-manager": "Users Manager"
+  "users-manager": "Users Manager",
+  "select-user": "Select User"
 
 
 }
