@@ -28,7 +28,7 @@ class SalesInvoice extends StatelessWidget {
   Widget build(BuildContext context) {
     SalesInvoiceManager salesManager = Provider.of<SalesInvoiceManager>(context,
         listen: false)
-      ..init(Provider.of<AppStateManager>(context, listen: false).user.uuid);
+      ..init(Provider.of<AppStateManager>(context, listen: false).user.uuid!);
 
     return SafeArea(
       child: Scaffold(

@@ -3,7 +3,7 @@ import 'package:email_auth/email_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../shared/component.dart';
-import '../../models/user.dart';
+import '../../models/user_model.dart';
 
 class AuthServices extends ChangeNotifier {
   final CollectionReference collection =

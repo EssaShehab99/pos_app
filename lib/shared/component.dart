@@ -112,7 +112,47 @@ class Component {
     end: Alignment(1.0, 0.3),
     tileMode: TileMode.clamp,
   );
-
+  static Widget appBar({required BuildContext context,required String title})=> Expanded(
+      flex: 0,
+      child: Container(
+        height: 70,
+        decoration: BoxDecoration(
+          color: ColorsApp.primary,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Container(
+                alignment: AlignmentDirectional.centerStart,
+                margin: const EdgeInsetsDirectional.only(
+                    start: ConstantsValues.padding * 0.5),
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back_ios,
+                      color: ColorsApp.white, size: 30),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: Text(
+                  title,
+                style: TextStyle(
+                  color: ColorsApp.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Flexible(
+              child: Container(),
+            ),
+          ],
+        ),
+      ));
 }
 enum Status {
   FAILED,

@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart' as localized;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:pos_app/data/models/user.dart';
+import 'package:pos_app/data/models/user_model.dart';
 import 'package:pos_app/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';

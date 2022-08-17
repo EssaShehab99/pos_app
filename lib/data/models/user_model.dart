@@ -1,14 +1,16 @@
 class UserModel{
+  String? id;
   String email;
   String? phone;
   String? companyName;
   String? password;
-  String uuid;
+  String? uuid;
   String? type;
-  UserModel({required  this.email,  this.companyName,  this.password,  this.phone,  required this.uuid,  this.type});
+  UserModel({this.id,required  this.email,  this.companyName,  this.password,  this.phone, this.uuid,  this.type});
 
   factory UserModel.fromJson(Map<String, dynamic> json,String id) => UserModel(
-    email: id,
+    id: id,
+    email: json["email"],
     companyName: json["companyName"],
     password: json["password"],
     phone: json["phone"],

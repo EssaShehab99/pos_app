@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pos_app/constants/constants_images.dart';
 import 'package:pos_app/constants/constants_values.dart';
-import 'package:pos_app/data/models/user.dart';
 import 'package:pos_app/data/network/services/auth_services.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';
+import '../../data/models/user_model.dart';
 import '../../data/providers/app_state_manager.dart';
 import '../../routes.dart';
 import '../../shared/component.dart';
-import '../../shared/custom_dropdown.dart';
 import '../../shared/custom_input.dart';
 import '../../styles/colors_app.dart';
 

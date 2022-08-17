@@ -9,12 +9,14 @@ import 'package:pos_app/modules/home.dart';
 import 'package:pos_app/modules/auth/register.dart';
 import 'package:pos_app/modules/auth/verify_otp.dart';
 import 'package:pos_app/modules/customers.dart';
+import 'package:pos_app/modules/accounts.dart';
 import 'package:pos_app/modules/show_sales_invoice.dart';
 import 'package:pos_app/routes.dart';
 import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
 import 'package:provider/provider.dart';
 import 'data/network/services/auth_services.dart';
+import 'data/providers/accounts_manager.dart';
 import 'data/providers/product_manager.dart';
 import 'data/setting/config_app.dart';
 import 'modules/auth/login.dart';
@@ -56,6 +58,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CustomerManager()),
         ChangeNotifierProvider(create: (_) => SalesInvoiceManager()),
         ChangeNotifierProvider(create: (_) => ReturnInvoiceManager()),
+        ChangeNotifierProvider(create: (_) => AccountsManager()),
       ],
       child: Consumer<AppStateManager>(
         builder: (_, loginManager, __) {
@@ -91,6 +94,8 @@ class _MyAppState extends State<MyApp> {
                     return Products();
                   case Routes.FORGOT_PASSWORD_PAGE:
                     return ForgetPassword();
+                  case Routes.MANAGE_USER_PAGE:
+                    return const Accounts();
 
                   default:
                     return const Login();

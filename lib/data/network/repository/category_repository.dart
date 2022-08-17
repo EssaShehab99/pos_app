@@ -69,5 +69,6 @@ class CategoryRepository extends ChangeNotifier
     if(category.data() != null){
       return Category.fromJson(category.data() as Map<String, dynamic>,category.id);
     }
+    return null;
   }
 }

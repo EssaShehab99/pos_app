@@ -60,7 +60,8 @@
   "credit": "Credit",
   "no-product-found": "No product found",
   "not-enough-quantity": "Not enough quantity",
-  "invoice-return": "Invoice Return"
+  "invoice-return": "Invoice Return",
+  "users-manager": "Users Manager"
 
 
 }

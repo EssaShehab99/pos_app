@@ -35,7 +35,7 @@ class _CustomersState extends State<Customers> {
   OperationsType operationsType = OperationsType.ADD;
   @override
   void initState() {
-    _customerManager = Provider.of<CustomerManager>(context,listen: false)..init(Provider.of<AppStateManager>(context, listen: false).user.uuid)..getCustomers();
+    _customerManager = Provider.of<CustomerManager>(context,listen: false)..init(Provider.of<AppStateManager>(context, listen: false).user.uuid!)..getCustomers();
     super.initState();
   }
   @override

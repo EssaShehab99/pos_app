@@ -49,7 +49,7 @@ String id='';
   void initState() {
     super.initState();
     productManager = Provider.of<ProductManager>(context, listen: false);
-    productManager.init(Provider.of<AppStateManager>(context, listen: false).user.uuid);
+    productManager.init(Provider.of<AppStateManager>(context, listen: false).user.uuid!);
   }
 Future<void> initialize() async {
   await productManager.getCategories();

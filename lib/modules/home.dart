@@ -18,8 +18,10 @@ class Home extends StatelessWidget {
       __Menu(
           title: 'return-invoice'.tr(),
           icon: ConstantsImages.IMAGE_RETURNS_INVOICE),
-      __Menu(title: 'product-manager'.tr(), icon: ConstantsImages.IMAGE_PRODUCT),
-      __Menu(title: 'customer-manager'.tr(), icon: ConstantsImages.IMAGE_CUSTOMER),
+      __Menu(
+          title: 'product-manager'.tr(), icon: ConstantsImages.IMAGE_PRODUCT),
+      __Menu(
+          title: 'customer-manager'.tr(), icon: ConstantsImages.IMAGE_CUSTOMER),
     ];
     return SafeArea(
         child: Scaffold(
@@ -76,10 +78,15 @@ class Home extends StatelessWidget {
                                 SizedBox(
                                   width: ConstantsValues.padding,
                                 ),
-                                SvgPicture.asset(
-                                  ConstantsImages.IMAGE_ACCOUNT,
-                                  width: 30,
-                                  height: 30,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, Routes.MANAGE_USER_PAGE);
+                                  },
+                                  child: SvgPicture.asset(
+                                    ConstantsImages.IMAGE_ACCOUNT,
+                                    width: 30,
+                                    height: 30,
+                                  ),
                                 ),
                               ],
                             ),
@@ -137,14 +144,17 @@ class Home extends StatelessWidget {
                       children: menus.map((__Menu menu) {
                         return InkWell(
                           onTap: () {
-                            if(menu.title == 'invoice-sales'.tr()) {
-                              Navigator.pushNamed(context, Routes.SALES_INVOICE_PAGE);
-                            } else if(menu.title == 'return-invoice'.tr()) {
-                              Navigator.pushNamed(context, Routes.SALES_RETURNED_INVOICE);
-                            } else if(menu.title == 'product-manager'.tr()) {
+                            if (menu.title == 'invoice-sales'.tr()) {
+                              Navigator.pushNamed(
+                                  context, Routes.SALES_INVOICE_PAGE);
+                            } else if (menu.title == 'return-invoice'.tr()) {
+                              Navigator.pushNamed(
+                                  context, Routes.SALES_RETURNED_INVOICE);
+                            } else if (menu.title == 'product-manager'.tr()) {
                               Navigator.pushNamed(context, Routes.PRODUCT_PAGE);
-                            } else if(menu.title == 'customer-manager'.tr()) {
-                              Navigator.pushNamed(context, Routes.CUSTOMER_PAGE);
+                            } else if (menu.title == 'customer-manager'.tr()) {
+                              Navigator.pushNamed(
+                                  context, Routes.CUSTOMER_PAGE);
                             }
                           },
                           child: Container(
