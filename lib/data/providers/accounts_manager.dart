@@ -28,7 +28,7 @@ class AccountsManager extends ChangeNotifier{
     return users;
   }
   Future<void> getPending() async {
-    pending = await _pendingRepository.findAllItems();
+    pending = await _pendingRepository.findByReceiver(userModel.email);
     if(pending.isNotEmpty){
       notifyListeners();
     }
@@ -50,13 +50,18 @@ class AccountsManager extends ChangeNotifier{
     await getUsers();
     notifyListeners();
   }
+  Future<UserModel?> updateUserUuid(UserModel userModel) async {
+    await _userRepository.updateItem(userModel);
+    UserModel? user = await _userRepository.findItemById(userModel.id!);
+    return user;
+  }
   Future<void> deletePending(String id) async {
     await _pendingRepository.deleteItem(id);
     pending.removeWhere((category) => category.id == id);
     notifyListeners();
   }
   void setUserPending(String accountReceiver) async {
-    pendingModel = PendingModel(id: "", accountSender: userModel.id??'', accountReceiver: accountReceiver,companyUUid: userModel.uuid!);
+    pendingModel = PendingModel(id: "", accountSender: userModel.email, accountReceiver: accountReceiver,companyUUid: userModel.uuid!,companyName: userModel.companyName!, status: 'pending');
     notifyListeners();
   }
   Future<void> insertPending() async {

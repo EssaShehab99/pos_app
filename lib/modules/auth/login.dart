@@ -8,6 +8,7 @@ import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';
 import '../../data/models/user_model.dart';
 import '../../data/providers/app_state_manager.dart';
+import '../../data/setting/config_app.dart';
 import '../../routes.dart';
 import '../../shared/component.dart';
 import '../../shared/custom_input.dart';
@@ -116,7 +117,7 @@ class Login extends StatelessWidget {
                           return null;
                         },
                         textDirection: TextDirection.ltr,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.done,
                       ),
                       SizedBox(height: ConstantsValues.padding * 0.5),
@@ -205,7 +206,10 @@ class Login extends StatelessWidget {
                                 });
                                 if(status==Status.SUCCESS) {
                                   Provider.of<AppStateManager>(context,listen: false).setUser(user!);
-                                  Navigator.pushNamed(context, Routes.HOME_PAGE);
+                               await   ConfigApp.saveEmailAndPassword(
+                                      controllerEmail.text,
+                                      controllerPassword.text);
+                                  Navigator.pushReplacementNamed(context, Routes.HOME_PAGE);
                                 }
                               }
                             },

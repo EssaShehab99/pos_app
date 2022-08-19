@@ -62,7 +62,15 @@
   "not-enough-quantity": "Not enough quantity",
   "invoice-return": "Invoice Return",
   "users-manager": "Users Manager",
-  "select-user": "Select User"
-
-
+  "select-user": "Select User",
+  "loading": "Loading...",
+  "account-sender": "Account Sender",
+    "account-receiver": "Account Receiver",
+  "company-name": "Company Name",
+  "logout": "Logout",
+  "logout-confirmation": "Are you sure you want to logout?",
+  "notifications": "Notifications",
+  "rejected": "Rejected",
+  "accepted": "Accepted",
+  "you-are-not-admin": "You are not admin"
 }

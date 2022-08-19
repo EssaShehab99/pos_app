@@ -62,5 +62,15 @@
  "not-enough-quantity": "لا يوجد كمية كافية",
  "invoice-return": "ارجاع الفاتورة",
  "users-manager": "إدارة المستخدمين",
- "select-user": "حدد المستخدم"
+ "select-user": "حدد المستخدم",
+ "loading": "جاري التحميل...",
+ "account-sender": "الحساب المرسل",
+    "account-receiver": "الحساب المستقبل",
+ "company-name": "اسم الشركة",
+ "logout": "تسجيل الخروج",
+ "logout-confirm": "هل أنت متأكد من تسجيل الخروج؟",
+ "notifications": "الإشعارات",
+ "rejected": "مرفوض",
+ "accepted": "مقبول",
+ "you-are-not-admin": "ليس لديك صلاحية"
 }

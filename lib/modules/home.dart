@@ -1,10 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pos_app/data/providers/app_state_manager.dart';
 import 'package:pos_app/routes.dart';
+import 'package:pos_app/shared/component.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/constants_images.dart';
 import '../constants/constants_values.dart';
+import '../data/setting/config_app.dart';
 import '../shared/custom_input.dart';
 import '../styles/colors_app.dart';
 
@@ -70,17 +74,27 @@ class Home extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                SvgPicture.asset(
-                                  ConstantsImages.IMAGE_NOTIFICATION,
-                                  width: 30,
-                                  height: 30,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, Routes.NOTIFICATION_PAGE);
+                                  },
+                                  child: SvgPicture.asset(
+                                    ConstantsImages.IMAGE_NOTIFICATION,
+                                    width: 30,
+                                    height: 30,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: ConstantsValues.padding,
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(context, Routes.MANAGE_USER_PAGE);
+                                    if(Provider.of<AppStateManager>(context,listen: false).user.type=="admin") {
+                                      Navigator.pushNamed(
+                                          context, Routes.MANAGE_USER_PAGE);
+                                    }else{
+                                      Component.showSnackBar(context, "you-are-not-admin".tr());
+                                    }
                                   },
                                   child: SvgPicture.asset(
                                     ConstantsImages.IMAGE_ACCOUNT,
@@ -88,6 +102,23 @@ class Home extends StatelessWidget {
                                     height: 30,
                                   ),
                                 ),
+                                IconButton(
+                                    icon:
+                                    Icon(Icons.logout, color: ColorsApp.white, size: 30),
+                                    onPressed: (){
+                                      showDialog(
+                                          context: context,
+                                          builder: (ctx) => Component.confirmDialog(
+                                              title: "logout".tr(),
+                                              content: "logout-confirm".tr(),
+                                              closeAfter: false,
+                                              onPressed: () async {
+                                                await ConfigApp.removeEmailAndPassword();
+                                                Navigator.pushNamedAndRemoveUntil(context, Routes.LOGIN_PAGE, (route) => false);
+                                              },
+                                              context: context));
+                                    }
+                                )
                               ],
                             ),
                           )),

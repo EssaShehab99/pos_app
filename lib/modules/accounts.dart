@@ -18,6 +18,8 @@ import '../data/models/category.dart';
 import '../data/models/product.dart';
 import '../data/providers/product_manager.dart';
 import '../data/providers/accounts_manager.dart';
+import '../data/setting/config_app.dart';
+import '../routes.dart';
 import '../shared/component.dart';
 import 'add_category_dialog.dart';
 
@@ -224,19 +226,12 @@ class Accounts extends StatelessWidget {
     return Container(
         height: 70,
         alignment: Alignment.center,
-        child: item != ''
-            ? Text(
+        child:Text(
           item,
           style: TextStyle(
               color: ColorsApp.secondary,
               fontSize: 16,
               fontWeight: FontWeight.bold),
-        )
-            : Row(
-          children: [
-            Expanded(child: Icon(Icons.delete)),
-            Expanded(child: Icon(Icons.edit)),
-          ],
         ));
   }
 }

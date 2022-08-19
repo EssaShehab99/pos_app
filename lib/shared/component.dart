@@ -1,26 +1,46 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_app/constants/constants_values.dart';
+import 'package:pos_app/data/setting/config_app.dart';
 import 'package:pos_app/shared/custom_button.dart';
 
+import '../routes.dart';
 import '../styles/colors_app.dart';
 
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 class Component {
-  static  Future<List<dynamic>> parseJsonFromAssets() async {
+  static Future<List<dynamic>> parseJsonFromAssets() async {
     return rootBundle.loadString("assets/json/countries.json").then((jsonStr) {
       var data = json.decode(jsonStr);
       return data;
     });
   }
-  static Widget Indicator(int length,int selected) {
+  static showSnackBar(context,String firstText){
+    return  WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          firstText,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              ?.copyWith(color: ColorsApp.white),
+        ),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20)),
+      ));
+    });
+  }
+
+  static Widget Indicator(int length, int selected) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(length, (index){
-        if(index == selected)
-         return Container(
+      children: List.generate(length, (index) {
+        if (index == selected)
+          return Container(
             width: 40,
             height: 10,
             margin: EdgeInsets.symmetric(horizontal: 2.5),
@@ -39,11 +59,13 @@ class Component {
     );
   }
 
- static Widget confirmDialog(
-      {required String title,
-      required String content,
-      required Future<void> Function() onPressed,
-      required BuildContext context,}) {
+  static Widget confirmDialog({
+    required String title,
+    required String content,
+    required Future<void> Function() onPressed,
+    required BuildContext context,
+    bool closeAfter=true,
+  }) {
     bool isLoading = false;
     return AlertDialog(
       title: Text(title),
@@ -51,7 +73,9 @@ class Component {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(content),
-          SizedBox(height: ConstantsValues.padding,),
+          SizedBox(
+            height: ConstantsValues.padding,
+          ),
           Row(
             children: [
               Flexible(
@@ -70,9 +94,9 @@ class Component {
               ),
               Flexible(
                 child: SizedBox(
-                height: 50,
+                  height: 50,
                   child: StatefulBuilder(
-                    builder:(context, setState) => CustomButton(
+                    builder: (context, setState) => CustomButton(
                       text: 'ok'.tr(),
                       isLoading: isLoading,
                       onTap: () async {
@@ -83,7 +107,8 @@ class Component {
                         setState(() {
                           isLoading = false;
                         });
-                        Navigator.pop(context);
+                        if(closeAfter)
+                          Navigator.pop(context);
                       },
                     ),
                   ),
@@ -95,7 +120,6 @@ class Component {
       ),
     );
   }
-
 
   static const shimmerGradient = LinearGradient(
     colors: [
@@ -112,48 +136,60 @@ class Component {
     end: Alignment(1.0, 0.3),
     tileMode: TileMode.clamp,
   );
-  static Widget appBar({required BuildContext context,required String title})=> Expanded(
-      flex: 0,
-      child: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          color: ColorsApp.primary,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(
-              child: Container(
-                alignment: AlignmentDirectional.centerStart,
-                margin: const EdgeInsetsDirectional.only(
-                    start: ConstantsValues.padding * 0.5),
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back_ios,
-                      color: ColorsApp.white, size: 30),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+
+  static Widget appBar(
+          {required BuildContext context, required String title,VoidCallback? onPressed}) =>
+      Expanded(
+          flex: 0,
+          child: Container(
+            height: 70,
+            decoration: BoxDecoration(
+              color: ColorsApp.primary,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Container(
+                    alignment: AlignmentDirectional.centerStart,
+                    margin: const EdgeInsetsDirectional.only(
+                        start: ConstantsValues.padding * 0.5),
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios,
+                          color: ColorsApp.white, size: 30),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: Text(
-                  title,
-                style: TextStyle(
-                  color: ColorsApp.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                Flexible(
+                  flex: 2,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      color: ColorsApp.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+                Flexible(
+                  child: onPressed!=null? Padding(
+                    padding: const EdgeInsetsDirectional.only(
+                        end: ConstantsValues.padding * 0.5),
+                    child: IconButton(
+                      icon:
+                          Icon(Icons.logout, color: ColorsApp.white, size: 30),
+                      onPressed: onPressed
+                    ),
+                  ):Container(),
+                ),
+              ],
             ),
-            Flexible(
-              child: Container(),
-            ),
-          ],
-        ),
-      ));
+          ));
 }
+
 enum Status {
   FAILED,
   SUCCESS,
@@ -161,11 +197,7 @@ enum Status {
   NONE,
   EXIST,
 }
-enum OTPType {
-  FORGOT_PASSWORD,
-  SIGN_UP
-}
-enum OperationsType{
-ADD,
-  EDIT
-}
+
+enum OTPType { FORGOT_PASSWORD, SIGN_UP }
+
+enum OperationsType { ADD, EDIT }

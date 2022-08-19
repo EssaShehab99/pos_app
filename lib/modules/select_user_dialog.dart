@@ -52,6 +52,7 @@ class SelectUserDialog extends StatelessWidget {
                   style: DefaultTextStyle.of(context).style.copyWith(
                       fontStyle: FontStyle.italic
                   ),controller: emailController,
+                keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -88,7 +89,7 @@ class SelectUserDialog extends StatelessWidget {
               },
               onSuggestionSelected: (UserModel user) {
                 emailController.text = user.email;
-                accountsManager.setUserPending(user.id??"");
+                accountsManager.setUserPending(user.email);
               },
             ),
             SizedBox(

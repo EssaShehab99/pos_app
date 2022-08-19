@@ -10,9 +10,9 @@ class PendingServices {
   PendingServices(){
     collection = FirebaseFirestore.instance.collection('pending');
   }
-  Future<List<DocumentReference<Object?>>> showPending() async {
+  Future<List<DocumentReference<Object?>>> showReceiverPending(String userId) async {
     try{
-      return await collection
+      return await collection.where('accountReceiver',isEqualTo: userId)
           .get()
           .then((value) => value.docs.map((e) => e.reference).toList());
     }catch(e){

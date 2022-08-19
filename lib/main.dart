@@ -10,8 +10,11 @@ import 'package:pos_app/modules/auth/register.dart';
 import 'package:pos_app/modules/auth/verify_otp.dart';
 import 'package:pos_app/modules/customers.dart';
 import 'package:pos_app/modules/accounts.dart';
+import 'package:pos_app/modules/notifications_page.dart';
+import 'package:pos_app/modules/shimmer/home_shimmer.dart';
 import 'package:pos_app/modules/show_sales_invoice.dart';
 import 'package:pos_app/routes.dart';
+import 'package:pos_app/styles/colors_app.dart';
 import '/data/providers/app_state_manager.dart';
 import 'package:pos_app/styles/theme_app.dart';
 import 'package:provider/provider.dart';
@@ -36,12 +39,12 @@ Future<void> main() async {
       fallbackLocale: const Locale('ar', 'SA'),
       startLocale: const Locale('ar', 'SA'),
       saveLocale: true,
-      child: MyApp(token: await ConfigApp.getToken())));
+      child: MyApp(emailAndPassword: await ConfigApp.getEmailAndPassword())));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key, required this.token}) : super(key: key);
-  final String? token;
+  const MyApp({Key? key, required this.emailAndPassword}) : super(key: key);
+  final List<String> emailAndPassword;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -70,7 +73,9 @@ class _MyAppState extends State<MyApp> {
             locale: context.locale,
             debugShowCheckedModeBanner: false,
             theme: ThemeApp.light,
-            initialRoute: Routes.LOGIN_PAGE,
+            initialRoute: widget.emailAndPassword.isEmpty
+                ? Routes.LOGIN_PAGE
+                : Routes.HOME_PAGE,
             onGenerateRoute: (RouteSettings settings) {
               return Routes.fadeThrough(settings, (context) {
                 switch (settings.name) {
@@ -81,7 +86,34 @@ class _MyAppState extends State<MyApp> {
                   case Routes.VERIFY_OTP_PAGE:
                     return VerifyOtp();
                   case Routes.HOME_PAGE:
-                    return const Home();
+                    return FutureBuilder(
+                      future: loginManager.autoSignIn(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return  SafeArea(
+                              child: Scaffold(body: Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    CircularProgressIndicator(color: ColorsApp.primary),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'loading'.tr(),
+                                      style: Theme.of(context).textTheme.bodyText1,
+                                    ),
+                                  ],
+                                ),
+                              )));
+                        }
+                        if (snapshot.hasData) {
+                          if (snapshot.data == true) {
+                            return Home();
+                          }
+                        }
+                        return const Login();
+                      },
+                    );
                   case Routes.SALES_INVOICE_PAGE:
                     return SalesInvoice();
                   case Routes.SHOW_SALES_INVOICE_PAGE:
@@ -96,6 +128,8 @@ class _MyAppState extends State<MyApp> {
                     return ForgetPassword();
                   case Routes.MANAGE_USER_PAGE:
                     return const Accounts();
+                  case Routes.NOTIFICATION_PAGE:
+                    return const NotificationPage();
 
                   default:
                     return const Login();

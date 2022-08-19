@@ -25,8 +25,12 @@ class PendingRepository extends ChangeNotifier
 
   @override
   Future<List<PendingModel>> findAllItems() async {
-  List<DocumentReference<Object?>> pending =
-      await _pendingServices.showPending();
+  // TODO: implement findAllItems
+    throw UnimplementedError();
+  }
+  Future<List<PendingModel>> findByReceiver(String accountReceiver) async {
+    List<DocumentReference<Object?>> pending =
+    await _pendingServices.showReceiverPending(accountReceiver);
     List<PendingModel> pendingList = [];
     for (var pend in pending) {
       DocumentSnapshot<Object?> pendingDocument = await pend.get();
@@ -36,7 +40,6 @@ class PendingRepository extends ChangeNotifier
     }
     return pendingList;
   }
-
   @override
   Future<PendingModel?> findItemById(String id) async {
     var pending =await _pendingServices.findPendingById(id);
