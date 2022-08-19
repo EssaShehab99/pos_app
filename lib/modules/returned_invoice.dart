@@ -96,17 +96,6 @@ class ReturnedInvoice extends StatelessWidget {
                 children: [
                   const SizedBox(height: ConstantsValues.padding),
                   Expanded(
-                    flex: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(ConstantsValues.padding),
-                      child: CustomInput(
-                        hint: 'product'.tr(),
-                        controller: TextEditingController(),
-                        icon: Icons.search,
-                      ),
-                    ),
-                  ),
-                  Expanded(
                     child: Container(
                       margin: const EdgeInsets.all(ConstantsValues.padding),
                       child: SingleChildScrollView(

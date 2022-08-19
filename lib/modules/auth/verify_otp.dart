@@ -159,9 +159,9 @@ class VerifyOtp extends StatelessWidget {
                                   }
                                   if (status == Status.SUCCESS) {
                                     if(signUpRepository.otpType == OTPType.SIGN_UP) {
-                                      Navigator.pushNamed(context, Routes.LOGIN_PAGE);
+                                      Navigator.pushReplacementNamed(context, Routes.LOGIN_PAGE);
                                     } else if(signUpRepository.otpType == OTPType.FORGOT_PASSWORD) {
-                                      Navigator.pushNamed(context, Routes.FORGOT_PASSWORD_PAGE);
+                                      Navigator.pushReplacementNamed(context, Routes.FORGOT_PASSWORD_PAGE);
                                     }
                                   }
                                   setState(() {

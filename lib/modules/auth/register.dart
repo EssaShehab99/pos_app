@@ -24,7 +24,7 @@ class Register extends StatelessWidget {
     AuthServices signUpRepository =
         Provider.of<AuthServices>(context, listen: false);
     TextEditingController controllerEmail = TextEditingController();
-    TextEditingController controllerPhone = TextEditingController(text: "");
+    TextEditingController controllerPhone = TextEditingController();
     TextEditingController controllerPassword = TextEditingController();
     TextEditingController controllerCompanyName = TextEditingController();
     String selectedCountry = '';
@@ -262,8 +262,13 @@ class Register extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: ConstantsValues.padding * 0.5),
-                      Text('already-have-account'.tr(),
-                          style: Theme.of(context).textTheme.bodyText2),
+                      InkWell(
+                       onTap: (){
+                         Navigator.pop(context);
+                       },
+                        child: Text('already-have-account'.tr(),
+                            style: Theme.of(context).textTheme.bodyText2),
+                      ),
                     ],
                   ),
                 ),

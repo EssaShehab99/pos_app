@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/data/providers/app_state_manager.dart';
+import 'package:pos_app/modules/shimmer/home_shimmer.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:pos_app/shared/custom_dropdown.dart';
 import 'package:provider/provider.dart';
@@ -57,76 +58,79 @@ Future<void> initialize() async {
 }
   @override
   Widget build(BuildContext context) {
-    initialize();
     return SafeArea(
         child: Scaffold(
-      backgroundColor: ColorsApp.primary,
-      body: SlidingUpPanel(
-        controller: _pc1,
-        borderRadius: BorderRadiusDirectional.only(
-            topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
-        boxShadow: [
-          BoxShadow(
-            color: ColorsApp.shadow,
-            blurRadius: 1,
-            spreadRadius: 1,
-          )
-        ],
-        maxHeight: 420,
-        backdropColor: Colors.white.withOpacity(0.0),
-        body: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-                flex: 0,
-                child: Container(
-                  height: 70,
+      body: Column(
+        children: [
+          Expanded(
+              flex: 0,
+              child: Container(
+                height: 70,
+                decoration: BoxDecoration(
+                  color: ColorsApp.primary,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Container(
+                        alignment: AlignmentDirectional.centerStart,
+                        margin: const EdgeInsetsDirectional.only(
+                            start: ConstantsValues.padding * 0.5),
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios,
+                              color: ColorsApp.white, size: 30),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: Text(
+                        'products'.tr(),
+                        style: TextStyle(
+                          color: ColorsApp.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(),
+                    ),
+                  ],
+                ),
+              )),
+          Expanded(
+            child: FutureBuilder(
+                future: initialize(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const HomeShimmer();
+                  }
+                  return SlidingUpPanel(
+                controller: _pc1,
+                borderRadius: BorderRadiusDirectional.only(
+                    topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorsApp.shadow,
+                    blurRadius: 1,
+                    spreadRadius: 1,
+                  )
+                ],
+                maxHeight: 420,
+                backdropColor: Colors.white.withOpacity(0.0),
+                body: Container(
+                  alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: ColorsApp.primary,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Container(
-                          alignment: AlignmentDirectional.centerStart,
-                          margin: const EdgeInsetsDirectional.only(
-                              start: ConstantsValues.padding * 0.5),
-                          child: IconButton(
-                            icon: Icon(Icons.arrow_back_ios,
-                                color: ColorsApp.white, size: 30),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Text(
-                          'products'.tr(),
-                          style: TextStyle(
-                            color: ColorsApp.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: Container(),
-                      ),
-                    ],
-                  ),
-                )),
-            Expanded(
-                child: Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
                 color: ColorsApp.grey,
                 borderRadius: const BorderRadiusDirectional.only(
                     topEnd: Radius.circular(ConstantsValues.borderRadius * 3)),
-              ),
-              child: Column(
+                  ),
+                  child: Column(
                 children: [
                   const SizedBox(height: ConstantsValues.padding),
                   Flexible(
@@ -137,6 +141,9 @@ Future<void> initialize() async {
                         hint: 'product'.tr(),
                         controller: TextEditingController(),
                         icon: Icons.search,
+                        onChanged: (value) {
+                          productManager.searchProduct(value);
+                        },
                       ),
                     ),
                   ),
@@ -189,10 +196,10 @@ Future<void> initialize() async {
                                 SizedBox(height: 15),
                                 SizedBox(height: 15),
                               ]),
-                              for (var item in value.products)
+                              for (var item in value.filterProducts)
                                 TableRow(
                                   children: [
-                                    buildCell((value.products.indexOf(item) + 1)
+                                    buildCell((value.filterProducts.indexOf(item) + 1)
                                         .toString()),
                                     buildCell(item.name),
                                     buildCell(value.getCategoryName(item.category)??item.category),
@@ -251,12 +258,12 @@ Future<void> initialize() async {
                                   ],
                                   decoration: BoxDecoration(
                                     color: ColorsApp.white,
-                                    borderRadius: item == value.products.first
+                                    borderRadius: item == value.filterProducts.first
                                         ? const BorderRadius.vertical(
                                             top: Radius.circular(
                                                 ConstantsValues.borderRadius *
                                                     0.5))
-                                        : item == value.products.last
+                                        : item == value.filterProducts.last
                                             ? const BorderRadius.vertical(
                                                 bottom: Radius.circular(
                                                     ConstantsValues
@@ -272,222 +279,224 @@ Future<void> initialize() async {
                     ),
                   ),
                 ],
-              ),
-            ))
-          ],
-        ),
-        panel: Column(
-          children: [
-            SizedBox(height: ConstantsValues.padding),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(ConstantsValues.padding),
-              child: Form(
-                key: formKey,
-                child: Column(
+                  ),
+                ),
+                panel: Column(
                   children: [
-                    Flexible(
-                      child: CustomInput(
-                        controller: controllerName,
-                        hint: 'product-name'.tr(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: ConstantsValues.padding,
-                    ),
-                    Flexible(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Selector<ProductManager, List<Category>>(
-                              selector: (_, productManager) =>
-                                  productManager.categories,
-                              builder: (context, value, child) {
-                                if (value.isNotEmpty) {
-                                  category = value.first.name;
-                                }
-                                return CustomDropdown(
-                                  items: [
-                                    for (var item in value)
-                                      {
-                                        'value': item.id,
-                                        'data': item.name,
-                                      }
-                                  ],
-                                  onDeletePress: (String value) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) =>
-                                            Component.confirmDialog(
-                                                title: 'delete-category'.tr(),
-                                                content: 'are-you-sure'.tr(),
-                                                onPressed: () async {
-                                                await  productManager
-                                                      .deleteCategory(value);
-                                                },
-                                                context: context));
-                                  },
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return 'category'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  hint: 'category'.tr(),
-                                  onChanged: (value) {
-                                    category = productManager.categories.firstWhere((element) => element.id== value).name;
-                                  },
-                                );
-                              },
+                    SizedBox(height: ConstantsValues.padding),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.all(ConstantsValues.padding),
+                      child: Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            Flexible(
+                              child: CustomInput(
+                                controller: controllerName,
+                                hint: 'product-name'.tr(),
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: ConstantsValues.padding,
-                          ),
-                          Expanded(
-                              flex: 0,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                      color: ColorsApp.secondary,
-                                      borderRadius: BorderRadius.circular(
-                                          ConstantsValues.borderRadius * 0.5)),
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.add,
-                                      color: ColorsApp.white,
+                            SizedBox(
+                              height: ConstantsValues.padding,
+                            ),
+                            Flexible(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Selector<ProductManager, List<Category>>(
+                                      selector: (_, productManager) =>
+                                          productManager.categories,
+                                      builder: (context, value, child) {
+                                        if (value.isNotEmpty) {
+                                          category = value.first.name;
+                                        }
+                                        return CustomDropdown(
+                                          items: [
+                                            for (var item in value)
+                                              {
+                                                'value': item.id,
+                                                'data': item.name,
+                                              }
+                                          ],
+                                          onDeletePress: (String value) {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    Component.confirmDialog(
+                                                        title: 'delete-category'.tr(),
+                                                        content: 'are-you-sure'.tr(),
+                                                        onPressed: () async {
+                                                        await  productManager
+                                                              .deleteCategory(value);
+                                                        },
+                                                        context: context));
+                                          },
+                                          validator: (value) {
+                                            if (value == null) {
+                                              return 'category'.tr();
+                                            }
+                                            return null;
+                                          },
+                                          hint: 'category'.tr(),
+                                          onChanged: (value) {
+                                            category = productManager.categories.firstWhere((element) => element.id== value).name;
+                                          },
+                                        );
+                                      },
                                     ),
-                                    onPressed: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context) =>
-                                              AddCategoryDialog());
-                                    },
-                                  ))),
-                        ],
+                                  ),
+                                  SizedBox(
+                                    width: ConstantsValues.padding,
+                                  ),
+                                  Expanded(
+                                      flex: 0,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              color: ColorsApp.secondary,
+                                              borderRadius: BorderRadius.circular(
+                                                  ConstantsValues.borderRadius * 0.5)),
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.add,
+                                              color: ColorsApp.white,
+                                            ),
+                                            onPressed: () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      AddCategoryDialog());
+                                            },
+                                          ))),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: ConstantsValues.padding,
+                            ),
+                            Flexible(
+                                child: Row(
+                              children: [
+                                Flexible(
+                                    child: CustomInput(
+                                  controller: controllerQuantity,
+                                  hint: 'quantity'.tr(),
+                                  keyboardType: TextInputType.number,
+                                )),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Flexible(
+                                    child: CustomInput(
+                                  controller: controllerSize,
+                                  hint: 'size'.tr(),
+                                )),
+                              ],
+                            )),
+                            SizedBox(
+                              height: ConstantsValues.padding,
+                            ),
+                            Flexible(
+                                child: Row(
+                              children: [
+                                Flexible(
+                                    child: CustomInput(
+                                  controller: controllerTax,
+                                  hint: 'tax'.tr(),
+                                  keyboardType: TextInputType.number,
+                                )),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Flexible(
+                                    child: CustomInput(
+                                  controller: controllerPrice,
+                                  hint: 'price'.tr(),
+                                  keyboardType: TextInputType.number,
+                                )),
+                              ],
+                            )),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: ConstantsValues.padding,
-                    ),
-                    Flexible(
-                        child: Row(
-                      children: [
-                        Flexible(
-                            child: CustomInput(
-                          controller: controllerQuantity,
-                          hint: 'quantity'.tr(),
-                          keyboardType: TextInputType.number,
-                        )),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Flexible(
-                            child: CustomInput(
-                          controller: controllerSize,
-                          hint: 'size'.tr(),
-                        )),
-                      ],
                     )),
-                    SizedBox(
-                      height: ConstantsValues.padding,
-                    ),
-                    Flexible(
-                        child: Row(
-                      children: [
-                        Flexible(
-                            child: CustomInput(
-                          controller: controllerTax,
-                          hint: 'tax'.tr(),
-                          keyboardType: TextInputType.number,
+                    Expanded(
+                        flex: 0,
+                        child: Container(
+                          width: 250,
+                          margin: EdgeInsets.all(ConstantsValues.padding),
+                          child: Row(
+                            children: [
+                              Flexible(
+                                child: StatefulBuilder(builder: (context, setStateButton) {
+                                  return CustomButton(
+                                    isLoading: isLoading,
+                                    onTap: () async {
+                                      if (formKey.currentState!.validate()) {
+                                        setStateButton(() {
+                                          isLoading = true;
+                                        });
+                                        if (operationsType == OperationsType.ADD) {
+                                          await productManager.addProduct(Product(
+                                              id: "",
+                                              name: controllerName.text,
+                                              quantity: int.parse(controllerQuantity.text),
+                                              size: controllerSize.text,
+                                              tax: double.parse(controllerTax.text),
+                                              price: double.parse(controllerPrice.text),
+                                              category: category));
+                                          setStateButton(() {
+                                            isLoading = false;
+                                          });
+                                        }else if(operationsType == OperationsType.EDIT){
+                                          await productManager.updateItem(Product(
+                                              id: id,
+                                              name: controllerName.text,
+                                              quantity: int.parse(controllerQuantity.text),
+                                              size: controllerSize.text,
+                                              tax: double.parse(controllerTax.text),
+                                              price: double.parse(controllerPrice.text),
+                                              category: category));
+                                          setStateButton(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      }
+                                    },
+                                    text: operationsType==OperationsType.ADD?"add".tr():"edit".tr(),
+                                  );
+                                }),
+                              ),
+                              SizedBox(
+                                width: ConstantsValues.padding,
+                              ),
+                              Flexible(
+                                child:  CustomButton(
+                                    onTap: () async {
+                                      _pc1.close();
+                                      controllerName.text = "";
+                                      controllerQuantity.text = "";
+                                      controllerSize.text = "";
+                                      controllerTax.text = "";
+                                      controllerPrice.text = "";
+                                      category = "none";
+                                      setState(() {
+                                        operationsType = OperationsType.ADD;
+                                      });
+                                    },
+                                    text: "cancel".tr(),
+                                  ),
+
+                              ),
+                            ],
+                          ),
                         )),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Flexible(
-                            child: CustomInput(
-                          controller: controllerPrice,
-                          hint: 'price'.tr(),
-                          keyboardType: TextInputType.number,
-                        )),
-                      ],
-                    )),
                   ],
                 ),
-              ),
-            )),
-            Expanded(
-                flex: 0,
-                child: Container(
-                  width: 250,
-                  margin: EdgeInsets.all(ConstantsValues.padding),
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: StatefulBuilder(builder: (context, setStateButton) {
-                          return CustomButton(
-                            isLoading: isLoading,
-                            onTap: () async {
-                              if (formKey.currentState!.validate()) {
-                                setStateButton(() {
-                                  isLoading = true;
-                                });
-                                if (operationsType == OperationsType.ADD) {
-                                  await productManager.addProduct(Product(
-                                      id: "",
-                                      name: controllerName.text,
-                                      quantity: int.parse(controllerQuantity.text),
-                                      size: controllerSize.text,
-                                      tax: double.parse(controllerTax.text),
-                                      price: double.parse(controllerPrice.text),
-                                      category: category));
-                                  setStateButton(() {
-                                    isLoading = false;
-                                  });
-                                }else if(operationsType == OperationsType.EDIT){
-                                  await productManager.updateItem(Product(
-                                      id: id,
-                                      name: controllerName.text,
-                                      quantity: int.parse(controllerQuantity.text),
-                                      size: controllerSize.text,
-                                      tax: double.parse(controllerTax.text),
-                                      price: double.parse(controllerPrice.text),
-                                      category: category));
-                                  setStateButton(() {
-                                    isLoading = false;
-                                  });
-                                }
-                              }
-                            },
-                            text: operationsType==OperationsType.ADD?"add".tr():"edit".tr(),
-                          );
-                        }),
-                      ),
-                      SizedBox(
-                        width: ConstantsValues.padding,
-                      ),
-                      Flexible(
-                        child:  CustomButton(
-                            onTap: () async {
-                              _pc1.close();
-                              controllerName.text = "";
-                              controllerQuantity.text = "";
-                              controllerSize.text = "";
-                              controllerTax.text = "";
-                              controllerPrice.text = "";
-                              category = "none";
-                              setState(() {
-                                operationsType = OperationsType.ADD;
-                              });
-                            },
-                            text: "cancel".tr(),
-                          ),
-
-                      ),
-                    ],
-                  ),
-                )),
-          ],
-        ),
+              );
+  }),
+          ),
+        ],
       ),
     ));
   }

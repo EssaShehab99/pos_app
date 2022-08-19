@@ -20,14 +20,15 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController controllerEmail =
-        TextEditingController(text: "essa.shehab.dev@gmail.com");
+        TextEditingController();
     TextEditingController controllerPassword =
-        TextEditingController(text: "3");
+        TextEditingController();
     Status status = Status.NONE;
     AuthServices signUpRepository=   Provider.of<
         AuthServices>(context,
         listen: false);
     final formKey = GlobalKey<FormState>();
+    bool isRemember = true;
     return SafeArea(
         child: Scaffold(
       backgroundColor: ColorsApp.grey,
@@ -136,14 +137,20 @@ class Login extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              Checkbox(
-                                value: false,
-                                onChanged: (value) {},
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(3)),
-                                side: BorderSide(
-                                  color: ColorsApp.secondary,
-                                  width: 1,
+                              StatefulBuilder(
+                                builder:(context, setState) => Checkbox(
+                                  value: isRemember,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      isRemember = value!;
+                                    });
+                                  },
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(3)),
+                                  side: BorderSide(
+                                    color: ColorsApp.secondary,
+                                    width: 1,
+                                  ),
                                 ),
                               ),
                               const SizedBox(
@@ -206,6 +213,7 @@ class Login extends StatelessWidget {
                                 });
                                 if(status==Status.SUCCESS) {
                                   Provider.of<AppStateManager>(context,listen: false).setUser(user!);
+                                  if(isRemember)
                                await   ConfigApp.saveEmailAndPassword(
                                       controllerEmail.text,
                                       controllerPassword.text);

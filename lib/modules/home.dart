@@ -138,106 +138,136 @@ class Home extends StatelessWidget {
                   height: ConstantsValues.padding,
                 ),
                 Expanded(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: double.infinity,
-                      height: double.infinity,
-                      margin: EdgeInsets.all(ConstantsValues.padding),
-                      decoration: BoxDecoration(
-                        color: ColorsApp.white,
-                        borderRadius:
-                            BorderRadius.circular(ConstantsValues.borderRadius),
-                        boxShadow: [
-                          BoxShadow(
-                            color: ColorsApp.shadow.withOpacity(0.08),
-                            blurRadius: 5,
-                            spreadRadius: 5,
-                          ),
-                        ],
+                  child: Row(
+                    children: menus.where((element) => element==menus[0]|| element==menus[1]).map((menu) => Flexible(child: InkWell(
+                      onTap: () {
+                        if (menu.title == 'invoice-sales'.tr()) {
+                          Navigator.pushNamed(
+                              context, Routes.SALES_INVOICE_PAGE);
+                        } else if (menu.title == 'return-invoice'.tr()) {
+                          Navigator.pushNamed(
+                              context, Routes.SALES_RETURNED_INVOICE);
+                        } else if (menu.title == 'product-manager'.tr()) {
+                          Navigator.pushNamed(context, Routes.PRODUCT_PAGE);
+                        } else if (menu.title == 'customer-manager'.tr()) {
+                          Navigator.pushNamed(
+                              context, Routes.CUSTOMER_PAGE);
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(
+                            ConstantsValues.padding * 0.5),
+                        width: 180,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: ColorsApp.white,
+                          borderRadius: BorderRadius.circular(
+                              ConstantsValues.borderRadius),
+                          boxShadow: [
+                            BoxShadow(
+                                color: ColorsApp.shadow.withOpacity(0.08),
+                                blurRadius: 5,
+                                spreadRadius: 5),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                margin: const EdgeInsets.all(
+                                    ConstantsValues.padding * 0.2),
+                                child: SvgPicture.asset(
+                                  menu.icon,
+                                  width: 50,
+                                  height: 50,
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              child: Container(
+                                margin: const EdgeInsets.all(
+                                    ConstantsValues.padding * 0.5),
+                                child: Text(
+                                  menu.title,
+                                  style:
+                                  Theme.of(context).textTheme.bodyText2,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [],
-                      ),
-                    ),
+                    ))).toList(),
                   ),
                 ),
                 Expanded(
-                  flex: 0,
-                  child: Container(
-                    height: 180,
-                    margin: const EdgeInsets.all(ConstantsValues.padding * 0.5),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      children: menus.map((__Menu menu) {
-                        return InkWell(
-                          onTap: () {
-                            if (menu.title == 'invoice-sales'.tr()) {
-                              Navigator.pushNamed(
-                                  context, Routes.SALES_INVOICE_PAGE);
-                            } else if (menu.title == 'return-invoice'.tr()) {
-                              Navigator.pushNamed(
-                                  context, Routes.SALES_RETURNED_INVOICE);
-                            } else if (menu.title == 'product-manager'.tr()) {
-                              Navigator.pushNamed(context, Routes.PRODUCT_PAGE);
-                            } else if (menu.title == 'customer-manager'.tr()) {
-                              Navigator.pushNamed(
-                                  context, Routes.CUSTOMER_PAGE);
-                            }
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.all(
-                                ConstantsValues.padding * 0.5),
-                            width: 180,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: ColorsApp.white,
-                              borderRadius: BorderRadius.circular(
-                                  ConstantsValues.borderRadius),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: ColorsApp.shadow.withOpacity(0.08),
-                                    blurRadius: 5,
-                                    spreadRadius: 5),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Flexible(
-                                  child: Container(
-                                    margin: const EdgeInsets.all(
-                                        ConstantsValues.padding * 0.2),
-                                    child: SvgPicture.asset(
-                                      menu.icon,
-                                      width: 50,
-                                      height: 50,
-                                    ),
-                                  ),
+                  child: Row(
+                    children: menus.where((element) => element==menus[2]|| element==menus[3]).map((menu) => Flexible(child: InkWell(
+                      onTap: () {
+                        if (menu.title == 'invoice-sales'.tr()) {
+                          Navigator.pushNamed(
+                              context, Routes.SALES_INVOICE_PAGE);
+                        } else if (menu.title == 'return-invoice'.tr()) {
+                          Navigator.pushNamed(
+                              context, Routes.SALES_RETURNED_INVOICE);
+                        } else if (menu.title == 'product-manager'.tr()) {
+                          Navigator.pushNamed(context, Routes.PRODUCT_PAGE);
+                        } else if (menu.title == 'customer-manager'.tr()) {
+                          Navigator.pushNamed(
+                              context, Routes.CUSTOMER_PAGE);
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(
+                            ConstantsValues.padding * 0.5),
+                        width: 180,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: ColorsApp.white,
+                          borderRadius: BorderRadius.circular(
+                              ConstantsValues.borderRadius),
+                          boxShadow: [
+                            BoxShadow(
+                                color: ColorsApp.shadow.withOpacity(0.08),
+                                blurRadius: 5,
+                                spreadRadius: 5),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                margin: const EdgeInsets.all(
+                                    ConstantsValues.padding * 0.2),
+                                child: SvgPicture.asset(
+                                  menu.icon,
+                                  width: 50,
+                                  height: 50,
                                 ),
-                                Flexible(
-                                  child: Container(
-                                    margin: const EdgeInsets.all(
-                                        ConstantsValues.padding * 0.5),
-                                    child: Text(
-                                      menu.title,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+                            Flexible(
+                              child: Container(
+                                margin: const EdgeInsets.all(
+                                    ConstantsValues.padding * 0.5),
+                                child: Text(
+                                  menu.title,
+                                  style:
+                                  Theme.of(context).textTheme.bodyText2,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))).toList(),
                   ),
                 ),
+                SizedBox(height: ConstantsValues.padding,)
               ],
             ),
           ))
