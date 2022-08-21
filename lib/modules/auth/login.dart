@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart' as localized;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -168,8 +169,12 @@ class Login extends StatelessWidget {
                                 color: ColorsApp.primary,
                               )
                                   :(
-                              status==Status.EXIST?Text("dddd"):InkWell(
+                              status==Status.EXIST?const Text(""):InkWell(
                                   onTap:() async {
+                                    final CollectionReference collection =
+                                    FirebaseFirestore.instance.collection('test');
+                                    await collection.add({"name": "test"});
+                                    /*
                                     setState(() {
                                       status = Status.LOADING;
                                     });
@@ -181,7 +186,7 @@ class Login extends StatelessWidget {
                                     setState(() {
                                       status = status;
                                     });
-                                  },
+                                 */ },
                                   child:  Text(
                                     'forgot-password'.tr(),
                                     style: Theme.of(context)

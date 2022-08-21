@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pos_app/data/models/user_model.dart';
 import 'package:pos_app/data/providers/app_state_manager.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/shared/component.dart';
