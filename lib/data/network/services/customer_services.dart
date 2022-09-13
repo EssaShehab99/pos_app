@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../models/customer.dart';
-import '../../models/product.dart';
 
 class CustomerServices extends ChangeNotifier {
   late CollectionReference collection;

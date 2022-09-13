@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pos_app/data/models/customer.dart';
 import 'package:pos_app/data/models/sales_invoice_model.dart';
-import 'package:pos_app/data/network/services/customer_services.dart';
 import 'package:pos_app/data/network/services/sales_invoice_services.dart';
-import '/modules/products.dart';
-import '../../models/product.dart';
-import '../services/product_services.dart';
 import '/data/network/repository/repository.dart';
 
 class SalesInvoiceRepository extends Repository<SalesInvoiceModel>{

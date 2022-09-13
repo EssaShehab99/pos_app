@@ -26,6 +26,7 @@ class Register extends StatelessWidget {
     TextEditingController controllerEmail = TextEditingController();
     TextEditingController controllerPhone = TextEditingController();
     TextEditingController controllerPassword = TextEditingController();
+    TextEditingController controllerPasswordConfirm = TextEditingController();
     TextEditingController controllerCompanyName = TextEditingController();
     String selectedCountry = '';
     return SafeArea(
@@ -189,7 +190,7 @@ class Register extends StatelessWidget {
                       Text('password'.tr(),
                           style: Theme.of(context).textTheme.bodyText2),
                       CustomInput(
-                        controller: controllerPassword,
+                        controller: controllerPasswordConfirm,
                         validator: (value) {
                           if (value == null ||
                               value != controllerPassword.text) {

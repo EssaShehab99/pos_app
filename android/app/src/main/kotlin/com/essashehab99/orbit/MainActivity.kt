@@ -1,4 +1,4 @@
-package com.example.pos_app
+package com.essashehab99.orbit
 
 import io.flutter.embedding.android.FlutterActivity
 

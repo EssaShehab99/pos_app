@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:pos_app/data/models/customer.dart';
 import 'package:pos_app/data/network/repository/customer_repository.dart';
-import 'package:pos_app/data/network/repository/products_repository.dart';
-
-import '../models/category.dart';
-import '../models/product.dart';
-import '../network/repository/category_repository.dart';
 
 class CustomerManager extends ChangeNotifier {
   List<Customer> customers = [];

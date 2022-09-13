@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pos_app/data/models/pending_model.dart';
 
 import '../models/user_model.dart';
 import '../network/services/auth_services.dart';

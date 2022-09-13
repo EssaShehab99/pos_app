@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/data/data_response.dart';
 import 'package:pos_app/data/models/category.dart';
 import 'package:pos_app/modules/select_customer_dialog.dart';
@@ -14,10 +13,8 @@ import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
 import '../data/models/product.dart';
-import '../data/models/sales_invoice_model.dart';
 import '../data/providers/app_state_manager.dart';
 import '../data/providers/sales_invoice_manager.dart';
-import 'add_category_dialog.dart';
 
 class SalesInvoice extends StatelessWidget {
   SalesInvoice({Key? key}) : super(key: key);

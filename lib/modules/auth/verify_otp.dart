@@ -8,7 +8,6 @@ import '../../constants/constants_images.dart';
 import '../../constants/constants_values.dart';
 import '../../shared/component.dart';
 import '../../shared/custom_button.dart';
-import '../../shared/custom_dropdown.dart';
 import '../../shared/custom_input.dart';
 import '../../styles/colors_app.dart';
 

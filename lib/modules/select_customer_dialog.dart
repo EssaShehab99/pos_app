@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pos_app/constants/constants_values.dart';
 import 'package:pos_app/data/models/customer.dart';
-import 'package:pos_app/data/providers/product_manager.dart';
 import 'package:pos_app/data/providers/sales_invoice_manager.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';

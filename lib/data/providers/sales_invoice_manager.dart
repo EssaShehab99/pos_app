@@ -11,7 +11,6 @@ import '../models/category.dart';
 import '../models/product.dart';
 import '../models/sales_invoice_model.dart';
 import '../network/repository/category_repository.dart';
-import '../network/services/category_services.dart';
 
 class SalesInvoiceManager extends ChangeNotifier {
   List<Customer> customers = [];

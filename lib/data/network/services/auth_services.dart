@@ -117,9 +117,9 @@ class AuthServices extends ChangeNotifier {
   Future<Status> changePassword(String password) async {
     Status status = Status.LOADING;
     try {
-      await collection
-          .doc(user.email)
-          .update({'password': password}).then((value) {
+     QuerySnapshot<Object?> u= await collection
+          .where("email", isEqualTo: user.email).get();
+     await collection.doc(u.docs.first.id).update({'password': password}).then((value) {
         status = Status.SUCCESS;
       });
     } catch (error) {

@@ -1,9 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:pos_app/data/models/pending_model.dart';
-import 'package:pos_app/data/models/user_model.dart';
-
-import '../../models/category.dart';
 
 class PendingServices {
   late CollectionReference collection ;

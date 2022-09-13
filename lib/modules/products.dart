@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/data/providers/app_state_manager.dart';
 import 'package:pos_app/modules/shimmer/home_shimmer.dart';
 import 'package:pos_app/shared/custom_button.dart';
@@ -8,7 +7,6 @@ import 'package:pos_app/shared/custom_dropdown.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../../constants/constants_images.dart';
 import '../../../constants/constants_values.dart';
 import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';

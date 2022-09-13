@@ -1,13 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/data/models/customer.dart';
 import 'package:pos_app/data/providers/customer_manager.dart';
 import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import '../../constants/constants_images.dart';
 import '../../constants/constants_values.dart';
 import '../../shared/custom_input.dart';
 import '../../styles/colors_app.dart';

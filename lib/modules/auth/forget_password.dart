@@ -8,7 +8,6 @@ import '../../constants/constants_images.dart';
 import '../../constants/constants_values.dart';
 import '../../shared/component.dart';
 import '../../shared/custom_button.dart';
-import '../../shared/custom_dropdown.dart';
 import '../../shared/custom_input.dart';
 import '../../styles/colors_app.dart';
 
@@ -18,6 +17,7 @@ class ForgetPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController controllerPassword = TextEditingController();
+    TextEditingController controllerPasswordConfirm = TextEditingController();
     final formKey = GlobalKey<FormState>();
     Status status = Status.NONE;
     AuthServices signUpRepository =
@@ -115,7 +115,14 @@ class ForgetPassword extends StatelessWidget {
                         SizedBox(height: ConstantsValues.padding),
                         Flexible(
                           child: CustomInput(
-                            controller: TextEditingController(),
+                            controller: controllerPasswordConfirm,
+                            validator: (value) {
+                              if (value == null ||
+                                  value != controllerPassword.text) {
+                                return 'not-match'.tr();
+                              }
+                              return null;
+                            },
                             hint: 'confirm-password'.tr(),
                             obscureText: true,
                           ),
@@ -130,18 +137,20 @@ class ForgetPassword extends StatelessWidget {
                                   isLoading: status == Status.LOADING,
                                   text: 'change-password'.tr(),
                                   onTap: () async {
-                                    setState(() {
-                                      status = Status.LOADING;
-                                    });
-                                 status=await signUpRepository.changePassword(
-                                            controllerPassword.text);
-                                    if (status == Status.SUCCESS) {
-                                      Navigator.pushNamed(
-                                          context, Routes.HOME_PAGE);
+                                    if (formKey.currentState!.validate()) {
+                                      setState(() {
+                                        status = Status.LOADING;
+                                      });
+                                      status =
+                                          await signUpRepository.changePassword(
+                                              controllerPassword.text);
+                                      if (status == Status.SUCCESS) {
+                                        Navigator.pop(context);
+                                      }
+                                      setState(() {
+                                        status = Status.NONE;
+                                      });
                                     }
-                                    setState(() {
-                                      status = Status.NONE;
-                                    });
                                   },
                                 ),
                               ),

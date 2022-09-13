@@ -5,7 +5,6 @@ import 'package:pos_app/data/network/repository/products_repository.dart';
 import '../models/category.dart';
 import '../models/product.dart';
 import '../network/repository/category_repository.dart';
-import '../network/services/category_services.dart';
 
 class ProductManager extends ChangeNotifier {
   List<Category> categories = [];

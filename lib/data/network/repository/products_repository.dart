@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '/modules/products.dart';
 import '../../models/product.dart';
 import '../services/product_services.dart';
 import '/data/network/repository/repository.dart';

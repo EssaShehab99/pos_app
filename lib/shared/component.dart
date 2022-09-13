@@ -1,10 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_app/constants/constants_values.dart';
-import 'package:pos_app/data/setting/config_app.dart';
 import 'package:pos_app/shared/custom_button.dart';
 
-import '../routes.dart';
 import '../styles/colors_app.dart';
 
 import 'dart:convert';

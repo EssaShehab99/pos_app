@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-
-import '../constants/constants_values.dart';
 import '../styles/colors_app.dart';
 
 class CustomInput extends StatelessWidget {

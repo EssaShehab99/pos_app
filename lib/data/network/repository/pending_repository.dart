@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:pos_app/data/models/pending_model.dart';
 import 'package:pos_app/data/network/services/pending_services.dart';
 
-import '../../models/category.dart';
-import '../services/category_services.dart';
 import '/data/network/repository/repository.dart';
 
 class PendingRepository extends ChangeNotifier

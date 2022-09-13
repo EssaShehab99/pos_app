@@ -1,34 +1,20 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pos_app/data/models/user_model.dart';
 import 'package:pos_app/data/providers/app_state_manager.dart';
 import 'package:pos_app/modules/select_user_dialog.dart';
 import 'package:pos_app/modules/shimmer/home_shimmer.dart';
-import 'package:pos_app/shared/custom_button.dart';
-import 'package:pos_app/shared/custom_dropdown.dart';
 import 'package:provider/provider.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-
-import '../../../constants/constants_images.dart';
 import '../../../constants/constants_values.dart';
-import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
-import '../data/models/category.dart';
-import '../data/models/product.dart';
-import '../data/providers/product_manager.dart';
 import '../data/providers/accounts_manager.dart';
-import '../data/setting/config_app.dart';
-import '../routes.dart';
 import '../shared/component.dart';
-import 'add_category_dialog.dart';
 
 class Accounts extends StatelessWidget {
   const Accounts({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
     final accountsManager = Provider.of<AccountsManager>(
         context, listen: false)..init(Provider
         .of<AppStateManager>(context, listen: false).user);

@@ -7,11 +7,9 @@ import 'package:pos_app/shared/custom_button.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../../constants/constants_values.dart';
-import '../../../shared/custom_input.dart';
 import '../../../styles/colors_app.dart';
 import '../data/models/sales_invoice_model.dart';
 import '../data/providers/app_state_manager.dart';
-import '../data/providers/customer_manager.dart';
 import '../data/providers/sales_invoice_manager.dart';
 
 class ReturnedInvoice extends StatelessWidget {

@@ -1,12 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pos_app/data/models/pending_model.dart';
 import 'package:pos_app/data/models/user_model.dart';
-import 'package:pos_app/data/network/services/pending_services.dart';
 import 'package:pos_app/data/network/services/users_services.dart';
 
-import '../../models/category.dart';
-import '../services/category_services.dart';
 import '/data/network/repository/repository.dart';
 
 class UserRepository extends ChangeNotifier

@@ -1,17 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:collection/collection.dart';
 import 'package:pos_app/data/models/customer.dart';
 import 'package:pos_app/data/network/repository/customer_repository.dart';
 import 'package:pos_app/data/network/repository/products_repository.dart';
 import 'package:pos_app/data/network/repository/sales_invoice_repository.dart';
 
-import '../models/category.dart';
 import '../models/product.dart';
 import '../models/sales_invoice_model.dart';
-import '../network/repository/category_repository.dart';
-import '../network/services/category_services.dart';
-
 class ReturnInvoiceManager extends ChangeNotifier {
   late SalesInvoiceRepository _salesInvoiceRepository;
   bool isLoading = false;

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 abstract class Repository<T> {
 
   Stream<List<T>> watchAllItems();

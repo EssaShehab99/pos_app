@@ -2,14 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:pos_app/data/models/pending_model.dart';
 import 'package:pos_app/modules/shimmer/home_shimmer.dart';
-import 'package:pos_app/routes.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constants_values.dart';
 import '../data/models/user_model.dart';
 import '../data/providers/accounts_manager.dart';
 import '../data/providers/app_state_manager.dart';
-import '../data/setting/config_app.dart';
 import '../shared/component.dart';
 import '../styles/colors_app.dart';
 

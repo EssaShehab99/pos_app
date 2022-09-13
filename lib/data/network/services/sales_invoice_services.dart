@@ -1,11 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:pos_app/data/models/sales_invoice_model.dart';
-import 'package:pos_app/modules/sales_invoice.dart';
-
-import '../../models/customer.dart';
-import '../../models/product.dart';
-
 class SalesInvoiceServices extends ChangeNotifier {
   late CollectionReference collection;
 

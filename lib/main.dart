@@ -11,7 +11,6 @@ import 'package:pos_app/modules/auth/verify_otp.dart';
 import 'package:pos_app/modules/customers.dart';
 import 'package:pos_app/modules/accounts.dart';
 import 'package:pos_app/modules/notifications_page.dart';
-import 'package:pos_app/modules/shimmer/home_shimmer.dart';
 import 'package:pos_app/modules/show_sales_invoice.dart';
 import 'package:pos_app/routes.dart';
 import 'package:pos_app/styles/colors_app.dart';
